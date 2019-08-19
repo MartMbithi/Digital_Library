@@ -1,0 +1,285 @@
+.bb-bookblock {
+	width: 100%;
+	height: 600px;
+	margin: 0 auto;
+	position: relative;
+	z-index: 100;
+	-webkit-perspective: 1300px;
+	perspective: 1300px;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	box-shadow:0px 0px 15px 5px rgba(0,0,0,1)
+	
+	
+}
+.bb-custom-wrapper{
+	float:left;
+	width:100%;
+	position:relative;
+	background-image: url(../images/strip.png), url(../images/leather-pettern.jpg);
+	background-repeat: no-repeat, repeat;
+	background-position:center, center;
+	border-radius:10px;
+	box-shadow:0px 0px 5px 0px rgba(255,255,255,1) inset;
+	-moz-box-shadow:0px 0px 5px 0px rgba(255,255,255,1) inset;
+	-webkit-box-shadow:0px 0px 5px 0px rgba(255,255,255,1) inset;
+	padding:30px;
+	
+	
+}
+.bb-custom-side:before, .bb-custom-side:after{
+	content:"";
+	position:absolute;
+	width:10px;
+	border:solid 1px #eaeaea;
+	outline:solid 1px #eaeaea;
+	outline-offset:-4px;
+	top:0px;
+	height:100%;
+	left:3px;
+	z-index:10;
+}
+.bb-custom-side:after{
+	left:auto;
+	right:3px;
+}
+.bb-custom-side, .bb-custom-firstpage {
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    align-items: center;
+    background: #fff none repeat scroll 0 0;
+    float: left;
+    height: 100%;
+    overflow: hidden;
+    width: 50%;
+}
+.bb-custom-side{
+	padding:50px;
+	cursor:move;
+	border-top:solid 3px #eaeaea;
+	border-bottom:solid 3px #eaeaea;
+	border-left:solid 1px #eaeaea;
+	border-right:solid 1px #eaeaea;
+	box-shadow:0 40px 20px -25px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow:0 40px 20px -25px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow:0 40px 20px -25px rgba(0, 0, 0, 0.1);
+	
+}
+.bb-custom-wrapper > nav{
+	position:absolute;
+	left:0px;
+	bottom:80px;
+	width:auto;
+	right:0px;
+	z-index:100;
+}
+.bb-custom-wrapper > nav a {
+    border-radius: 2px;
+    color: #ccc;
+    display: inline-block;
+    font-size: 0;
+    height: 40px;
+    margin: 0px 5px;
+    text-align: center;
+    width: 40px;
+	line-height:normal;
+	position:absolute;
+}
+.bb-custom-wrapper > nav a#bb-nav-prev{
+	left:40px;
+}
+.bb-custom-wrapper > nav a#bb-nav-next{
+	right:40px;
+}
+.bb-custom-wrapper > nav a:hover{
+	background-color:#000;
+}
+.bb-custom-icon:before {
+	content:"\f104";
+	font-family: FontAwesome;
+	speak: none;
+	font-size: 30px;
+	line-height: 40px;
+	display: block;
+	-webkit-font-smoothing: antialiased;
+}
+.bb-custom-icon.bb-custom-icon-arrow-right:before{
+	content:"\f105";
+}
+
+.bb-custom-icon-first:before,
+.bb-custom-icon-last:before {
+	content: "\e002";
+}
+
+.bb-page {
+	position: absolute;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transition-property: -webkit-transform;
+	transition-property: transform;
+}
+
+.bb-vertical .bb-page {
+	width: 50%;
+	height: 100%;
+	left: 50%;
+	-webkit-transform-origin: left center;
+	transform-origin: left center;
+}
+
+.bb-horizontal .bb-page {
+	width: 100%;
+	height: 50%;
+	top: 50%;
+	-webkit-transform-origin: center top;
+	transform-origin: center top;
+}
+
+.bb-page > div,
+.bb-outer,
+.bb-content,
+.bb-inner {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.bb-vertical .bb-content {
+	width: 200%;
+}
+
+.bb-horizontal .bb-content {
+	height: 200%;
+}
+
+.bb-page > div {
+	width: 100%;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.bb-vertical .bb-back {
+	-webkit-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
+
+.bb-horizontal .bb-back {
+	-webkit-transform: rotateX(-180deg);
+	transform: rotateX(-180deg);
+}
+
+.bb-outer {
+	width: 100%;
+	overflow: hidden;
+	z-index: 999;
+}
+
+.bb-overlay, 
+.bb-flipoverlay {
+	background-color: rgba(0, 0, 0, 0.7);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+
+.bb-flipoverlay {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.bb-bookblock.bb-vertical > div.bb-page:first-child,
+.bb-bookblock.bb-vertical > div.bb-page:first-child .bb-back {
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+.bb-bookblock.bb-horizontal > div.bb-page:first-child,
+.bb-bookblock.bb-horizontal > div.bb-page:first-child .bb-back {
+	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}
+
+/* Content display */
+.bb-content {
+	background: #fff;
+}
+
+.bb-vertical .bb-front .bb-content {
+	left: -100%;
+}
+
+.bb-horizontal .bb-front .bb-content {
+	top: -100%;
+}
+
+/* Flipping classes */
+.bb-vertical .bb-flip-next,
+.bb-vertical .bb-flip-initial {
+	-webkit-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
+
+.bb-vertical .bb-flip-prev {
+	-webkit-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+}
+
+.bb-horizontal .bb-flip-next,
+.bb-horizontal .bb-flip-initial {
+	-webkit-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}
+
+.bb-horizontal .bb-flip-prev {
+	-webkit-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+}
+
+.bb-vertical .bb-flip-next-end {
+	-webkit-transform: rotateY(-15deg);
+	transform: rotateY(-15deg);
+}
+
+.bb-vertical .bb-flip-prev-end {
+	-webkit-transform: rotateY(-165deg);
+	transform: rotateY(-165deg);
+}
+
+.bb-horizontal .bb-flip-next-end {
+	-webkit-transform: rotateX(15deg);
+	transform: rotateX(15deg);
+}
+
+.bb-horizontal .bb-flip-prev-end {
+	-webkit-transform: rotateX(165deg);
+	transform: rotateX(165deg);
+}
+
+.bb-item {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height:100%;
+	width:100%;
+	display: none;
+	
+}
+
+/* No JS */
+.no-js .bb-bookblock, 
+.no-js ul.bb-custom-grid li {
+	width: auto;
+	height: auto;
+}
+
+.no-js .bb-item {
+	display: block;
+	position: relative;
+}
