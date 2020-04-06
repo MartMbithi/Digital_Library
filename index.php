@@ -18,14 +18,14 @@
     	<div class="top-strip">
         	<div class="container">
             	<div class="pull-left">
-                	<p>Welcome to Digital Library Management System</p>
+                	<p>Welcome to iLibrary The Digital Library Management System</p>
                 </div>
             	<ul class="my-account">
                         
                         <li><a href="lib_user/"><i class="fa fa-user"></i> My Account</a></li>
                         
                         <li><a target = "_blank" href="librarian/"><i class="fa fa-sign-in"></i> Librarian</a></li>
-                        <li><a target = "_blank"  href="admin/"><i class="fa fa-user-secret"></i> Administrator</a></li>                        
+                        <li><a target = "_blank"  href="sudo/pages_sudo_index.php"><i class="fa fa-user-secret"></i> Super User</a></li>                        
                     </ul>
             </div>
         </div>
@@ -38,9 +38,7 @@
         	<li>
             	<img src="images/banner-1.png" alt="">
                 <div class="kode-caption-2">
-                	
-                	<h2>Digital Libray Management System</h2>
-                    					
+                	<h2>Digital Library Management System</h2>
                 </div>
             </li>
             
@@ -63,7 +61,7 @@
 			  <ul class="nav nav-tabs" role="tablist">
 				<li role="presentation"><a href="lib_user/">Library User</a></li>
 				<li role="presentation" class="active"><a href="librarian/">Librarian</a></li>
-				<li role="presentation"><a href="admin/" >Administrator</a></li>
+				<li role="presentation"><a href="sudo/pages_sudo_index.php" >Administrator</a></li>
 			  </ul>
 			
 			 
@@ -108,9 +106,7 @@
 <script type="text/javascript" src="lib/booklet-lib.js"></script>
 <script src="js/jquerypp.custom.js"></script>
 <script src="js/jquery.bookblock.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
 <script src="js/functions.js"></script>
 </body>
 
-<!-- Mirrored from kodeforest.net/html/books/library/index-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 22 Jul 2019 08:41:06 GMT -->
 </html>
