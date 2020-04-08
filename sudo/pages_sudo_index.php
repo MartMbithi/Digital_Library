@@ -141,12 +141,12 @@
             </div>
         </div>
         <!--
-            Super user account is system generated -->
+            Super user account is system generated 
+            Uncomment this block of code to enable super users to create account
+
         <div class="uk-margin-top uk-text-center">
             <a href="#" id="signup_form_show">Create Super User Account</a>
         </div>
-
-        <!--Uncomment this block of code to enable super users to create account
         -->
     </div>
 
