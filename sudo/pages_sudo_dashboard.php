@@ -6,6 +6,193 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
+
+    
+    /*
+    Statics logic
+        1.Books
+            1.0 : Number of all book categories in the library
+            1.1 : Number of all books no matter what category
+            1.2 : Number of all Borrowed Books no matter what category
+            1.3 : Number of all Lost Books no matter what category
+
+        2.Library Users(Students and Librarians)
+            2.0 : Number of Employed Librarians
+            2.1 : Number of all Enrolled Students
+            2.2 : Number of all Enrolled Students with pending account activation
+            2.3 : Number of all Employed Librarians with pending accounts activations
+        3.Misc
+            3.0 : Number of all Librarians requestings for Password Resets
+            3.1 : Number of all students requesting for password resets
+            3.2 : Number of Unread Messsanges inbox
+            3.3 : Number of all amount paid by students as a fine of loosing and damaging any book
+
+    Charts
+         1.Books
+            1.0 : Number Of Books Per Book Category ->PieChart
+            1.1 : Number of Borrowed Books Per Books Category ->Piechart or Donought Chart
+
+
+
+    */
+     //1.Books
+
+    //1.0 : Number of all book categories in the library
+    $result ="SELECT count(*) FROM iL_BookCategories";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($book_categories);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.1 : Number of all books no matter what category
+    $result ="SELECT count(*) FROM iL_Books";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($books);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.2 : Number of all Borrowed Books no matter what category
+    $result ="SELECT count(*) FROM iL_Books WHERE b_status = 'Borrowed'";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($borrowed_books);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.3 : Number of all Lost Books no matter what category
+    $result ="SELECT count(*) FROM iL_Books WHERE b_status = 'Lost' ||  b_status = 'Damanged' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($damanged_and_lost_books);
+    $stmt->fetch();
+    $stmt->close();
+
+
+    //2.Library Users(Students and Librarians)
+    //2.0 : Number of Employed Librarians
+    $result ="SELECT count(*) FROM iL_Librarians WHERE l_acc_status = 'Active' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($librarians);
+    $stmt->fetch();
+    $stmt->close();
+
+    //2.1 : Number of all Enrolled Students
+    $result ="SELECT count(*) FROM iL_Students WHERE s_acc_status = 'Active' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($students);
+    $stmt->fetch();
+    $stmt->close();
+
+    //2.2 : Number of all Enrolled Students with pending account activation
+    $result ="SELECT count(*) FROM iL_Students WHERE s_acc_status = 'Pending' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($pending_students);
+    $stmt->fetch();
+    $stmt->close();
+
+    //2.3 : Number of all Employed Librarians with pending accounts activations
+    $result ="SELECT count(*) FROM iL_Librarians WHERE l_acc_status = 'Pending' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($pending_librarians);
+    $stmt->fetch();
+    $stmt->close();
+
+    // 3.Misc
+
+    //3.0 : Number of all Librarians requestings for Password Resets
+    $result ="SELECT count(*) FROM iL_PasswordResets WHERE pr_usertype = 'Librarian' AND pr_status='Pending' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($pending_librarians_pwd_resets);
+    $stmt->fetch();
+    $stmt->close();
+
+    //3.1 : Number of all students requesting for password resets
+    $result ="SELECT count(*) FROM iL_PasswordResets WHERE pr_usertype = 'Student' AND pr_status='Pending' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($pending_student_pwd_resets);
+    $stmt->fetch();
+    $stmt->close();
+
+    //3.2 : Number of Unread Messsanges inbox
+    $id = $_SESSION['id'];
+    $result ="SELECT count(*) FROM iL_messages WHERE receiver_id = ? ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->bind_result($inbox);
+    $stmt->fetch();
+    $stmt->close();
+
+    //3.3 : Number of all amount paid by students as a fine of loosing and damaging any book
+    $result ="SELECT SUM(f_amt) FROM iL_Fines WHERE f_status = 'Paid' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($fines);
+    $stmt->fetch();
+    $stmt->close();
+
+
+    /*
+        The following block of codes implements Books Charts
+
+        -->Books Category Will be HardCoded so my bad<--
+    */
+
+    //1.0.1 : Number Of Books under Non-fiction Category
+    $result ="SELECT COUNT(*) FROM iL_Books WHERE bc_name = 'Non-fiction' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($non_fiction);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.0.2 : Number Of Books under Fiction Category
+    $result ="SELECT COUNT(*) FROM iL_Books WHERE bc_name = 'Fiction' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($fiction);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.0.3 : Number Of Books under References Category
+    $result ="SELECT COUNT(*) FROM iL_Books WHERE bc_name = 'References' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($References);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.1.0 : Number of Borrowed Books Per Books in Non-fiction Category ->Piechart or Donought Chart
+    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'Non-fiction' AND lo_type ='Borrowed' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($borrowed_non_fiction);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.1.1 : Number of Borrowed Books Per Books in fiction Category ->Piechart or Donought Chart
+    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'Fiction' AND lo_type ='Borrowed' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($borrowed_fiction);
+    $stmt->fetch();
+    $stmt->close();
+
+    //1.1.2 : Number of Borrowed Books Per Books in References Category ->Piechart or Donought Chart
+    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'References' AND lo_type ='Borrowed' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($borrowed_references);
+    $stmt->fetch();
+    $stmt->close();
     
 ?>
 <!doctype html>
@@ -30,47 +217,127 @@
     <div id="page_content">
         <div id="page_content_inner">
 
-            <!-- statistics (small charts) -->
+            <!--1.Books-->
             <div class="uk-grid uk-grid-width-large-1-4 uk-grid-width-medium-1-2 uk-grid-medium uk-sortable sortable-handler hierarchical_show" data-uk-sortable data-uk-grid-margin>
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">
-                            <div class="uk-float-right uk-margin-top uk-margin-small-right"><span class="peity_visitors peity_data">5,3,9,6,5,9,7</span></div>
-                            <span class="uk-text-muted uk-text-small">Visitors (last 7d)</span>
-                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>12456</noscript></span></h2>
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Book Categories</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $book_categories;?></noscript></span></h2>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">
-                            <div class="uk-float-right uk-margin-top uk-margin-small-right"><span class="peity_sale peity_data">5,3,9,6,5,9,7,3,5,2</span></div>
-                            <span class="uk-text-muted uk-text-small">Sale</span>
-                            <h2 class="uk-margin-remove">$<span class="countUpMe">0<noscript>142384</noscript></span></h2>
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Books</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $books;?></noscript></span></h2>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">
-                            <div class="uk-float-right uk-margin-top uk-margin-small-right"><span class="peity_orders peity_data">64/100</span></div>
-                            <span class="uk-text-muted uk-text-small">Orders Completed</span>
-                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>64</noscript></span>%</h2>
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Borrowed Books</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $borrowed_books;?></noscript></span></h2>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">
-                            <div class="uk-float-right uk-margin-top uk-margin-small-right"><span class="peity_live peity_data">5,3,9,6,5,9,7,3,5,2,5,3,9,6,5,9,7,3,5,2</span></div>
-                            <span class="uk-text-muted uk-text-small">Visitors (live)</span>
-                            <h2 class="uk-margin-remove" id="peity_live_text">46</h2>
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Lost | Damaged Books</span>
+                            <h2 class="uk-margin-remove"><?php echo $damanged_and_lost_books;?></h2>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- large chart -->
+            <!--2.Library Users(Students and Librarians)-->
+            <div class="uk-grid uk-grid-width-large-1-4 uk-grid-width-medium-1-2 uk-grid-medium uk-sortable sortable-handler hierarchical_show" data-uk-sortable data-uk-grid-margin>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Librarians</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $librarians;?></noscript></span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Enrolled Students</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $students;?></noscript></span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Pending Librarians Accounts</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $pending_librarians;?></noscript></span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Pending Students Accounts</span>
+                            <h2 class="uk-margin-remove"><?php echo $pending_students;?></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--3.Misc-->
+            <div class="uk-grid uk-grid-width-large-1-4 uk-grid-width-medium-1-2 uk-grid-medium uk-sortable sortable-handler hierarchical_show" data-uk-sortable data-uk-grid-margin>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Pending Librarians Password Resets</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $pending_librarians_pwd_resets;?></noscript></span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Pending Students Password Resets</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $pending_student_pwd_resets;?></noscript></span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Inbox</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $inbox;?></noscript></span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Library Fines</span>
+                            <h2 class="uk-margin-remove">Ksh <?php echo $fines;?></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <!-- Pie Charts-->
             <div class="uk-grid">
                 <div class="uk-width-1-1">
                     <div class="md-card">
@@ -78,275 +345,113 @@
                             <div class="md-card-toolbar-actions">
                                 <i class="md-icon material-icons md-card-fullscreen-activate">&#xE5D0;</i>
                                 <i class="md-icon material-icons">&#xE5D5;</i>
-                                <div class="md-card-dropdown" data-uk-dropdown="{pos:'bottom-right'}">
-                                    <i class="md-icon material-icons">&#xE5D4;</i>
-                                    <div class="uk-dropdown uk-dropdown-small">
-                                        <ul class="uk-nav">
-                                            <li><a href="#">Action 1</a></li>
-                                            <li><a href="#">Action 2</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                
                             </div>
-                            <h3 class="md-card-toolbar-heading-text">
-                                Chart
-                            </h3>
                         </div>
+
                         <div class="md-card-content">
                             <div class="mGraph-wrapper">
-                                <div id="mGraph_sale" class="mGraph" data-uk-check-display></div>
+                                <div id="PieChart" class="mGraph" style="height: 400px; max-width: 500px; margin: 0px auto;"></div>
                             </div>
+
                             <div class="md-card-fullscreen-content">
                                 <div class="uk-overflow-container">
                                     <table class="uk-table uk-table-no-border uk-text-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Best Seller</th>
-                                            <th>Total Sale</th>
-                                            <th>Change</th>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>Category</th>
+                                            <th>ISBN No.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>January 2014</td>
-                                            <td>Qui consequuntur laudantium architecto.</td>
-                                            <td>$3 234 162</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>February 2014</td>
-                                            <td>Consequatur unde quis quibusdam eligendi.</td>
-                                            <td>$3 771 083</td>
-                                            <td class="uk-text-success">+2.5%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>March 2014</td>
-                                            <td>Eum corporis saepe.</td>
-                                            <td>$2 429 352</td>
-                                            <td class="uk-text-danger">-4.6%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>April 2014</td>
-                                            <td>Provident quibusdam asperiores nesciunt.</td>
-                                            <td>$4 844 169</td>
-                                            <td class="uk-text-success">+7%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>May 2014</td>
-                                            <td>Unde sed sed.</td>
-                                            <td>$5 284 318</td>
-                                            <td class="uk-text-success">+3.2%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>June 2014</td>
-                                            <td>Odio quaerat minima adipisci ut.</td>
-                                            <td>$4 688 183</td>
-                                            <td class="uk-text-danger">-6%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>July 2014</td>
-                                            <td>Quia odio atque aut.</td>
-                                            <td>$4 353 427</td>
-                                            <td class="uk-text-success">-5.3%</td>
-                                        </tr>
+                                        <?php
+                                            $ret="SELECT * FROM  iL_Books"; 
+                                            $stmt= $mysqli->prepare($ret) ;
+                                            $stmt->execute() ;//ok
+                                            $res=$stmt->get_result();
+                                            while($row=$res->fetch_object())
+                                            {
+                                        ?>
+                                            <tr>
+                                                <td><?php echo $row->b_title;?></td>
+                                                <td><?php echo $row->b_author;?></td>
+                                                <td><?php echo $row->bc_name;?></td>
+                                                <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
+                                            </tr>
+
+                                        <?php }?>
                                     </tbody>
                                 </table>
                                 </div>
-                                <p class="uk-margin-large-top uk-margin-small-bottom heading_list uk-text-success">Some Info:</p>
-                                <p class="uk-margin-top-remove">Unde aliquam ducimus quibusdam dicta est facere qui perferendis vitae inventore aut est exercitationem voluptas rerum ratione reiciendis sed ducimus illo aut vel enim et alias unde asperiores quia vitae sed qui nobis qui recusandae veniam vitae distinctio dolorem est iure odit quia et maiores vel assumenda facilis iste eos et sed natus sed voluptatem vero culpa ut ullam eveniet commodi perferendis aperiam eveniet sed quo dolor ipsam ipsa officiis ipsa a consequatur rerum minus quas saepe corrupti sit commodi laboriosam eligendi cupiditate est dolores laboriosam necessitatibus et dignissimos ipsum totam numquam nihil nesciunt suscipit eum tempore qui excepturi quis ea fugiat id vel velit enim et vel exercitationem aliquid ut adipisci et officiis praesentium corrupti consequuntur inventore aut aut eligendi repellat animi commodi sed dolorem possimus quo.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- circular charts -->
-            <div class="uk-grid uk-grid-width-small-1-2 uk-grid-width-large-1-3 uk-grid-width-xlarge-1-5 uk-text-center uk-sortable sortable-handler" id="dashboard_sortable_cards" data-uk-sortable data-uk-grid-margin>
-                <div>
-                    <div class="md-card md-card-hover md-card-overlay">
-                        <div class="md-card-content">
-                            <div class="epc_chart" data-percent="76" data-bar-color="#03a9f4">
-                                <span class="epc_chart_icon"><i class="material-icons">&#xE0BE;</i></span>
-                            </div>
-                        </div>
-                        <div class="md-card-overlay-content">
-                            <div class="uk-clearfix md-card-overlay-header">
-                                <i class="md-icon material-icons md-card-overlay-toggler">&#xE5D4;</i>
-                                <h3>
-                                    User Messages
-                                </h3>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus alias consectetur.
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="md-card md-card-hover md-card-overlay">
-                        <div class="md-card-content uk-flex uk-flex-center uk-flex-middle">
-                            <span class="peity_conversions_large peity_data">5,3,9,6,5,9,7</span>
-                        </div>
-                        <div class="md-card-overlay-content">
-                            <div class="uk-clearfix md-card-overlay-header">
-                                <i class="md-icon material-icons md-card-overlay-toggler">&#xE5D4;</i>
-                                <h3>
-                                    Conversions
-                                </h3>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="md-card md-card-hover md-card-overlay md-card-overlay-active">
-                        <div class="md-card-content" id="canvas_1">
-                            <div class="epc_chart" data-percent="37" data-bar-color="#9c27b0">
-                                <span class="epc_chart_icon"><i class="material-icons">&#xE85D;</i></span>
-                            </div>
-                        </div>
-                        <div class="md-card-overlay-content">
-                            <div class="uk-clearfix md-card-overlay-header">
-                                <i class="md-icon material-icons md-card-overlay-toggler">&#xE5D4;</i>
-                                <h3>
-                                    Tasks List
-                                </h3>
-                            </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            <button class="md-btn md-btn-primary">More</button>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="md-card md-card-hover md-card-overlay">
-                        <div class="md-card-content">
-                            <div class="epc_chart" data-percent="53" data-bar-color="#009688">
-                                <span class="epc_chart_text"><span class="countUpMe">53</span>%</span>
-                            </div>
-                        </div>
-                        <div class="md-card-overlay-content">
-                            <div class="uk-clearfix md-card-overlay-header">
-                                <i class="md-icon material-icons md-card-overlay-toggler">&#xE5D4;</i>
-                                <h3>
-                                    Orders
-                                </h3>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="md-card md-card-hover md-card-overlay">
-                        <div class="md-card-content">
-                            <div class="epc_chart" data-percent="37" data-bar-color="#607d8b">
-                                <span class="epc_chart_icon"><i class="material-icons">&#xE7FE;</i></span>
-                            </div>
-                        </div>
-                        <div class="md-card-overlay-content">
-                            <div class="uk-clearfix md-card-overlay-header">
-                                <i class="md-icon material-icons md-card-overlay-toggler">&#xE5D4;</i>
-                                <h3>
-                                    User Registrations
-                                </h3>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- tasks -->
-            <div class="uk-grid" data-uk-grid-margin data-uk-grid-match="{target:'.md-card-content'}">
-                <div class="uk-width-medium-1-2">
+            <!--Donought chart-->
+            <div class="uk-grid">
+                <div class="uk-width-1-1">
                     <div class="md-card">
+                        <div class="md-card-toolbar">
+                            <div class="md-card-toolbar-actions">
+                                <i class="md-icon material-icons md-card-fullscreen-activate">&#xE5D0;</i>
+                                <i class="md-icon material-icons">&#xE5D5;</i>
+                                
+                            </div>
+                            
+                        </div>
+
                         <div class="md-card-content">
-                            <div class="uk-overflow-container">
-                                <table class="uk-table">
+                            <div class="mGraph-wrapper">
+                                <div id="BooksBorrowedPerCategory" class="mGraph" style="height: 400px; max-width: 500px; margin: 0px auto;"></div>
+                                
+                            </div>
+
+                            <div class="md-card-fullscreen-content">
+                                <div class="uk-overflow-container">
+                                    <table class="uk-table uk-table-no-border uk-text-nowrap">
                                     <thead>
                                         <tr>
-                                            <th class="uk-text-nowrap">Task</th>
-                                            <th class="uk-text-nowrap">Status</th>
-                                            <th class="uk-text-nowrap">Progress</th>
-                                            <th class="uk-text-nowrap uk-text-right">Due Date</th>
+                                            <th>Name</th>
+                                            <th>Number</th>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>Category</th>
+                                            <th>ISBN No.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="uk-table-middle">
-                                            <td class="uk-width-3-10 uk-text-nowrap"><a href="page_scrum_board.html">ALTR-231</a></td>
-                                            <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge">In progress</span></td>
-                                            <td class="uk-width-3-10">
-                                                <div class="uk-progress uk-progress-mini uk-progress-warning uk-margin-remove">
-                                                    <div class="uk-progress-bar" style="width: 40%;"></div>
-                                                </div>
-                                            </td>
-                                            <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">24.11.2015</td>
-                                        </tr>
-                                        <tr class="uk-table-middle">
-                                            <td class="uk-width-3-10 uk-text-nowrap"><a href="page_scrum_board.html">ALTR-82</a></td>
-                                            <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-warning">Open</span></td>
-                                            <td class="uk-width-3-10">
-                                                <div class="uk-progress uk-progress-mini uk-progress-success uk-margin-remove">
-                                                    <div class="uk-progress-bar" style="width: 82%;"></div>
-                                                </div>
-                                            </td>
-                                            <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">21.11.2015</td>
-                                        </tr>
-                                        <tr class="uk-table-middle">
-                                            <td class="uk-width-3-10 uk-text-nowrap"><a href="page_scrum_board.html">ALTR-123</a></td>
-                                            <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-primary">New</span></td>
-                                            <td class="uk-width-3-10">
-                                                <div class="uk-progress uk-progress-mini uk-margin-remove">
-                                                    <div class="uk-progress-bar" style="width: 0;"></div>
-                                                </div>
-                                            </td>
-                                            <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">12.11.2015</td>
-                                        </tr>
-                                        <tr class="uk-table-middle">
-                                            <td class="uk-width-3-10 uk-text-nowrap"><a href="page_scrum_board.html">ALTR-164</a></td>
-                                            <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-success">Resolved</span></td>
-                                            <td class="uk-width-3-10">
-                                                <div class="uk-progress uk-progress-mini uk-progress-primary uk-margin-remove">
-                                                    <div class="uk-progress-bar" style="width: 61%;"></div>
-                                                </div>
-                                            </td>
-                                            <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">17.11.2015</td>
-                                        </tr>
-                                        <tr class="uk-table-middle">
-                                            <td class="uk-width-3-10 uk-text-nowrap"><a href="page_scrum_board.html">ALTR-123</a></td>
-                                            <td class="uk-width-2-10 uk-text-nowrap"><span class="uk-badge uk-badge-danger">Overdue</span></td>
-                                            <td class="uk-width-3-10">
-                                                <div class="uk-progress uk-progress-mini uk-progress-danger uk-margin-remove">
-                                                    <div class="uk-progress-bar" style="width: 10%;"></div>
-                                                </div>
-                                            </td>
-                                            <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">12.11.2015</td>
-                                        </tr>
-                                        <tr class="uk-table-middle">
-                                            <td class="uk-width-3-10"><a href="page_scrum_board.html">ALTR-92</a></td>
-                                            <td class="uk-width-2-10"><span class="uk-badge uk-badge-success">Open</span></td>
-                                            <td class="uk-width-3-10">
-                                                <div class="uk-progress uk-progress-mini uk-margin-remove">
-                                                    <div class="uk-progress-bar" style="width: 90%;"></div>
-                                                </div>
-                                            </td>
-                                            <td class="uk-width-2-10 uk-text-right uk-text-muted uk-text-small">08.11.2015</td>
-                                        </tr>
+                                        <?php
+                                            $ret="SELECT * FROM  iL_LibraryOperations"; 
+                                            $stmt= $mysqli->prepare($ret) ;
+                                            $stmt->execute() ;//ok
+                                            $res=$stmt->get_result();
+                                            while($row=$res->fetch_object())
+                                            {
+                                        ?>
+                                            <tr>
+                                                <td><?php echo $row->s_name;?></td>
+                                                <td><?php echo $row->s_number;?></td>
+                                                <td><?php echo $row->b_title;?></td>
+                                                <td><?php echo $row->b_author;?></td>
+                                                <td><?php echo $row->bc_name;?></td>
+                                                <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
+                                            </tr>
+
+                                        <?php }?>
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-width-medium-1-2">
-                    <div class="md-card">
-                        <div class="md-card-content">
-                            <h3 class="heading_a uk-margin-bottom">Statistics</h3>
-                            <div id="ct-chart" class="chartist"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- info cards -->
+            <!-- info cards 
             <div class="uk-grid uk-grid-medium uk-grid-width-medium-1-2 uk-grid-width-large-1-3" data-uk-grid-margin data-uk-grid-match="{target:'.md-card-content'}">
                 <div>
                     <div class="md-card">
@@ -516,7 +621,7 @@
                     </div>
                 </div>
             </div>
-
+            -->
 
         </div>
     </div>
@@ -541,6 +646,74 @@
             s.parentNode.insertBefore(wf, s);
         })();
     </script>
+
+<!--Load Canvas JS -->
+<script src="assets/js/canvasjs.min.js"></script>
+<!--Load Few Charts-->
+  <script>
+      window.onload = function () {
+
+      var Piechart = new CanvasJS.Chart("PieChart", {
+        exportEnabled: false,
+        animationEnabled: true,
+        title:{
+          text: "Books Per Category"
+        },
+        legend:{
+          cursor: "pointer",
+          itemclick: explodePie
+        },
+        data: [{
+          type: "pie",
+          showInLegend: true,
+          toolTipContent: "{name}: <strong>{y}%</strong>",
+          indexLabel: "{name} - {y}%",
+          dataPoints: [
+            { y: <?php echo $non_fiction;?> , name: "Non Fiction", exploded: true },
+
+            { y: <?php echo $fiction;?> , name: " Fiction", exploded: true },
+
+            { y:<?php echo $References;?> , name: "Refrences", exploded: true }
+          ]
+        }]
+      });
+
+      var borrowChart = new CanvasJS.Chart("BooksBorrowedPerCategory", {
+        exportEnabled: false,
+        animationEnabled: true,
+        title:{
+          text: "Book Borrowing Trend"
+        },
+        legend:{
+          cursor: "pointer",
+          itemclick: explodePie
+        },
+        data: [{
+          type: "pie",
+          showInLegend: true,
+          toolTipContent: "{name}: <strong>{y}%</strong>",
+          indexLabel: "{name} - {y}%",
+          dataPoints: [
+            { y:<?php echo $borrowed_non_fiction;?>, name: "Non Fiction", exploded: true },
+            { y:<?php echo $borrowed_fiction;?>, name: "Fiction", exploded: true },
+            { y:<?php echo $borrowed_references;?>, name: "Refrences", exploded: true }
+          ]
+        }]
+      });
+      Piechart.render();
+      borrowChart.render();
+      }
+
+      function explodePie (e) {
+        if(typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+          e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+        } else {
+          e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+        }
+        e.chart.render();
+
+      }
+  </script>
 
     <!-- common functions -->
     <script src="assets/js/common.min.js"></script>

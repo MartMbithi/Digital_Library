@@ -789,7 +789,9 @@
                                                         ?>
                                                     </div>
                                                     <div class="md-list-content">
-                                                        <span class="md-list-heading"><?php echo $row->username;?></span>
+                                                        <a href="pages_sudo_sudoers.php?sudo_id=<?php echo $row->id;?>">
+                                                            <span class="md-list-heading"><?php echo $row->username;?></span>
+                                                        </a>
                                                         <span class="uk-text-small uk-text-muted"><?php echo $row->email;?></span>
                                                     </div>
                                                 </li>
