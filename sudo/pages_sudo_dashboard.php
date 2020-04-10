@@ -303,7 +303,7 @@
                     <div class="md-card">
                         <div class="md-card-content">
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
-                            <span class="uk-text-muted uk-text-small">Pending Librarians Password Resets</span>
+                            <span class="uk-text-muted uk-text-small">Pending Lib's Password Resets</span>
                             <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $pending_librarians_pwd_resets;?></noscript></span></h2>
                         </div>
                     </div>
@@ -322,7 +322,7 @@
                         <div class="md-card-content">
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
                             <span class="uk-text-muted uk-text-small">Inbox</span>
-                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $inbox;?></noscript></span></h2>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $inbox;?></noscript></span> Msgs</h2>
                         </div>
                     </div>
                 </div>

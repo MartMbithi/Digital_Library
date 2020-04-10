@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">
 
-    <title>iLibray : Automated Digital Library Management System  - Super User  Login Page</title>
+    <title>iLibray An Automated Digital Library Management System</title>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel='stylesheet' type='text/css'>
 
@@ -79,6 +79,25 @@
                </script>
 
        <?php } ?>
+       <script>
+       function getBookId(val)
+            
+             {
+                    $.ajax
+                    ({
+                        //get book ID
+                    type: "POST",
+                    url: "ajax.php",
+                    data:'bookCategoryName='+val,
+                    success: function(data){
+                    //alert(data);
+                    $('#BookCategoryID').val(data);
+                    }
+                });
+
+             }
+
+    </script> 
       
 
 </head>
