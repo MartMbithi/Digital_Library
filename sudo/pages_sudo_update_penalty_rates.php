@@ -3,34 +3,26 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    //generate random librarian number
-    $length = 5;    
-    $Number =  substr(str_shuffle('0123456789'),1,$length);
 
-    //create a librarian account
-    if(isset($_POST['add_librarian']))
+
+    //update penalty rate
+    if(isset($_POST['update_penalty_rate']))
     {
-
-        $l_number = $_POST['l_number'];
-        $l_name =$_POST['l_name'];
-        $l_phone = $_POST['l_phone'];
-        $l_email = $_POST['l_email'];
-        $l_pwd = sha1(md5($_POST['l_pwd']));
-        $l_adr = $_POST['l_adr'];
-        $l_bio = $_POST['l_bio'];
-        $l_acc_status = $_POST['l_acc_status'];
+        $rateCode = $_GET['rateCode'];
+        $cr_name = $_POST['cr_name'];
+        $cr_amount = $_POST['cr_amount'];
         
         //Insert Captured information to a database table
-        $query="INSERT INTO iL_Librarians (l_number, l_name, l_phone, l_email, l_pwd, l_adr, l_bio, l_acc_status) VALUES (?,?,?,?,?,?,?,?)";
+        $query="UPDATE iL_ChargesRates SET cr_name = ? , cr_amount = ? WHERE cr_code = ?";
         $stmt = $mysqli->prepare($query);
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $l_number, $l_name, $l_phone, $l_email, $l_pwd, $l_adr, $l_bio, $l_acc_status);
+        $rc=$stmt->bind_param('sss', $cr_name, $cr_amount, $rateCode);
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Librarian Account Created";
+            $success = "Fine Rate Updated";
         }
         else 
         {
@@ -56,79 +48,66 @@
             include("assets/inc/sidebar.php");
         ?>
     <!-- main sidebar end -->
+    <?php
+        $rateCode = $_GET['rateCode'];
+        $ret="SELECT * FROM  iL_ChargesRates WHERE cr_code = ? "; 
+        $stmt= $mysqli->prepare($ret) ;
+        $stmt->bind_param('s', $rateCode);
+        $stmt->execute() ;//ok
+        $res=$stmt->get_result();
+        while($row=$res->fetch_object())
+    {
+    ?>
+        <div id="page_content">
+            <!--Breadcrums-->
+            <div id="top_bar">
+                <ul id="breadcrumbs">
+                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                    <li><a href="#">Finances</a></li>
+                    <li><a href="pages_sudo_manage_penalty.php">Manage Penalty Rates</a></li>
+                    <li><span>Update <?php echo $row->cr_name;?></span></li>
+                </ul>
+            </div>
 
-    <div id="page_content">
-    <!--Breadcrums-->
-        <div id="top_bar">
-            <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Librarians</a></li>
-                <li><span>New Librarian Account</span></li>
-            </ul>
-        </div>
+            <div id="page_content_inner">
 
-        <div id="page_content_inner">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <h3 class="heading_a">Please Fill All Fields</h3>
+                        <hr>
+                        <form method="post">
+                            <div class="uk-grid" data-uk-grid-margin>
+                                <div class="uk-width-medium-2-2">
+                                    <div class="uk-form-row">
+                                        <label>Penalty For :</label>
+                                        <input type="text" required readonly value="<?php echo $row->cr_name;?>" name="cr_name" class="md-input" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Penalty Amount (Ksh)</label>
+                                        <input type="text" value="<?php echo $row->cr_amount;?>" required name="cr_amount" class="md-input" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Penalty  Code</label>
+                                        <input type="text" required readonly value="<?php echo $row->cr_code;?>" name="cr_code" class="md-input label-fixed" />
+                                    </div>
+                                
+                                </div>
 
-            <div class="md-card">
-                <div class="md-card-content">
-                    <h3 class="heading_a">Please Fill All Fields</h3>
-                    <hr>
-                    <form method="post">
-                        <div class="uk-grid" data-uk-grid-margin>
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Full Name</label>
-                                    <input type="text" required name="l_name" class="md-input" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Number</label>
-                                    <input type="text" required readonly value="iLib-<?php echo $Number;?>" name="l_number" class="md-input label-fixed" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Email</label>
-                                    <input type="email" required name="l_email" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row" style="display:none">
-                                    <label>Librarian Account Status</label>
-                                    <input type="text" required name="l_acc_status" value="Active" class="md-input"  />
-                                </div>
-                            </div>
-
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Phone Number</label>
-                                    <input type="text" required class="md-input" name="l_phone" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Address</label>
-                                    <input type="text" requied name="l_adr" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Passsword</label>
-                                    <input type="password" required name="l_pwd" class="md-input"  />
-                                </div>
-                            </div>
-
-                            <div class="uk-width-medium-2-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Bio | About  </label>
-                                    <textarea cols="30" rows="4" class="md-input" name="l_bio"></textarea>
-                                </div>
-                            </div>
-                            <div class="uk-width-medium-2-2">
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <input type="submit" class="md-btn md-btn-success" name="add_librarian" value="Create Librarian Account" />
+                                <div class="uk-width-medium-2-2">
+                                    <div class="uk-form-row">
+                                        <div class="uk-input-group">
+                                            <input type="submit" class="md-btn md-btn-warning" name="update_penalty_rate" value="Update Penalty Rate" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
+    <?php }?>
 
     <!-- google web fonts -->
     <script>

@@ -18,13 +18,17 @@
         $bc_id = $_POST['bc_id'];
         $bc_name = $_POST['bc_name'];
         $b_status = $_POST['b_status'];
-        $b_summary = $_POST['b_summary'];       
+        $b_summary = $_POST['b_summary'];   
+        $b_copies = $_POST['b_copies'];
+
+        $b_coverimage = $_FILES["b_coverimage"]["name"];
+        move_uploaded_file($_FILES["b_coverimage"]["tmp_name"],"assets/img/books/".$_FILES["b_coverimage"]["name"]); 
         
         //Insert Captured information to a database table
-        $query="INSERT INTO iL_Books (b_title, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary) VALUES (?,?,?,?,?,?,?,?)";
+        $query="INSERT INTO iL_Books (b_title, b_copies, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary, b_coverimage) VALUES (?,?,?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $b_title, $b_author, $b_isbn_no, $b_publisher, $bc_id, $bc_name, $b_status, $b_summary);
+        $rc=$stmt->bind_param('ssssssssss', $b_title, $b_copies, $b_author, $b_isbn_no, $b_publisher, $bc_id, $bc_name, $b_status, $b_summary, $b_coverimage);
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
@@ -73,7 +77,7 @@
                 <div class="md-card-content">
                     <h3 class="heading_a">Please Fill All Fields</h3>
                     <hr>
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-2">
                                 <div class="uk-form-row">
@@ -88,16 +92,24 @@
                                     <label>Book Author</label>
                                     <input type="text" required name="b_author" class="md-input"  />
                                 </div>
+                                
                                 <div class="uk-form-row" style="display:none">
                                     <label>Book Status</label>
                                     <input type="text" required name="b_status" value="Available" class="md-input"  />
                                 </div>
+
+                                
                             </div>
 
                             <div class="uk-width-medium-1-2">
                                 <div class="uk-form-row">
                                     <label>Book Publisher</label>
                                     <input type="text" required class="md-input" name="b_publisher" />
+                                </div>
+
+                                <div class="uk-form-row">
+                                    <label>Number Of Copies</label>
+                                    <input type="text"  required name="b_copies" class="md-input"  />
                                 </div>
                                 
                                 <div class="uk-form-row">
@@ -122,6 +134,17 @@
                                     <input type="text" id="BookCategoryID" required name="bc_id" class="md-input"  />
                                 </div>
 
+                            </div>
+
+                            <div class="uk-width-medium-2-2">
+                                <div id="file_upload-drop" class="uk-file-upload">
+                                    <p class="uk-text">Drop Book Cover Image</p>
+                                    <p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
+                                    <a class="uk-form-file md-btn">choose file<input id="file_upload-select" name="b_coverimage" type="file"></a>
+                                </div>
+                                <div id="file_upload-progressbar" class="uk-progress uk-hidden">
+                                    <div class="uk-progress-bar" style="width:0">0%</div>
+                                </div>
                             </div>
 
                             <div class="uk-width-medium-2-2">

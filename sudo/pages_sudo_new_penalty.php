@@ -3,34 +3,29 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    //generate random librarian number
+
+    //generate charge(code)
     $length = 5;    
-    $Number =  substr(str_shuffle('0123456789'),1,$length);
+    $Number =  substr(str_shuffle('QWERTYUIOPLKJHGFDSAZXCVBNM'),1,$length);
 
-    //create a librarian account
-    if(isset($_POST['add_librarian']))
+    //penalty rate
+    if(isset($_POST['add_penalty_rate']))
     {
-
-        $l_number = $_POST['l_number'];
-        $l_name =$_POST['l_name'];
-        $l_phone = $_POST['l_phone'];
-        $l_email = $_POST['l_email'];
-        $l_pwd = sha1(md5($_POST['l_pwd']));
-        $l_adr = $_POST['l_adr'];
-        $l_bio = $_POST['l_bio'];
-        $l_acc_status = $_POST['l_acc_status'];
+        $cr_code = $_POST['cr_code'];
+        $cr_name = $_POST['cr_name'];
+        $cr_amount = $_POST['cr_amount'];
         
         //Insert Captured information to a database table
-        $query="INSERT INTO iL_Librarians (l_number, l_name, l_phone, l_email, l_pwd, l_adr, l_bio, l_acc_status) VALUES (?,?,?,?,?,?,?,?)";
+        $query="INSERT INTO iL_ChargesRates (cr_code, cr_name, cr_amount) VALUES (?,?,?)";
         $stmt = $mysqli->prepare($query);
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $l_number, $l_name, $l_phone, $l_email, $l_pwd, $l_adr, $l_bio, $l_acc_status);
+        $rc=$stmt->bind_param('sss', $cr_code, $cr_name, $cr_amount);
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Librarian Account Created";
+            $success = "Fine Rate Added";
         }
         else 
         {
@@ -62,8 +57,8 @@
         <div id="top_bar">
             <ul id="breadcrumbs">
                 <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Librarians</a></li>
-                <li><span>New Librarian Account</span></li>
+                <li><a href="#">Finances</a></li>
+                <li><span>Penalty Rates</span></li>
             </ul>
         </div>
 
@@ -75,50 +70,30 @@
                     <hr>
                     <form method="post">
                         <div class="uk-grid" data-uk-grid-margin>
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Full Name</label>
-                                    <input type="text" required name="l_name" class="md-input" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Number</label>
-                                    <input type="text" required readonly value="iLib-<?php echo $Number;?>" name="l_number" class="md-input label-fixed" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Email</label>
-                                    <input type="email" required name="l_email" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row" style="display:none">
-                                    <label>Librarian Account Status</label>
-                                    <input type="text" required name="l_acc_status" value="Active" class="md-input"  />
-                                </div>
-                            </div>
-
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Phone Number</label>
-                                    <input type="text" required class="md-input" name="l_phone" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Address</label>
-                                    <input type="text" requied name="l_adr" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Passsword</label>
-                                    <input type="password" required name="l_pwd" class="md-input"  />
-                                </div>
-                            </div>
-
                             <div class="uk-width-medium-2-2">
                                 <div class="uk-form-row">
-                                    <label>Librarian Bio | About  </label>
-                                    <textarea cols="30" rows="4" class="md-input" name="l_bio"></textarea>
+                                    <label>Penalty For:</label>
+                                    <select  required name="cr_name" class="md-input">
+                                        <option>Lost Book</option>
+                                        <option>Damanged Book</option>
+                                        <option>Late Return</option>
+                                    </select>
                                 </div>
+                                <div class="uk-form-row">
+                                    <label>Penalty Amount (Ksh)</label>
+                                    <input type="text" required name="cr_amount" class="md-input" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Penalty  Code</label>
+                                    <input type="text" required readonly value="<?php echo $Number;?>" name="cr_code" class="md-input label-fixed" />
+                                </div>
+                               
                             </div>
+
                             <div class="uk-width-medium-2-2">
                                 <div class="uk-form-row">
                                     <div class="uk-input-group">
-                                        <input type="submit" class="md-btn md-btn-success" name="add_librarian" value="Create Librarian Account" />
+                                        <input type="submit" class="md-btn md-btn-success" name="add_penalty_rate" value="Add Penalty Rate" />
                                     </div>
                                 </div>
                             </div>

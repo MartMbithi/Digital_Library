@@ -1,129 +1,144 @@
-<?php 
+<?php
     session_start();
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    //generate random librarian number
-    $length = 5;    
-    $Number =  substr(str_shuffle('0123456789'),1,$length);
 
-    //create a librarian account
-    if(isset($_POST['add_librarian']))
-    {
+    //delete finance record
+    if(isset($_GET['flushPenalty']))
+   {
+         $id=intval($_GET['flushPenalt']);
+         $adn="DELETE FROM  iL_Fines  WHERE f_id = ?";
+         $stmt= $mysqli->prepare($adn);
+         $stmt->bind_param('i',$id);
+         $stmt->execute();
+         $stmt->close();	 
+   
+            if($stmt)
+            {
+                $info = "Library Fine Record Deleted";
+            }
+            else
+            {
+                $err = "Try Again Later";
+            }
+     }
 
-        $l_number = $_POST['l_number'];
-        $l_name =$_POST['l_name'];
-        $l_phone = $_POST['l_phone'];
-        $l_email = $_POST['l_email'];
-        $l_pwd = sha1(md5($_POST['l_pwd']));
-        $l_adr = $_POST['l_adr'];
-        $l_bio = $_POST['l_bio'];
-        $l_acc_status = $_POST['l_acc_status'];
-        
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_Librarians (l_number, l_name, l_phone, l_email, l_pwd, l_adr, l_bio, l_acc_status) VALUES (?,?,?,?,?,?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $l_number, $l_name, $l_phone, $l_email, $l_pwd, $l_adr, $l_bio, $l_acc_status);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Librarian Account Created";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
-    }
-?>
-
+   
+?>    
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php
+<?php 
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-        <?php 
-            include("assets/inc/nav.php");
-        ?>
+    <?php
+        include("assets/inc/nav.php");
+    ?>
     <!-- main header end -->
     <!-- main sidebar -->
-        <?php
-            include("assets/inc/sidebar.php");
-        ?>
+    <?php
+        include("assets/inc/sidebar.php");
+    ?>
     <!-- main sidebar end -->
 
     <div id="page_content">
-    <!--Breadcrums-->
+    <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
                 <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Librarians</a></li>
-                <li><span>New Librarian Account</span></li>
+                <li><a href="#">Finances</a></li>
+                <li><span>Manage Finances</span></li>
             </ul>
         </div>
-
         <div id="page_content_inner">
 
-            <div class="md-card">
+            <h4 class="heading_a uk-margin-bottom">iLibrary Finance Records</h4>
+            <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
-                    <h3 class="heading_a">Please Fill All Fields</h3>
-                    <hr>
-                    <form method="post">
-                        <div class="uk-grid" data-uk-grid-margin>
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Full Name</label>
-                                    <input type="text" required name="l_name" class="md-input" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Number</label>
-                                    <input type="text" required readonly value="iLib-<?php echo $Number;?>" name="l_number" class="md-input label-fixed" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Email</label>
-                                    <input type="email" required name="l_email" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row" style="display:none">
-                                    <label>Librarian Account Status</label>
-                                    <input type="text" required name="l_acc_status" value="Active" class="md-input"  />
-                                </div>
-                            </div>
+                    <div class="dt_colVis_buttons"></div>
+                    <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
+                        <thead>
+                            <th>Penalty Type</th>
+                            <th>Penalty Charges</th>
+                            <th>Student Name</th>
+                            <th>Student Number</th>
+                            <th>Penalty Status</th>
+                            <th>Action</th>
+                        </thead>    
+                      
+                        <tbody>
+                            <?php
+                                $ret="SELECT * FROM  iL_Fines  "; 
+                                $stmt= $mysqli->prepare($ret) ;
+                                $stmt->execute() ;//ok
+                                $res=$stmt->get_result();
+                                while($row=$res->fetch_object())
+                                {
+                                    
+                                    //assign .success .danger .warning classes to f_type
+                                    if($row->f_type== 'Lost Book')
+                                    {
+                                        $opsType = "<td class='uk-text-danger'>$row->f_type</td>";
+                                    }
+                                    elseif($row->f_type == 'Damaged Book')
+                                    {
+                                        $opsType = "<td class='uk-text-warning'>$row->f_type</td>";
+                                    }
+                                    else
+                                    {
+                                        $opsType = "<td class='uk-text-success'>$row->f_type</td>";
+                                    }
 
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Phone Number</label>
-                                    <input type="text" required class="md-input" name="l_phone" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Address</label>
-                                    <input type="text" requied name="l_adr" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Passsword</label>
-                                    <input type="password" required name="l_pwd" class="md-input"  />
-                                </div>
-                            </div>
+                                    //also assig some .success and  .danger to penalty status
+                                    if($row->f_status == '')
+                                    {
+                                        $fineStatus = "<td class='uk-text-danger'>Pending</td>";
+                                    }
+                                    else
+                                    {
+                                        $fineStatus = "<td class='uk-text-success'>Paid</td>";
+                                    }
 
-                            <div class="uk-width-medium-2-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Bio | About  </label>
-                                    <textarea cols="30" rows="4" class="md-input" name="l_bio"></textarea>
-                                </div>
-                            </div>
-                            <div class="uk-width-medium-2-2">
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <input type="submit" class="md-btn md-btn-success" name="add_librarian" value="Create Librarian Account" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                            ?>
+                                <tr>
+                                    <?php echo $opsType;?>
+                                    <td>Ksh <?php echo $row->f_amt?></td>
+                                    <td><?php echo $row->s_name;?></td>
+                                    <td class="uk-text-primary"><?php echo $row->s_number;?></td>
+                                    <?php echo $fineStatus;?>
+                                    <td>
+                                        <?php
+                                            //invoicing logic
+                                            if($row->f_status == '')
+                                            {
+                                                echo 
+                                                "
+                                                    <a href='pages_sudo_pay_fine.php?fineId=$row->f_id'>
+                                                        <span class='uk-badge uk-badge-danger'>Pay</span>
+                                                    </a>
+                                                ";
+                                            }
+                                            else
+                                            {
+                                                echo 
+                                                "
+                                                    <a href='pages_sudo_get_receipt.php?fineId=$row->f_id&s_id=$row->s_id'>
+                                                        <span class='uk-badge uk-badge-success'>Get Receipt</span>
+                                                    </a>
+                                                ";
+
+                                            }
+                                        ?>
+                                        
+                                    </td>
+                                </tr>
+
+                            <?php }?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -158,7 +173,25 @@
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
+    <!-- page specific plugins -->
+    <!-- datatables -->
+    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <!-- datatables buttons-->
+    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
+    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
+    <script src="bower_components/jszip/dist/jszip.min.js"></script>
+    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
+    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
 
+    <!-- datatables custom integration -->
+    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
+
+    <!--  datatables functions -->
+    <script src="assets/js/pages/plugins_datatables.min.js"></script>
+    
     <script>
         $(function() {
             if(isHighDensity()) {
@@ -177,8 +210,6 @@
             altair_helpers.ie_fix();
         });
     </script>
-
-   
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>
