@@ -98,9 +98,16 @@
                                     <td><?php echo $row->l_adr;?></td>
                                     <?php echo $account_status;?>
                                     <td>
-                                        <a href="pages_sudo_edit_librarian.php?librarian_number=<?php echo $row->l_number;?>"><i class="md-icon material-icons">&#xE254;</i></a>
-                                        <a href="pages_sudo_view_librarian.php?librarian_number=<?php echo $row->l_number;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
-                                        <a href="pages_sudo_manage_librarians.php?deleteAccount=<?php echo $row->l_id;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
+                                        
+                                        <a href="pages_sudo_view_librarian.php?librarian_number=<?php echo $row->l_number;?>">
+                                            <span class='uk-badge uk-badge-success'>View</span>
+                                        </a>
+                                        <a href="pages_sudo_edit_librarian.php?librarian_number=<?php echo $row->l_number;?>">
+                                           <span class='uk-badge uk-badge-primary'>Update</span>
+                                        </a>
+                                        <a href="pages_sudo_manage_librarians.php?deleteAccount=<?php echo $row->l_id;?>">
+                                            <span class='uk-badge uk-badge-danger'>Delete</span>
+                                        </a>
                                     </td>
                                 </tr>
 

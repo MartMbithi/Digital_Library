@@ -30,6 +30,16 @@
         $res=$stmt->get_result();
         while($row=$res->fetch_object())
     {
+        //load default book cover page if book is missing a cover image
+        if($row->b_coverimage == '')
+        {
+            $cover_image = "<img src='assets/img/books/Image12.jpg' alt='Book Image'>";
+        }
+        else
+        {
+            $cover_image = "<img src='assets/img/books/$row->b_coverimage' alt='Book Image'>";
+
+        }
     ?>
         <div id="page_content">
             <!--Breadcrums-->
@@ -44,13 +54,13 @@
                 <div class="uk-grid" data-uk-grid-margin data-uk-grid-match id="user_profile">
                     <div class="uk-width-large-10-10">
                         <div class="md-card">
-                            <div class="user_heading user_heading_bg" style="background-image: url('assets/img/gallery/Image10.jpg')">
+                            <div class="user_heading user_heading_bg" style="background-image: url('assets/img/books/<?php echo $row->b_coverimage;?>')">
                                 <div class="bg_overlay">
                                     <div class="user_heading_menu hidden-print">
                                         <div class="uk-display-inline-block"><i class="md-icon md-icon-light material-icons" id="page_print">&#xE8ad;</i></div>
                                     </div>
                                     <div class="user_heading_content">
-                                        <h2 class="heading_b uk-margin-bottom"><span class="uk-text-truncate"><?php echo $row->b_title;?></span><span class="sub-heading"><?php echo $row->b_isbn_no?></span></h2>
+                                        <h2 class="heading_b uk-margin-bottom"><span class="uk-text-truncate"><?php echo $row->b_title;?></span><span class="sub-heading">ISBN NO: <?php echo $row->b_isbn_no?></span></h2>
                                         
                                     </div>
                                 </div>
@@ -131,6 +141,17 @@
                                     </li>
 
                                 </ul>
+                                <!--Book Cover Image-->
+                                <h4 class="heading_c uk-margin-small-bottom">Book Cover Image</h4>
+                                <hr>
+                                <div class="md-card md-card-hover">
+                                        <div class="gallery_grid_item md-card-content">
+                                            <a href="#" class="custom-modal-open" data-image-id="7">
+                                                <?php echo $cover_image ;?>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,6 +159,7 @@
                 </div>
             </div>
         </div>
+    
     <?php }?>
 
     <!-- google web fonts -->

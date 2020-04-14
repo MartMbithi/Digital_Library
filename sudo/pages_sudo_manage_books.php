@@ -61,7 +61,6 @@
                             <th>Title</th>
                             <th>Author</th>
                             <th>Category</th>
-                            <th>ISBN No.</th>
                             <th>Available Copies</th>
                             <th>Action</th>
                         </thead>    
@@ -76,15 +75,20 @@
                                 {
                             ?>
                                 <tr>
-                                    <td><?php echo $row->b_title;?></td>
+                                    <td class="uk-text-truncate"><?php echo $row->b_title;?></td>
                                     <td><?php echo $row->b_author;?></td>
                                     <td><?php echo $row->bc_name;?></td>
-                                    <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
-                                    <td><?php echo $row->b_copies;?></td>
+                                    <td><?php echo $row->b_copies;?> Copies</td>
                                     <td>
-                                        <a href="pages_sudo_edit_book.php?book_id=<?php echo $row->b_id;?>"><i class="md-icon material-icons">&#xE254;</i></a>
-                                        <a href="pages_sudo_view_book.php?book_id=<?php echo $row->b_id;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
-                                        <a href="pages_sudo_manage_books.php?deleteBook=<?php echo $row->b_id;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
+                                        <a href="pages_sudo_view_book.php?book_id=<?php echo $row->b_id;?>">
+                                            <span class='uk-badge uk-badge-success'>View</span>
+                                        </a>
+                                        <a href="pages_sudo_edit_book.php?book_id=<?php echo $row->b_id;?>">
+                                            <span class='uk-badge uk-badge-primary'>Update</span>
+                                        </a>                                        </a>
+                                        <a href="pages_sudo_manage_books.php?deleteBook=<?php echo $row->b_id;?>">
+                                            <span class='uk-badge uk-badge-danger'>Delete</span>
+                                        </a>
                                     </td>
                                 </tr>
 

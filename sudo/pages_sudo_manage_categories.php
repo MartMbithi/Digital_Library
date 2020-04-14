@@ -78,9 +78,15 @@
                                     <td><?php echo $row->bc_code;?></td>
                                     <td><?php echo $row->bc_name;?></td>
                                     <td>
-                                        <a href="pages_sudo_edit_book_category.php?category_code=<?php echo $row->bc_code;?>"><i class="md-icon material-icons">&#xE254;</i></a>
-                                        <a href="pages_sudo_view_book_category.php?category_code=<?php echo $row->bc_code;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
-                                        <a href="pages_sudo_manage_categories.php?deleteBookCategory=<?php echo $row->bc_id;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
+                                        <a href="pages_sudo_view_book_category.php?category_code=<?php echo $row->bc_code;?>">
+                                            <span class='uk-badge uk-badge-success'>View</span>
+                                        </a>
+                                        <a href="pages_sudo_edit_book_category.php?category_code=<?php echo $row->bc_code;?>">
+                                            <span class='uk-badge uk-badge-primary'>Update</span>
+                                        </a>
+                                        <a href="pages_sudo_manage_categories.php?deleteBookCategory=<?php echo $row->bc_id;?>">
+                                            <span class='uk-badge uk-badge-danger'>Delete</span>
+                                        </a>
                                     </td>
                                 </tr>
 

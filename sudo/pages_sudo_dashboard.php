@@ -46,7 +46,7 @@
     $stmt->close();
 
     //1.1 : Number of all books no matter what category
-    $result ="SELECT count(*) FROM iL_Books";
+    $result ="SELECT SUM(b_copies) FROM iL_Books";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
     $stmt->bind_result($books);
@@ -54,7 +54,7 @@
     $stmt->close();
 
     //1.2 : Number of all Borrowed Books no matter what category
-    $result ="SELECT count(*) FROM iL_Books WHERE b_status = 'Borrowed'";
+    $result ="SELECT count(*) FROM iL_LibraryOperations WHERE lo_type = 'Borrow' AND lo_status = '' ";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
     $stmt->bind_result($borrowed_books);
@@ -62,12 +62,22 @@
     $stmt->close();
 
     //1.3 : Number of all Lost Books no matter what category
-    $result ="SELECT count(*) FROM iL_Books WHERE b_status = 'Lost' ||  b_status = 'Damanged' ";
+    $result ="SELECT count(*) FROM iL_LibraryOperations WHERE lo_status = 'Lost'  ";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
-    $stmt->bind_result($damanged_and_lost_books);
+    $stmt->bind_result($lost_books);
     $stmt->fetch();
     $stmt->close();
+
+     //1.3.1 : Number of all Damanged no matter what category
+     $result ="SELECT count(*) FROM iL_LibraryOperations WHERE  lo_status = 'Damanged' ";
+     $stmt = $mysqli->prepare($result);
+     $stmt->execute();
+     $stmt->bind_result($damanged_books);
+     $stmt->fetch();
+     $stmt->close();
+
+     $damanged_and_lost_books = $lost_books + $damanged_books;
 
 
     //2.Library Users(Students and Librarians)
@@ -132,7 +142,7 @@
     $stmt->close();
 
     //3.3 : Number of all amount paid by students as a fine of loosing and damaging any book
-    $result ="SELECT SUM(f_amt) FROM iL_Fines WHERE f_status = 'Paid' ";
+    $result ="SELECT SUM(f_amt) FROM iL_Fines";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
     $stmt->bind_result($fines);
@@ -171,7 +181,7 @@
     $stmt->close();
 
     //1.1.0 : Number of Borrowed Books Per Books in Non-fiction Category ->Piechart or Donought Chart
-    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'Non-fiction' AND lo_type ='Borrowed' ";
+    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'Non-fiction' AND lo_type ='Borrow' ";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
     $stmt->bind_result($borrowed_non_fiction);
@@ -179,7 +189,7 @@
     $stmt->close();
 
     //1.1.1 : Number of Borrowed Books Per Books in fiction Category ->Piechart or Donought Chart
-    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'Fiction' AND lo_type ='Borrowed' ";
+    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'Fiction' AND lo_type ='Borrow' ";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
     $stmt->bind_result($borrowed_fiction);
@@ -187,7 +197,7 @@
     $stmt->close();
 
     //1.1.2 : Number of Borrowed Books Per Books in References Category ->Piechart or Donought Chart
-    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'References' AND lo_type ='Borrowed' ";
+    $result ="SELECT COUNT(*) FROM iL_LibraryOperations WHERE bc_name = 'References' AND lo_type ='Borrow' ";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
     $stmt->bind_result($borrowed_references);
@@ -418,7 +428,7 @@
                                             <th>Name</th>
                                             <th>Number</th>
                                             <th>Title</th>
-                                            <th>Author</th>
+                                            <th>Borrowed By</th>
                                             <th>Category</th>
                                             <th>ISBN No.</th>
                                         </tr>
@@ -436,7 +446,7 @@
                                                 <td><?php echo $row->s_name;?></td>
                                                 <td><?php echo $row->s_number;?></td>
                                                 <td><?php echo $row->b_title;?></td>
-                                                <td><?php echo $row->b_author;?></td>
+                                                <td><?php echo $row->s_name;?></td>
                                                 <td><?php echo $row->bc_name;?></td>
                                                 <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
                                             </tr>

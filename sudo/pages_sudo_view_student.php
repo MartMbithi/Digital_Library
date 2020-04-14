@@ -661,20 +661,42 @@
                                         $res=$stmt->get_result();
                                         while($row=$res->fetch_object())
                                         {
+                                            //trim timestamp to DD/MM/YYY
+                                            $tsamp = $row->created_at;
+                                            //assign .success .danger .warning classes to  operation type
+                                            if($row->lo_status == 'Returned')
+                                            {
+                                                $opsType = "<span class='uk-text-small uk-text-success uk-text-muted'>$row->lo_status</span>";
+                                            }
+                                            elseif($row->lo_status == 'Damanged')
+                                            {
+                                                $opsType = "<span class='uk-text-small uk-text-warning uk-text-muted'>$row->lo_status</span>";
+                                            }
+                                            else
+                                            {
+                                                $opsType = "<span class='uk-text-small  uk-text-danger uk-text-muted'>$row->lo_status</span>";
+                                            }
                                     ?>
                                         <li>
+                                        <!-- Book Cover Image
                                             <div class="md-list-addon-element">
                                                 <img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_02_tn.png" alt=""/>
                                             </div>
+                                            -->
                                             <div class="md-list-content">
-                                                <span class="md-list-heading"><?php echo $row->bc_name;?></span>
-                                                <span class="uk-text-small uk-text-muted"><?php echo $row->lo_status;?></span>
+                                                <span class="md-list-heading"><?php echo $row->b_title;?></span>
+                                                <?php echo $opsType;?>
+                                                <span class='uk-text-small uk-text-primary uk-text-muted'>Date Borrowed :
+                                                    <?php echo date("d-M-Y", strtotime($tsamp));?>
+                                                </span>
                                             </div>
                                         </li>
 
                                     <?php }?>
                                 </ul>
+                                <!--
                                 <a class="md-btn md-btn-flat md-btn-flat-primary" href="#">Show all</a>
+                                -->
                             </div>
                         </div>
                     </div>

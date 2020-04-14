@@ -1,134 +1,143 @@
-<?php 
-    session_start();
-    include('assets/config/config.php');
-    include('assets/config/checklogin.php');
-    check_login();
-    //generate random librarian number
-    $length = 5;    
-    $Number =  substr(str_shuffle('0123456789'),1,$length);
-
-    //create a librarian account
-    if(isset($_POST['add_librarian']))
-    {
-
-        $l_number = $_POST['l_number'];
-        $l_name =$_POST['l_name'];
-        $l_phone = $_POST['l_phone'];
-        $l_email = $_POST['l_email'];
-        $l_pwd = sha1(md5($_POST['l_pwd']));
-        $l_adr = $_POST['l_adr'];
-        $l_bio = $_POST['l_bio'];
-        $l_acc_status = $_POST['l_acc_status'];
-        
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_Librarians (l_number, l_name, l_phone, l_email, l_pwd, l_adr, l_bio, l_acc_status) VALUES (?,?,?,?,?,?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $l_number, $l_name, $l_phone, $l_email, $l_pwd, $l_adr, $l_bio, $l_acc_status);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Librarian Account Created";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
-    }
+<?php
+     session_start();
+     include('assets/config/config.php');
+     include('assets/config/checklogin.php');
+     check_login();
+ 
 ?>
-
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
 <?php
     include("assets/inc/head.php");
 ?>
+
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-        <?php 
-            include("assets/inc/nav.php");
-        ?>
+    <?php
+        include("assets/inc/nav.php");
+    ?>
     <!-- main header end -->
+
     <!-- main sidebar -->
-        <?php
-            include("assets/inc/sidebar.php");
-        ?>
+    <?php
+        include("assets/inc/sidebar.php");
+    ?>
     <!-- main sidebar end -->
+    <?php
+        //get details of the book using student id
+        $s_id = $_GET['s_id'];
+        $ret="SELECT * FROM  iL_LibraryOperations WHERE s_id = ?  "; 
+        $stmt= $mysqli->prepare($ret) ;
+        $stmt->bind_param('i', $s_id);
+        $stmt->execute() ;//ok
+        $res=$stmt->get_result();
+        while($row=$res->fetch_object())
+        {
+            $title = $row->b_title;
+            $isbn = $row->b_isbn_no;
+        }
+        //get details of a fine payment 
+        $fineId = $_GET['fineId'];
+        $ret="SELECT * FROM  iL_Fines WHERE f_id = ?  "; 
+        $stmt= $mysqli->prepare($ret) ;
+        $stmt->bind_param('i', $fineId);
+        $stmt->execute() ;//ok
+        $res=$stmt->get_result();
+        while($row=$res->fetch_object())
+        {
+            //trim payment timestamp to DD/MM/YYYY
+            $tsamp = $row->created_at;
+            //assign .success .danger .warning classes to f_type
+            if($row->f_type== 'Lost Book')
+            {
+                $opsType = "<span class='uk-text-danger'>$row->f_type</span>";
+            }
+            elseif($row->f_type == 'Damaged Book')
+            {
+                $opsType = "<span class='uk-text-warning'>$row->f_type</span>";
+            }
+            else
+            {
+                $opsType = "<span class='uk-text-success'>$row->f_type</span>";
+            }
 
-    <div id="page_content">
-    <!--Breadcrums-->
-        <div id="top_bar">
-            <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Librarians</a></li>
-                <li><span>New Librarian Account</span></li>
-            </ul>
-        </div>
-
-        <div id="page_content_inner">
-
-            <div class="md-card">
-                <div class="md-card-content">
-                    <h3 class="heading_a">Please Fill All Fields</h3>
-                    <hr>
-                    <form method="post">
-                        <div class="uk-grid" data-uk-grid-margin>
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Full Name</label>
-                                    <input type="text" required name="l_name" class="md-input" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Number</label>
-                                    <input type="text" required readonly value="iLib-<?php echo $Number;?>" name="l_number" class="md-input label-fixed" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Email</label>
-                                    <input type="email" required name="l_email" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row" style="display:none">
-                                    <label>Librarian Account Status</label>
-                                    <input type="text" required name="l_acc_status" value="Active" class="md-input"  />
-                                </div>
+    ?>
+        <div id="page_content">
+            <!--Breadcrums-->
+            <div id="top_bar">
+                <ul id="breadcrumbs">
+                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                    <li><a href="#">Finances</a></li>
+                    <li><a href="pages_sudo_manage_finances.php">Manage Finances</a></li>
+                    <li><span>Get Receipt</span></li>
+                </ul>
+            </div>
+            <div id="page_content_inner">
+                <div  class="uk-width-medium-5-5  reset-print">
+                    <div class="md-card md-card-success">
+                        <div class="md-card-toolbar">
+                            <div class="md-card-toolbar-actions">
+                                <i class="md-icon material-icons md-card-fullscreen-activate toolbar_fixed">&#xE5D0;</i>
+                                <i class="md-icon material-icons" id="print" onclick="printContent('Print_Receipt');" >&#xE8ad;</i>
                             </div>
-
-                            <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Phone Number</label>
-                                    <input type="text" required class="md-input" name="l_phone" />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Address</label>
-                                    <input type="text" requied name="l_adr" class="md-input"  />
-                                </div>
-                                <div class="uk-form-row">
-                                    <label>Librarian Passsword</label>
-                                    <input type="password" required name="l_pwd" class="md-input"  />
-                                </div>
-                            </div>
-
-                            <div class="uk-width-medium-2-2">
-                                <div class="uk-form-row">
-                                    <label>Librarian Bio | About  </label>
-                                    <textarea cols="30" rows="4" class="md-input" name="l_bio"></textarea>
-                                </div>
-                            </div>
-                            <div class="uk-width-medium-2-2">
-                                <div class="uk-form-row">
-                                    <div class="uk-input-group">
-                                        <input type="submit" class="md-btn md-btn-success" name="add_librarian" value="Create Librarian Account" />
+                                <h3 class="md-card-toolbar-heading-text">
+                                    Fine Payment Receipt For <?php echo $opsType;?> 
+                                </h3>
+                            </div>    
+                        <div>
+                        <div id = "Print_Receipt" class="md-card-content">
+                            <div class="md-card uk-margin-medium-bottom">
+                                <div class="md-card-content">
+                                    <div class="uk-overflow-container">
+                                        <table class="uk-table uk-table-striped uk-table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Student Name</th>
+                                                    <th>Student Number</th>
+                                                    <th>Date Paid</th>
+                                                    <th>Amount Paid</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><?php echo $row->s_name;?></td>
+                                                    <td><?php echo $row->s_number;?></td>
+                                                    <td><?php echo date("d-M-Y", strtotime($tsamp));?></td> 
+                                                    <td>Ksh <?php echo $row->f_amt;?></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="uk-table uk-table-striped uk-table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Code</th>
+                                                    <th><?php echo $opsType;?> Title</th>
+                                                    <th><?php echo $opsType;?> ISBN No</th>
+                                                    <th>Payment Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><?php echo $row->f_payment_code;?></td>
+                                                    <td><?php echo $title;?></td>
+                                                    <td><?php echo $isbn;?></td>
+                                                    <td class="uk-text-success">CONFIRMED</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
+                                <small class="uk-text-primary">Date Generated : <span class="uk-text-danger"> <?php echo date("d-M-Y h:m:s", strtotime($tsamp));?> </span></small>
+                                <br>
+                                <small class="uk-text-primary">This is a system generated receipt Signature : <span class="uk-text-danger"><?php echo $row->f_checksum;?></span></small> 
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
+    <?php }?>
 
     <!-- google web fonts -->
     <script>
@@ -158,7 +167,11 @@
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
+    <!-- page specific plugins -->
 
+    <!--  cards component functions -->
+    <script src="assets/js/pages/components_cards.min.js"></script>
+    
     <script>
         $(function() {
             if(isHighDensity()) {
@@ -177,8 +190,16 @@
             altair_helpers.ie_fix();
         });
     </script>
-
-   
+    <script>
+        function printContent(el)
+        {
+            var restorepage = $('body').html();
+            var printcontent = $('#' + el).clone();
+            $('body').empty().html(printcontent);
+            window.print();
+            $('body').html(restorepage);
+        }
+    </script> 
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>

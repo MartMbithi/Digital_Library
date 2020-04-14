@@ -100,9 +100,15 @@
                                     <td><?php echo $row->s_sex;?></td>
                                     <?php echo $account_status;?>
                                     <td>
-                                        <a href="pages_sudo_edit_student.php?student_number=<?php echo $row->s_number;?>"><i class="md-icon material-icons">&#xE254;</i></a>
-                                        <a href="pages_sudo_view_student.php?student_number=<?php echo $row->s_number;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
-                                        <a href="pages_sudo_manage_student.php?deleteAccount=<?php echo $row->s_id;?>"><i class="md-icon material-icons">&#xE88F;</i></a>
+                                        <a href="pages_sudo_view_student.php?student_number=<?php echo $row->s_number;?>">
+                                            <span class='uk-badge uk-badge-success'>View</span>
+                                        </a>
+                                        <a href="pages_sudo_edit_student.php?student_number=<?php echo $row->s_number;?>">
+                                            <span class='uk-badge uk-badge-primary'>Update</span>
+                                        </a>
+                                        <a href="pages_sudo_manage_student.php?deleteAccount=<?php echo $row->s_id;?>">
+                                            <span class='uk-badge uk-badge-danger'>Delete</span>
+                                        </a>
                                     </td>
                                 </tr>
 

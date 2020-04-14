@@ -123,7 +123,7 @@
                                 </div>
 
                                 <div class="uk-form-row">
-                                    <label>Librarian Bio | About  </label>
+                                    <label>Student Bio | About  </label>
                                     <textarea cols="30" rows="4" class="md-input" name="s_bio"></textarea>
                                 </div>
                             </div>
