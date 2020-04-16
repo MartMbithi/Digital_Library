@@ -179,7 +179,7 @@
                         <li><a href="pages_sudo_audit_book_categories.php">Book Categories</a></li>
                         <li><a href="pages_sudo_audit_books_records.php">Books Records</a></li>
                         <li><a href="pages_sudo_audit_library_operations.php">Library Operations</a></li>
-                        <li><a href="pages_sudo_audit_fines_payments.php">Subscription Records</a></li>
+                        <li><a href="pages_sudo_audit_subscriptions.php">Subscription Records</a></li>
                         <li><a href="pages_sudo_audit_fines_payments.php">Fines Payment Records</a></li>
 
                         
