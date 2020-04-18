@@ -187,7 +187,7 @@
                 
                 </li>
 
-                <!--Library Store-->
+                <!--Library Store--
                 <li title="iLibrary Store">
                     <a href="#">
                         <span class="menu_icon"><i class="material-icons">&#xE8CB;</i></span>
@@ -202,7 +202,8 @@
                     </ul>
                 
                 </li>
-
+                -->
+                
                 <!--Mailbox-->                
                 <li title="Mailbox">
                     <a href="pages_sudo_mailbox.php">

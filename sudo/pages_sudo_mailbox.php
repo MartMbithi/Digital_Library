@@ -4,18 +4,38 @@
     include('assets/config/checklogin.php');
     check_login();
      
-?>    
+    //delete mail
+    if(isset($_GET['deleteMail']))
+   {
+         $id=intval($_GET['deleteMail']);
+         $adn="DELETE FROM  iL_messages  WHERE id = ?";
+         $stmt= $mysqli->prepare($adn);
+         $stmt->bind_param('i',$id);
+         $stmt->execute();
+         $stmt->close();	 
+   
+            if($stmt)
+            {
+                $info = "Messange Deleted";
+            }
+            else
+            {
+                $err = "Try Again Later";
+            }
+     }
+?>
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php 
+
+<?php
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-    <?php
-        include("assets/inc/nav.php");
-    ?>
+        <?php
+            include("assets/inc/nav.php");
+        ?>
     <!-- main header end -->
     <!-- main sidebar -->
     <?php
@@ -24,63 +44,120 @@
     <!-- main sidebar end -->
 
     <div id="page_content">
-    <!--BreadCrumps-->
+        <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
                 <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Audits</a></li>
-                <li><span>Subscribed Media</span></li>
+                <li><span>MailBox</span></li>
             </ul>
         </div>
         <div id="page_content_inner">
-
-            <h4 class="heading_a uk-margin-bottom">iLibrary Subscribed Media Catalog</h4>
-            <div class="md-card uk-margin-medium-bottom">
-                <div class="md-card-content">
-                    <div class="dt_colVis_buttons"></div>
-                    <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
-                        <thead>
-                            <th>Title</th>
-                            <th>Publisher</th>
-                            <th>Category</th>
-                            <th>Issue Date</th>
-                            <th>Code</th>
-                            <th>Action</th>
-                        </thead>    
-                      
-                        <tbody>
+            <div class="md-card-list-wrapper" id="mailbox">
+                <div class="uk-width-large-8-10 uk-container-center">
+                    <div class="md-card-list">
+                        <div class="md-card-list-header heading_list">Inbox</div>
+                        <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">
+                            All Messages
+                        </div>
+                        <!--Start Messanges-->
                             <?php
-                                $ret="SELECT * FROM  iL_Subscriptions"; 
+                                $ret="SELECT * FROM  iL_messages"; 
                                 $stmt= $mysqli->prepare($ret) ;
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
+                                    //timestamp to DD-MM-YYYY
+                                    $tsamp = $row->send_at;
                             ?>
-                                <tr>
-                                    <td class="uk-text-truncate"><?php echo $row->s_title;?></td>
-                                    <td><?php echo $row->s_publisher;?></td>
-                                    <td><?php echo $row->s_category;?></td>
-                                    <td><?php echo $row->s_year;?></td>
-                                    <td class="uk-text-success"><?php echo $row->s_code;?></td>
-                                    <td>
-                                        <a href="pages_sudo_view_subscription.php?s_id=<?php echo $row->s_id;?>">
-                                            <span class='uk-badge uk-badge-success'>View</span>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <ul class="hierarchical_slide">
+                                    <li>
+                                        <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
+                                            <a href="#" class="md-icon material-icons">&#xE5D4;</a>
+                                            <div class="uk-dropdown uk-dropdown-small">
+                                                <ul class="uk-nav">
+                                                    <li><a href="pages_sudo_mailbox.php?deleteMail=<?php echo $row->id;?>"><i class="material-icons">&#xE872;</i> Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <span class="md-card-list-item-date"><?php echo date("d-M-Y h:m:s", strtotime($tsamp));?></span>
+                                        <div class="md-card-list-item-select">
+                                            <input type="checkbox" data-md-icheck />
+                                        </div>
+                                        <div class="md-card-list-item-avatar-wrapper">
+                                            <img src="assets/img/avatars/avatar_04_tn.png" class="md-card-list-item-avatar" alt="" />
+                                        </div>
+                                        <div class="md-card-list-item-sender">
+                                            <span><?php echo $row->sender;?></span>
+                                        </div>
+                                        <div class="md-card-list-item-subject">
+                                            <div class="md-card-list-item-sender-small">
+                                                <span><?php echo $row->sender;?></a></span>
+                                            </div>
+                                            <span class="uk-text-truncate"><?php echo $row->content;?> </span>
+                                        </div>
+                                        <div class="md-card-list-item-content-wrapper">
+                                            <div class="md-card-list-item-content">
+                                                <?php echo $row->content;?> 
+                                            <form method = "post" class="md-card-list-item-reply">
+                                                <label for="mailbox_reply_1493">Reply to <span><?php echo $row->sender;?></span></label>
+                                                <textarea class="md-input md-input-full" name="mailbox_reply_1493" id="mailbox_reply_1493" cols="30" rows="4"></textarea>
+                                                <button type="button" class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
+                                            </form>
+                                        </div>
+                                    </li>
 
+                                </ul>
                             <?php }?>
-                        </tbody>
-                    </table>
+                        <!--End Messanges -->
+                    </div>
+
                 </div>
             </div>
 
         </div>
     </div>
 
+    <div class="md-fab-wrapper">
+        <a class="md-fab md-fab-accent md-fab-wave" href="#mailbox_new_message" data-uk-modal="{center:true}">
+            <i class="material-icons">&#xE150;</i>
+        </a>
+    </div>
+
+    <div class="uk-modal" id="mailbox_new_message">
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close uk-close" type="button"></button>
+            <!--Send Mail Form-->
+            <form method = "post">
+                <div class="uk-modal-header">
+                    <h3 class="uk-modal-title">Compose Message</h3>
+                </div>
+                <div class="uk-margin-medium-bottom">
+                    <label for="mail_new_to">To</label>
+                    <input type="text" class="md-input" id="mail_new_to"/>
+                </div>
+                <div class="uk-margin-large-bottom">
+                    <label for="mail_new_message">Message</label>
+                    <textarea name="mail_new_message" id="mail_new_message" cols="30" rows="6" class="md-input"></textarea>
+                </div>
+                <div id="mail_upload-drop" class="uk-file-upload">
+                    <p class="uk-text">Drop file to upload</p>
+                    <p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
+                    <a class="uk-form-file md-btn">choose file<input id="mail_upload-select" type="file"></a>
+                </div>
+                <div id="mail_progressbar" class="uk-progress uk-hidden">
+                    <div class="uk-progress-bar" style="width:0">0%</div>
+                </div>
+                <div class="uk-modal-footer">
+                    <a href="#" class="md-icon-btn"><i class="md-icon material-icons">&#xE226;</i></a>
+                    <button type="button" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary">Send</button>
+                </div>
+            </form>
+            <!--End Send Mail-->
+        </div>
+    </div>
     <!-- google web fonts -->
-    <script>
+    <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         WebFontConfig = {
             google: {
                 families: [
@@ -108,23 +185,9 @@
     <script src="assets/js/altair_admin_common.min.js"></script>
 
     <!-- page specific plugins -->
-    <!-- datatables -->
-    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <!-- datatables buttons-->
-    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
-    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
-    <script src="bower_components/jszip/dist/jszip.min.js"></script>
-    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
-    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
 
-    <!-- datatables custom integration -->
-    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
-
-    <!--  datatables functions -->
-    <script src="assets/js/pages/plugins_datatables.min.js"></script>
+    <!--  mailbox functions -->
+    <script src="assets/js/pages/page_mailbox.min.js"></script>
     
     <script>
         $(function() {
@@ -143,6 +206,15 @@
             // ie fixes
             altair_helpers.ie_fix();
         });
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-65191727-1', 'auto');
+        ga('send', 'pageview');
     </script>
 
     <div id="style_switcher">
