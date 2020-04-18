@@ -107,7 +107,7 @@
                                                 </ul>
 
                                                 <div class="uk-text-center uk-margin-top uk-margin-small-bottom">
-                                                    <a href="pages_sudo_mail.php" class="md-btn md-btn-flat md-btn-flat-primary js-uk-prevent">Show All</a>
+                                                    <a href="pages_sudo_mailbox.php" class="md-btn md-btn-flat md-btn-flat-primary js-uk-prevent">Show All</a>
                                                 </div>
                                             </li>
 
