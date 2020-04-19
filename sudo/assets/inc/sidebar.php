@@ -205,12 +205,20 @@
                 -->
                 
                 <!--Mailbox-->                
-                <li title="Mailbox">
-                    <a href="pages_sudo_mailbox.php">
-                        <span class="menu_icon"><i class="material-icons">&#xE158;</i></span>
+               
+                <li title="iLibrary Store">
+                    <a href="#">
+                    <span class="menu_icon"><i class="material-icons">&#xE158;</i></span>
                         <span class="menu_title">Mailbox</span>
                     </a>
-                    
+                    <ul>
+                        <li><a href="pages_sudo_mail_students.php">Student Mail</a></li>
+                        <li><a href="pages_sudo_mail_staff.php">Staff Mail</a></li>
+                        <!--<li><a href="pages_sudo_manage_inbox.php">Manage Mail</a></li>-->
+                        <li><a href="pages_sudo_manage_sendmails.php">Send Mails</a></li>
+                        <li><a href="pages_sudo_manage_incommingmails.php">Inbox</a></li>
+                    </ul>
+                
                 </li>
 
                 <!--password resets-->
@@ -220,7 +228,8 @@
                         <span class="menu_title">Password Resets</span>
                     </a>
                     <ul>
-                        <li><a href="pages_sudo_new_manage_password_resets.php">Manage</a></li>
+                        <li><a href="pages_sudo_manage_librarian_password_resets.php">Manage Librarians</a></li>
+                        <li><a href="pages_sudo_manage_student_password_resets.php">Manage Students</a></li>
                     </ul>
                 </li>
             </ul>

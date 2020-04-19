@@ -29,10 +29,9 @@
     /*
         Messanges Counter
     */  
-    $id = $_SESSION['id'];
-    $result ="SELECT count(*) FROM iL_messages WHERE receiver_id = ? ";//get the number of all messsanges sent to sudo(Logged in user)
+
+    $result ="SELECT count(*) FROM  iL_receivedMails  WHERE sm_receiverName = 'System Admin' ";
     $stmt = $mysqli->prepare($result);
-    $stmt->bind_param('i', $id);
     $stmt->execute();
     $stmt->bind_result($msg_cnt);
     $stmt->fetch();
@@ -81,16 +80,14 @@
 
                                                     <?php
                                                         //display all messeges
-                                                        $id = $_SESSION['id'];
-                                                        $ret="SELECT * FROM  iL_messages  WHERE receiver_id = ? "; 
+                                                        $ret="SELECT * FROM  iL_receivedMails  WHERE sm_receiverName = 'System Admin' "; 
                                                         $stmt= $mysqli->prepare($ret) ;
-                                                        $stmt->bind_param('i', $id);
                                                         $stmt->execute() ;//ok
                                                         $res=$stmt->get_result();
                                                         while($row=$res->fetch_object())
                                                         {
                                                             
-                                                            $sender_initials = $row->sender;
+                                                            $sender_initials = $row->sm_senderName;
                                                             
                                                     ?>
                                                         <li>
@@ -98,8 +95,8 @@
                                                                 <span class="md-user-letters md-bg-cyan"><?php echo $sender_initials[0];?></span>
                                                             </div>
                                                             <div class="md-list-content">
-                                                                <span class="md-list-heading"><a href="pages_sudo_mail.php?sender=<?php echo $row->sender;?>"><?php echo $row->sender;?></a></span>
-                                                                <span class="uk-text-small uk-text-muted uk-text-truncate"><?php echo $row->content;?></span>
+                                                                <span class="md-list-heading"><a href="pages_sudo_mail.php?sender=<?php echo $row->sm_senderName;?>"><?php echo $row->sm_senderName;?></a></span>
+                                                                <span class="uk-text-small uk-text-muted uk-text-truncate"><?php echo $row->sm_title;?></span>
                                                             </div>
                                                         </li>
 
