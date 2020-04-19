@@ -131,13 +131,12 @@
     $stmt->fetch();
     $stmt->close();
 
-    //3.2 : Number of Unread Messsanges inbox
-    $id = $_SESSION['id'];
-    $result ="SELECT count(*) FROM iL_messages WHERE receiver_id = ? ";
+    //3.2 : Number of Subcribed media in the system
+    $result ="SELECT count(*) FROM iL_Subscriptions ";
     $stmt = $mysqli->prepare($result);
-    $stmt->bind_param('i', $id);
+    //$stmt->bind_param('i', $id);
     $stmt->execute();
-    $stmt->bind_result($inbox);
+    $stmt->bind_result($subscriptions);
     $stmt->fetch();
     $stmt->close();
 
@@ -331,8 +330,8 @@
                     <div class="md-card">
                         <div class="md-card-content">
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
-                            <span class="uk-text-muted uk-text-small">Inbox</span>
-                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $inbox;?></noscript></span> Msgs</h2>
+                            <span class="uk-text-muted uk-text-small">Subscribed Media</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $subscriptions;?></noscript></span></h2>
                         </div>
                     </div>
                 </div>
