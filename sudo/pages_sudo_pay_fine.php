@@ -31,16 +31,27 @@
         $f_status = $_POST['f_status'];
         $f_checksum = $_POST['f_checksum'];
         $fineId = $_GET['fineId'];
+
+        //---Post a notification that someone has cleared some fine//
+        $content = $_POST['content'];
+        $user_id = $_SESSION['id'];
+
         
         //Insert Captured information to a database table
         $query="UPDATE iL_Fines SET f_payment_code = ?, f_status = ?, f_checksum =? WHERE f_id= ?";
+        $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
+
+        $stmt2 = $mysqli->prepare($notif);
         $stmt = $mysqli->prepare($query);
         //bind paramaters
         $rc=$stmt->bind_param('sssi', $f_payment_code, $f_status, $f_checksum, $fineId);
+        $rc = $stmt2->bind_param('si', $content, $user_id);
+
+        $stmt2 ->execute();
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
-        if($stmt)
+        if($stmt && $stmt2)
         {
             $success = "Payment Confirmed";
         }
@@ -119,6 +130,12 @@
                                         <label>Payment Checksum</label>
                                         <input type="text" required  name="f_checksum" value="<?php echo $checksum;?>" class="md-input label-fixed" />
                                     </div>
+
+                                     <!--Notification Content-->
+                                     <div class="uk-form-row" style="display:none">
+                                        <label>Content</label>
+                                        <input type="text" required name="content" value="Ksh <?php echo $row->f_amt;?> Has been paid as a fine for <?php echo $row->f_type;?>" class="md-input"  />
+                                    </div>
                                 
                                 </div>
 
@@ -137,6 +154,9 @@
             </div>
         </div>
     <?php }?>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script>

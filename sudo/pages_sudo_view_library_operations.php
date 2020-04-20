@@ -95,7 +95,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE158;</i>
+                                                            <i class="md-list-addon-icon material-icons">book</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo $row->b_title;?></span>
@@ -104,7 +104,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0CD;</i>
+                                                            <i class="md-list-addon-icon material-icons">date_range</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo $row->b_isbn_no;?></span>
@@ -113,7 +113,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0C;</i>
+                                                            <i class="md-list-addon-icon material-icons">description</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo $row->bc_name;?></span>
@@ -124,7 +124,7 @@
                                                     <h4 class="heading_c uk-margin-small-bottom">Student Information</h4>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">how_to_reg</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo $row->s_name;?></span>
@@ -133,7 +133,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">verified_user</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo $row->s_number;?></span>
@@ -149,7 +149,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">event</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo date("d-M-Y h:m:s", strtotime($tsamp));?></span>
@@ -158,7 +158,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">offline_bolt</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo $row->lo_number;?></span>
@@ -167,7 +167,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">perm_data_setting</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading text-success uk-text-primary"><?php echo $row->lo_checksum;?></span>
@@ -181,7 +181,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">calendar_today</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo date("d-M-Y", strtotime($tsamp));?></span>
@@ -190,7 +190,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">check_box</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading uk-text-primary"><?php echo date("d-M-Y", strtotime($tsamp));?></span>
@@ -214,6 +214,9 @@
             </div>
         </div>
     <?php }?>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
