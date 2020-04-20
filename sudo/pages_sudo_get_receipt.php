@@ -138,6 +138,9 @@
             </div>
         </div>
     <?php }?>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script>
@@ -190,16 +193,7 @@
             altair_helpers.ie_fix();
         });
     </script>
-    <script>
-        function printContent(el)
-        {
-            var restorepage = $('body').html();
-            var printcontent = $('#' + el).clone();
-            $('body').empty().html(printcontent);
-            window.print();
-            $('body').html(restorepage);
-        }
-    </script> 
+    
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>

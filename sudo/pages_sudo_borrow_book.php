@@ -29,21 +29,29 @@
         $b_copies = $_POST['b_copies'];
         $lo_return_date = $_POST['lo_return_date'];
 
+        //---Post a notification that someone has borrowed a book--//
+        $content = $_POST['content'];
+        $user_id = $_SESSION['id'];
         //Insert Captured information to a database table -->insert to library operations table
         $query="INSERT INTO iL_LibraryOperations (b_title, b_isbn_no, bc_id, bc_name, lo_type, b_id, lo_number, s_id, s_name, s_number, lo_checksum, lo_return_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         //update book table and minus one book
         $book_borrow = "UPDATE iL_Books SET b_copies = ? WHERE  b_id = ?";
+        //give a notification that some one has borrowed a book
+        $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
         $stmt1= $mysqli->prepare($book_borrow);
         $stmt = $mysqli->prepare($query);
+        $stmt2 = $mysqli->prepare($notif);
         //bind paramaters
         $rc=$stmt->bind_param('ssssssssssss', $b_title, $b_isbn_no, $bc_id, $bc_name, $lo_type, $b_id, $lo_number, $s_id, $s_name, $s_number, $lo_checksum, $lo_return_date);
         $rc = $stmt1->bind_param('si', $b_copies ,$b_id);
+        $rc = $stmt2->bind_param('si', $content, $user_id);
 
         $stmt->execute();
         $stmt1 ->execute();
+        $stmt2 ->execute();
   
         //declare a varible which will be passed to alert function
-        if($stmt && $stmt1)
+        if($stmt && $stmt1 && $stmt2)
         {
             $success = "Book Borrowed";
         }
@@ -117,6 +125,11 @@
                                         <label>Book Category</label>
                                         <input type="text" required name="bc_name" value="<?php echo $row->bc_name;?>" class="md-input"  />
                                     </div>
+                                    <!--Notification Content-->
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Content</label>
+                                        <input type="text" required name="content" value="<?php echo $row->b_title;?>, ISBN NO: <?php echo $row->b_isbn_no;?> Has been borrowed" class="md-input"  />
+                                    </div>
                                     
                                 </div>
 
@@ -181,6 +194,9 @@
 
         </div>
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script>

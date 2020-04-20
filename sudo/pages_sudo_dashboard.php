@@ -77,6 +77,14 @@
      $stmt->fetch();
      $stmt->close();
 
+     //1.3.2 : Number of all returned books no matter what category
+    $result ="SELECT count(*) FROM iL_LibraryOperations WHERE lo_status = 'Returned'  ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($Returned);
+    $stmt->fetch();
+    $stmt->close();
+
      $damanged_and_lost_books = $lost_books + $damanged_books;
 
 
@@ -202,6 +210,8 @@
     $stmt->bind_result($borrowed_references);
     $stmt->fetch();
     $stmt->close();
+
+    
     
 ?>
 <!doctype html>
@@ -250,8 +260,8 @@
                     <div class="md-card">
                         <div class="md-card-content">
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
-                            <span class="uk-text-muted uk-text-small">Borrowed Books</span>
-                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $borrowed_books;?></noscript></span></h2>
+                            <span class="uk-text-muted uk-text-small">Returned Books</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $Returned;?></noscript></span></h2>
                         </div>
                     </div>
                 </div>
@@ -353,49 +363,115 @@
                         <div class="md-card-toolbar">
                             <div class="md-card-toolbar-actions">
                                 <i class="md-icon material-icons md-card-fullscreen-activate">&#xE5D0;</i>
+                               <!-- <i class="md-icon material-icons" id="print" onclick="printContent('Print_Content');">&#xE8ad;</i> -->
                                 <i class="md-icon material-icons">&#xE5D5;</i>
                                 
                             </div>
                         </div>
+                            <div  class="md-card-content">
 
-                        <div class="md-card-content">
-                            <div class="mGraph-wrapper">
-                                <div id="PieChart" class="mGraph" style="height: 400px; max-width: 500px; margin: 0px auto;"></div>
-                            </div>
+                                <div class="mGraph-wrapper">
+                                    <div id="PieChart" class="mGraph" style="height: 400px; max-width: 900px; margin: 0px auto;"></div>
+                                </div>
 
-                            <div class="md-card-fullscreen-content">
-                                <div class="uk-overflow-container">
-                                    <table class="uk-table uk-table-no-border uk-text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Author</th>
-                                            <th>Category</th>
-                                            <th>ISBN No.</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                            $ret="SELECT * FROM  iL_Books"; 
-                                            $stmt= $mysqli->prepare($ret) ;
-                                            $stmt->execute() ;//ok
-                                            $res=$stmt->get_result();
-                                            while($row=$res->fetch_object())
-                                            {
-                                        ?>
+                                <div id = "Print_Content" class="md-card-fullscreen-content">
+                                    <div class="uk-overflow-container">
+                                        <table class="uk-table uk-table-no-border uk-text-nowrap">
+                                        <thead>
                                             <tr>
-                                                <td><?php echo $row->b_title;?></td>
-                                                <td><?php echo $row->b_author;?></td>
-                                                <td><?php echo $row->bc_name;?></td>
-                                                <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
+                                                <th>Title</th>
+                                                <th>Author</th>
+                                                <th>Category</th>
+                                                <th>ISBN No.</th>
                                             </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $ret="SELECT * FROM  iL_Books"; 
+                                                $stmt= $mysqli->prepare($ret) ;
+                                                $stmt->execute() ;//ok
+                                                $res=$stmt->get_result();
+                                                while($row=$res->fetch_object())
+                                                {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $row->b_title;?></td>
+                                                    <td><?php echo $row->b_author;?></td>
+                                                    <td><?php echo $row->bc_name;?></td>
+                                                    <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
+                                                </tr>
 
-                                        <?php }?>
-                                    </tbody>
-                                </table>
+                                            <?php }?>
+                                        </tbody>
+                                    </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div id = "Print_Content" class="md-card-content">
+                                <div class="mGraph-wrapper">
+                                    <div id="BooksBorrowedPerCategory" class="mGraph" style="height: 400px; max-width: 900px; margin: 0px auto;"></div>
+                
+                                </div>
+
+                                <div class="md-card-fullscreen-content">
+                                    <div class="uk-overflow-container">
+                                        <table class="uk-table uk-table-no-border uk-text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Book Title</th>
+                                                <th>Borrowed By</th>
+                                                <th>Date Borrowed</th>
+                                                <th>Book Status</th>
+                                                <th>Book Category</th>
+                                                <th>ISBN No.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $ret="SELECT * FROM  iL_LibraryOperations"; 
+                                                $stmt= $mysqli->prepare($ret) ;
+                                                $stmt->execute() ;//ok
+                                                $res=$stmt->get_result();
+                                                while($row=$res->fetch_object())
+                                                {
+                                                    //trim timestamp to DD-MM-YYYY
+                                                    $dateBorrowed= $row->created_at;
+                                                    //add .success .warning .danger classses to book status
+                                                    if($row->lo_status == 'Returned')
+                                                    {
+                                                        $bookstatus = "<td class='uk-text-success'>$row->lo_status</td>";
+                                                    }
+                                                    elseif($row->lo_status == 'Damanged')
+                                                    {
+                                                        $bookstatus = "<td class='uk-text-warning'>$row->lo_status</td>";
+
+                                                    }
+                                                    elseif($row->lo_status == 'Lost')
+                                                    {
+                                                        $bookstatus = "<td class='uk-text-danger'>$row->lo_status</td>";
+
+                                                    }
+                                                    else
+                                                    {
+                                                        $bookstatus = "<td class='uk-text-primary'>Pending Return</td>";
+                                                    }
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $row->b_title;?></td>
+                                                    <td><?php echo $row->s_name;?> <?php echo $row->s_number;?></td>
+                                                    <td><?php echo date ("d-M-Y h:m", strtotime($dateBorrowed));?></td>
+                                                    <?php echo $bookstatus;?>
+                                                    <td><?php echo $row->bc_name;?></td>
+                                                    <td class="uk-text-primary"><?php echo $row->b_isbn_no;?></td>
+                                                </tr>
+
+                                            <?php }?>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -415,7 +491,7 @@
 
                         <div class="md-card-content">
                             <div class="mGraph-wrapper">
-                                <div id="BooksBorrowedPerCategory" class="mGraph" style="height: 400px; max-width: 500px; margin: 0px auto;"></div>
+                                <div id="libraryOperationsPerBookCategory" class="mGraph" style="height: 400px; max-width: 900px; margin: 0px auto;"></div>
                                 
                             </div>
 
@@ -424,11 +500,11 @@
                                     <table class="uk-table uk-table-no-border uk-text-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Number</th>
-                                            <th>Title</th>
+                                            <th>Book Title</th>
                                             <th>Borrowed By</th>
-                                            <th>Category</th>
+                                            <th>Date Borrowed</th>
+                                            <th>Book Status</th>
+                                            <th>Book Category</th>
                                             <th>ISBN No.</th>
                                         </tr>
                                     </thead>
@@ -440,14 +516,35 @@
                                             $res=$stmt->get_result();
                                             while($row=$res->fetch_object())
                                             {
+                                                //trim timestamp to DD-MM-YYYY
+                                                $dateBorrowed= $row->created_at;
+                                                //add .success .warning .danger classses to book status
+                                                if($row->lo_status == 'Returned')
+                                                {
+                                                    $bookstatus = "<td class='uk-text-success'>$row->lo_status</td>";
+                                                }
+                                                elseif($row->lo_status == 'Damanged')
+                                                {
+                                                    $bookstatus = "<td class='uk-text-warning'>$row->lo_status</td>";
+
+                                                }
+                                                elseif($row->lo_status == 'Lost')
+                                                {
+                                                    $bookstatus = "<td class='uk-text-danger'>$row->lo_status</td>";
+
+                                                }
+                                                else
+                                                {
+                                                    $bookstatus = "<td class='uk-text-primary'>Pending Return</td>";
+                                                }
                                         ?>
                                             <tr>
-                                                <td><?php echo $row->s_name;?></td>
-                                                <td><?php echo $row->s_number;?></td>
                                                 <td><?php echo $row->b_title;?></td>
-                                                <td><?php echo $row->s_name;?></td>
+                                                <td><?php echo $row->s_name;?> <?php echo $row->s_number;?></td>
+                                                <td><?php echo date ("d-M-Y h:m", strtotime($dateBorrowed));?></td>
+                                                <?php echo $bookstatus;?>
                                                 <td><?php echo $row->bc_name;?></td>
-                                                <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
+                                                <td class="uk-text-primary"><?php echo $row->b_isbn_no;?></td>
                                             </tr>
 
                                         <?php }?>
@@ -456,184 +553,128 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
 
-            <!-- info cards 
-            <div class="uk-grid uk-grid-medium uk-grid-width-medium-1-2 uk-grid-width-large-1-3" data-uk-grid-margin data-uk-grid-match="{target:'.md-card-content'}">
-                <div>
+            <div class="uk-grid">
+                <div class="uk-width-1-1">
+                    <h4 class="heading_a uk-margin-bottom">iLibrary Staffs</h4>
                     <div class="md-card">
-                        <div class="md-card-head md-bg-light-blue-600">
-                            <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
-                                <i class="md-icon material-icons md-icon-light">&#xE5D4;</i>
-                                <div class="uk-dropdown uk-dropdown-small">
-                                    <ul class="uk-nav">
-                                        <li><a href="#">User profile</a></li>
-                                        <li><a href="#">User permissions</a></li>
-                                        <li><a href="#" class="uk-text-danger">Delete user</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="uk-text-center">
-                                <img class="md-card-head-avatar" src="assets/img/avatars/avatar_11.png" alt=""/>
-                            </div>
-                            <h3 class="md-card-head-text uk-text-center md-color-white">
-                                Abbey Trantow                                <span><a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="3f5e534b5a51485a4d4b571152464d565e527f57504b525e5653115c5052">[email&#160;protected]</a></span>
-                            </h3>
-                        </div>
                         <div class="md-card-content">
-                            <ul class="md-list md-list-addon">
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon material-icons">&#xE158;</i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading"><a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="45282c2e243c29246b2e2028282037052724292c36313720372c372a2923362a2b6b2c2b232a">[email&#160;protected]</a></span>
-                                        <span class="uk-text-small uk-text-muted">Email</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon material-icons">&#xE0CD;</i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">409-109-3543x864</span>
-                                        <span class="uk-text-small uk-text-muted">Phone</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon uk-icon-facebook-official"></i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">facebook.com/envato</span>
-                                        <span class="uk-text-small uk-text-muted">Facebook</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon uk-icon-twitter"></i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">twitter.com/envato</span>
-                                        <span class="uk-text-small uk-text-muted">Twitter</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="md-card">
-                        <div class="md-card-head md-bg-grey-900">
-                            <div class="uk-cover uk-position-relative uk-height-1-1 transform-origin-50" id="video_player">
-                                <iframe width="300" height="150" src="about:blank" data-uk-cover frameborder="0" allowfullscreen style="max-height:100%"></iframe>
-                            </div>
-                        </div>
-                        <div class="md-card-content">
-                            <ul class="md-list md-list-addon md-list-interactive" id="video_player_playlist">
-                                <li data-video-src="-CYs99M7hzA">
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon material-icons">&#xE037;</i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">Unboxing the HERO4</span>
-                                        <span class="uk-text-small uk-text-muted">Mashable</span>
-                                    </div>
-                                </li>
-                                <li data-video-src="te689fEo2pY">
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon material-icons">&#xE037;</i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">Apple Watch Unboxing & Setup</span>
-                                        <span class="uk-text-small uk-text-muted">Unbox Therapy</span>
-                                    </div>
-                                </li>
-                                <li data-video-src="7AFJeaYojhU">
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon material-icons">&#xE037;</i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">Energous WattUp Power Transmitter</span>
-                                        <span class="uk-text-small uk-text-muted">TechCrunch</span>
-                                    </div>
-                                </li>
-                                <li data-video-src="hajnEpCq5SE">
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon material-icons">&#xE037;</i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">The new MacBook - Design</span>
-                                        <span class="uk-text-small uk-text-muted">Apple</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="md-card">
-                        <div class="md-card-head head_background" style="background-image: url('assets/img/gallery/Image17.jpg')">
-                            <div class="md-card-head-menu">
-                                <i class="md-icon material-icons md-icon-light">&#xE5D5;</i>
-                            </div>
-                            <h3 class="md-card-head-text">
-                                Some City
-                            </h3>
-                            <div class="md-card-head-subtext">
-                                <i class="md-card-head-icon wi wi-day-sunny-overcast uk-margin-right"></i>
-                                <span>14&deg;</span>
-                            </div>
-                        </div>
-                        <div class="md-card-content">
-                            <ul class="md-list md-list-addon">
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon wi wi-day-sunny-overcast"></i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">22&deg; Mostly Sunny</span>
-                                        <span class="uk-text-small uk-text-muted">7 Mar (Thursday)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon wi wi-cloudy"></i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">19&deg; Partly Cloudy</span>
-                                        <span class="uk-text-small uk-text-muted">8 Mar (Friday)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon wi wi-day-rain"></i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">16&deg; Rainy</span>
-                                        <span class="uk-text-small uk-text-muted">9 Mar (Saturday)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="md-list-addon-element">
-                                        <i class="md-list-addon-icon wi wi-day-sunny uk-text-warning"></i>
-                                    </div>
-                                    <div class="md-list-content">
-                                        <span class="md-list-heading">24&deg; Sunny</span>
-                                        <span class="uk-text-small uk-text-muted">9 Mar (Saturday)</span>
-                                    </div>
-                                </li>
-                            </ul>
+                            <table id="dt_individual_search" class="uk-table" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Staff Number</th>
+                                        <th>Phone No.</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Account Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $ret="SELECT * FROM  iL_Librarians"; 
+                                        $stmt= $mysqli->prepare($ret) ;
+                                        $stmt->execute() ;//ok
+                                        $res=$stmt->get_result();
+                                        while($row=$res->fetch_object())
+                                        {
+                                            //use .danger, .warning, .success according to account status
+                                            if($row->l_acc_status == 'Active')
+                                            {
+                                                $account_status = "<td class='uk-text-success'>$row->l_acc_status</td>";
+                                            }
+                                            elseif($row->l_acc_status == 'Pending')
+                                            {
+                                                $account_status = "<td class='uk-text-warning'>$row->l_acc_status</td>";
+                                            }
+                                            else
+                                            {
+                                                $account_status = "<td class='uk-text-danger'>$row->l_acc_status</td>";
+                                            }
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $row->l_name;?></td>
+                                            <td><?php echo $row->l_number;?></td>
+                                            <td><?php echo $row->l_phone;?></td>
+                                            <td><?php echo $row->l_email;?></td>
+                                            <td><?php echo $row->l_adr;?></td>
+                                            <?php echo $account_status;?>
+                                        </tr>
+
+                                    <?php }?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            -->
 
+            <div class="uk-grid">
+                <div class="uk-width-1-1">
+                    <h4 class="heading_a uk-margin-bottom">iLibrary Enrolled Students</h4>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <table id="dt_default" class="uk-table" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>iLib Student No</th>
+                                        <th>Phone No.</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Gender</th>
+                                        <th>Acc Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $ret="SELECT * FROM  iL_Students"; 
+                                        $stmt= $mysqli->prepare($ret) ;
+                                        $stmt->execute() ;//ok
+                                        $res=$stmt->get_result();
+                                        while($row=$res->fetch_object())
+                                        {
+                                            //use .danger, .warning, .success according to account status
+                                            if($row->s_acc_status == 'Active')
+                                            {
+                                                $account_status = "<td class='uk-text-success'>$row->s_acc_status</td>";
+                                            }
+                                            elseif($row->s_acc_status == 'Pending')
+                                            {
+                                                $account_status = "<td class='uk-text-warning'>$row->s_acc_status</td>";
+                                            }
+                                            else
+                                            {
+                                                $account_status = "<td class='uk-text-danger'>$row->s_acc_status</td>";
+                                            }
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $row->s_name;?></td>
+                                            <td><?php echo $row->s_number;?></td>
+                                            <td><?php echo $row->s_phone;?></td>
+                                            <td><?php echo $row->s_email;?></td>
+                                            <td><?php echo $row->s_adr;?></td>
+                                            <td><?php echo $row->s_sex;?></td>
+                                            <?php echo $account_status;?>
+                                            
+                                        </tr>
+                                    <?php }?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
+
 
     <!-- google web fonts -->
     <script>
@@ -666,7 +707,7 @@
         exportEnabled: false,
         animationEnabled: true,
         title:{
-          text: "Books Per Category"
+          text: "Percentage Number Of Books Per Category"
         },
         legend:{
           cursor: "pointer",
@@ -687,11 +728,11 @@
         }]
       });
 
-      var borrowChart = new CanvasJS.Chart("BooksBorrowedPerCategory", {
+      var borrowChart = new CanvasJS.Chart("libraryOperationsPerBookCategory", {
         exportEnabled: false,
         animationEnabled: true,
         title:{
-          text: "Book Borrowing Trend"
+          text: "Percentange Number Of Library Operations Per Book Category"
         },
         legend:{
           cursor: "pointer",
@@ -709,8 +750,34 @@
           ]
         }]
       });
+
+        var chart = new CanvasJS.Chart("BooksBorrowedPerCategory", {
+            animationEnabled: true,
+            title:{
+                text: "Library Operations At Glance",
+                //horizontalAlign: "centre"
+            },
+            data: [{
+                type: "doughnut",
+                startAngle: 60,
+                //innerRadius: 60,
+                indexLabelFontSize: 17,
+                indexLabel: "{label}:{y} (#percent%)",
+                toolTipContent: "{label} - #percent%",
+                dataPoints: [
+                    { y: <?php echo $lost_books;?>, label: "Lost Books" },
+                    { y: <?php echo $Returned;?>, label: "Returned Books" },
+                    { y: <?php echo $damanged_books;?>, label: "Damanged Books" }
+
+                ]
+            }]
+        });
+
+        
+      chart.render();
       Piechart.render();
       borrowChart.render();
+
       }
 
       function explodePie (e) {
@@ -988,6 +1055,24 @@
 
         });
     </script>
+    <!-- page specific plugins -->
+    <!-- datatables -->
+    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <!-- datatables buttons-->
+    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
+    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
+    <script src="bower_components/jszip/dist/jszip.min.js"></script>
+    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
+    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
+
+    <!-- datatables custom integration -->
+    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
+
+    <!--  datatables functions -->
+    <script src="assets/js/pages/plugins_datatables.min.js"></script>
 </body>
 
 </html>

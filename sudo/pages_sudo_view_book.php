@@ -90,7 +90,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE158;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">person</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->b_author;?></span>
@@ -99,7 +99,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0CD;</i>
+                                                            <i class="md-list-addon-icon  uk-text-primary material-icons">theaters</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->b_publisher;?></span>
@@ -116,7 +116,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">spellcheck</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->b_copies;?></span>
@@ -125,7 +125,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0C;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">description</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->bc_name;?></span>
@@ -161,6 +161,9 @@
         </div>
     
     <?php }?>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>

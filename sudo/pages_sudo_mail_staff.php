@@ -90,6 +90,9 @@
 
         </div>
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
     
     <!-- google web fonts -->
     <script>

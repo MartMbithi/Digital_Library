@@ -111,7 +111,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE158;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">&#xE158;</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->s_email;?></span>
@@ -120,7 +120,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0CD;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">&#xE0CD;</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->s_phone;?></span>
@@ -129,7 +129,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0C;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">add_location</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->s_adr;?></span>
@@ -146,7 +146,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">verified_user</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->s_number;?></span>
@@ -156,7 +156,7 @@
 
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">wc</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <?php echo $row->s_sex;?>
@@ -166,7 +166,7 @@
 
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0CD;</i>
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">settings</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <?php echo $account_status;?>
@@ -706,6 +706,9 @@
             </div>
         </div>
     <?php }?>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>

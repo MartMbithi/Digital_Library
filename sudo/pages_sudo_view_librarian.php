@@ -16,6 +16,7 @@
             include("assets/inc/nav.php");
         ?>
     <!-- main header end -->
+
     <!-- main sidebar -->
         <?php 
             include("assets/inc/sidebar.php");
@@ -131,7 +132,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0C;</i>
+                                                            <i class="md-list-addon-icon material-icons">add_location</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->l_adr;?></span>
@@ -148,7 +149,7 @@
                                                 <ul class="md-list md-list-addon">
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xe8a3;</i>
+                                                            <i class="md-list-addon-icon material-icons">verified_user</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <span class="md-list-heading"><?php echo $row->l_number;?></span>
@@ -157,7 +158,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="md-list-addon-element">
-                                                            <i class="md-list-addon-icon material-icons">&#xE0CD;</i>
+                                                            <i class="md-list-addon-icon material-icons">settings</i>
                                                         </div>
                                                         <div class="md-list-content">
                                                             <?php echo $account_status;?>
@@ -712,6 +713,9 @@
             </div>
         </div>
     <?php }?>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>

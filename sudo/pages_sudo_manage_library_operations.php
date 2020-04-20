@@ -87,15 +87,19 @@
                                     {
                                         $opsType = "<td class='uk-text-warning'>$row->lo_status</td>";
                                     }
-                                    else
+                                    elseif($row->lo_status == 'Lost')
                                     {
                                         $opsType = "<td class='uk-text-danger'>$row->lo_status</td>";
+                                    }
+                                    else
+                                    {
+                                        $opsType = "<td class='uk-text-primary'>Pending Return</td>";
                                     }
 
                             ?>
                                 <tr>
                                     <?php echo $opsType;?>
-                                    <td><?php echo date("d-M-Y", strtotime($tsamp));?></td> 
+                                    <td><?php echo date("d-M-Y h:m", strtotime($tsamp));?></td> 
                                     <td class="uk-text-primary"><?php echo $row->lo_checksum;?></td>
                                     <td class="uk-text-primary"><?php echo $row->lo_number;?></td>
                                     <td>
@@ -116,6 +120,9 @@
 
         </div>
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script>

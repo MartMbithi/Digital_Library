@@ -25,30 +25,42 @@
         $s_number = $_POST['s_number'];
         $s_name = $_POST['s_name'];
 
+        //---Post a notification that someone has reported a book lost--//
+        $content = $_POST['content'];
+        $user_id = $_SESSION['id'];
+
         //Insert Captured information to a database table -->insert to library operations table
         $query="UPDATE  iL_LibraryOperations SET lo_status = ? WHERE lo_id = ? ";
         //update book table and remove lost book
         $book_borrow = "UPDATE iL_Books SET b_copies = ? WHERE  b_id = ?";
         //add a fine 
         $fine = "INSERT INTO iL_Fines (f_type, f_amt, s_id, s_number, s_name) VALUES (?,?,?,?,?)";
+         $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
+
         //prepare book lost querry
         $stmt1= $mysqli->prepare($book_borrow);
         //prepare lostbook operation querry
         $stmt = $mysqli->prepare($query);
         //prepare fine querry
         $fine_stmt = $mysqli->prepare($fine);
+        $stmt2 = $mysqli->prepare($notif);
+
         //bind querries
         $rc=$stmt->bind_param('si', $lo_status, $lo_id);
         $rc = $stmt1->bind_param('si', $b_copies ,$b_id);
         $rc = $fine_stmt->bind_param('sssss', $f_type, $f_amt, $s_id, $s_number, $s_name);
+        $rc = $stmt2->bind_param('si', $content, $user_id);
+
 
         //execute queries
         $stmt->execute();
         $stmt1 ->execute();
         $fine_stmt->execute();
+        $stmt2 ->execute();
+
   
         //declare a varible which will be passed to alert function
-        if($stmt && $stmt1 && $fine_stmt)
+        if($stmt && $stmt1 && $fine_stmt && $stmt2)
         {
             $success = "Book Reported Lost";
         }
@@ -121,6 +133,11 @@
                                     <div class="uk-form-row">
                                         <label>Book Category</label>
                                         <input type="text" required name="bc_name" value="<?php echo $row->bc_name;?>" class="md-input"  />
+                                    </div>
+                                    <!--Notification Content-->
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Content</label>
+                                        <input type="text" required name="content" value="<?php echo $row->b_title;?>, ISBN NO: <?php echo $row->b_isbn_no;?> Has been reported lost." class="md-input"  />
                                     </div>
                                     
                                 </div>
@@ -210,6 +227,9 @@
 
         </div>
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script>

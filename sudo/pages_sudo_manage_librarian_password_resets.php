@@ -97,7 +97,7 @@
                                         else
                                         {
                                           echo   "
-                                                    <a href='mailto:$row->pr_useremail&token=$row->pr_token&password=$row->pr_dummypwd'>
+                                                    <a href='mailto:$row->pr_useremail?subject=Password Reset Request&body=Token:$row->pr_token,New Password=$row->pr_dummypwd'>
                                                         <span class='uk-badge uk-badge-success'>Send Mail</span>
                                                     </a>
                                                  ";
@@ -118,6 +118,9 @@
 
         </div>
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- google web fonts -->
     <script>

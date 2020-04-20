@@ -149,6 +149,9 @@
         </div>
         -->
     </div>
+    <!--Footer-->
+    <?php require_once('assets/inc/footer.php');?>
+    <!--Footer-->
 
     <!-- common functions -->
     <script src="assets/js/common.min.js"></script>
