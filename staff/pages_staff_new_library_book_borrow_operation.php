@@ -1,158 +1,94 @@
-<?php 
+<?php
     session_start();
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    
-
-    //update student account
-    if(isset($_POST['update_student']))
-    {
-
-       $s_name = $_POST['s_name'];
-       $student_number = $_GET['student_number'];
-       $s_email = $_POST['s_email'];
-       //$s_pwd = sha1(md5($_POST['s_pwd']));
-       $s_sex = $_POST['s_sex'];
-       $s_phone = $_POST['s_phone'];
-       $s_bio = $_POST['s_bio'];
-       $s_adr = $_POST['s_adr'];
-       $s_acc_status = $_POST['s_acc_status'];
-
-        
-        //Insert Captured information to a database table
-        $query="UPDATE iL_Students SET s_name =?, s_email = ?, s_sex = ?, s_phone = ?, s_bio = ?, s_adr =?, s_acc_status =? WHERE s_number =?";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $s_name, $s_email,  $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status, $student_number);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Student Account Updated";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
-    }
-?>
-
+   
+?>    
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php
+<?php 
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-        <?php 
-            include("assets/inc/nav.php");
-        ?>
+    <?php
+        include("assets/inc/nav.php");
+    ?>
     <!-- main header end -->
     <!-- main sidebar -->
-        <?php
-            include("assets/inc/sidebar.php");
-       
-        $student_number = $_GET['student_number'];
-        $ret="SELECT * FROM  iL_Students WHERE s_number = ?"; 
-        $stmt= $mysqli->prepare($ret) ;
-        $stmt->bind_param('s', $student_number);
-        $stmt->execute() ;//ok
-        $res=$stmt->get_result();
-        while($row=$res->fetch_object())
-        {
+    <?php
+        include("assets/inc/sidebar.php");
     ?>
+    <!-- main sidebar end -->
 
-        <div id="page_content">
-            <!--Breadcrums-->
-            <div id="top_bar">
-                <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
-                    <li><span>Update <?php echo $row->s_name;?></span></li>
-                </ul>
-            </div>
-
-            <div id="page_content_inner">
-
-                <div class="md-card">
-                    <div class="md-card-content">
-                        <h3 class="heading_a">Please Fill All Fields</h3>
-                        <hr>
-                        <form method="post">
-                            <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Full Name</label>
-                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Number</label>
-                                        <input type="text" required readonly value="<?php echo $row->s_number;?>" name="s_number" class="md-input label-fixed" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Email</label>
-                                        <input type="email" value="<?php echo $row->s_email;?>" required name="s_email" class="md-input"  />
-                                    </div>
-                                    
-                                    
-                                </div>
-
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Phone Number</label>
-                                        <input type="text" value="<?php echo $row->s_phone;?>" required class="md-input" name="s_phone" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Address</label>
-                                        <input type="text" value="<?php echo $row->s_adr;?>" requied name="s_adr" class="md-input"  />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Gender</label>
-                                            <select required name="s_sex" class="md-input"  />
-                                                <option>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
-                                    </div>
-                                </div>
-
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Account Status</label>
-                                            <select required name="s_acc_status" class="md-input"  />
-                                                <option>Active</option>
-                                                <option>Pending</option>
-                                                <option>Suspended</option>
-                                            </select>
-                                    </div>
-
-                                    <div class="uk-form-row">
-                                        <label>Student Bio | About  </label>
-                                        <textarea cols="30" rows="4" class="md-input" name="s_bio"><?php echo $row->s_bio;?></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <div class="uk-input-group">
-                                            <input type="submit" class="md-btn md-btn-success" name="update_student" value="Update <?php echo $row->s_name;?> Account" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
+    <div id="page_content">
+    <!--BreadCrumps-->
+        <div id="top_bar">
+            <ul id="breadcrumbs">
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Library Operations</a></li>
+                <li><span>Add Operation</span></li>
+            </ul>
         </div>
+        <div id="page_content_inner">
 
-    <?php }?>
+            <h4 class="heading_a uk-margin-bottom">iLibrary Books Catalog</h4>
+            <div class="md-card uk-margin-medium-bottom">
+                <div class="md-card-content">
+                    <div class="dt_colVis_buttons"></div>
+                    <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
+                        <thead>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>ISBN No.</th>
+                            <th>Available Copies</th>
+                            <th>Action</th>
+                        </thead>    
+                      
+                        <tbody>
+                            <?php
+                                $ret="SELECT * FROM  iL_Books"; 
+                                $stmt= $mysqli->prepare($ret) ;
+                                $stmt->execute() ;//ok
+                                $res=$stmt->get_result();
+                                while($row=$res->fetch_object())
+                                {
+                                    //limit user to not borrow when number of books fall to 0
+                                    if($row->b_copies > 0)
+                                    {
+                                        $borrow = "<a href='pages_staff_borrow_book.php?lo_type=Borrow&bc_id=$row->bc_id&bc_name=$row->bc_name&b_id=$row->b_id&b_title=$row->b_title&b_isbn_no=$row->b_isbn_no'>
+                                                        <span class=' uk-badge uk-badge-success'>Borrow</span>
+                                                    </a>
+                                                  ";
+                                    }
+                                    else
+                                    {
+                                        $borrow = "<span class=' uk-badge uk-badge-danger'>Not Available</span>";
+                                    }
+
+                            ?>
+                                <tr>
+                                    <td><?php echo $row->b_title;?></td>
+                                    <td><?php echo $row->b_author;?></td>
+                                    <td><?php echo $row->bc_name;?></td>
+                                    <td class="uk-text-success"><?php echo $row->b_isbn_no;?></td>
+                                    <td><?php echo $row->b_copies;?> Copies</td>
+                                    <td>                                
+                                        <?php echo $borrow;?>
+                                    </td>
+                                </tr>
+
+                            <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->
@@ -185,7 +121,25 @@
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
+    <!-- page specific plugins -->
+    <!-- datatables -->
+    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <!-- datatables buttons-->
+    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
+    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
+    <script src="bower_components/jszip/dist/jszip.min.js"></script>
+    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
+    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
 
+    <!-- datatables custom integration -->
+    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
+
+    <!--  datatables functions -->
+    <script src="assets/js/pages/plugins_datatables.min.js"></script>
+    
     <script>
         $(function() {
             if(isHighDensity()) {
@@ -204,8 +158,6 @@
             altair_helpers.ie_fix();
         });
     </script>
-
-   
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>

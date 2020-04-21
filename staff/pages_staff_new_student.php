@@ -3,16 +3,18 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    
+    //generate random student number
+    $length = 5;    
+    $Number =  substr(str_shuffle('0123456789'),1,$length);
 
-    //update student account
-    if(isset($_POST['update_student']))
+    //create a student account
+    if(isset($_POST['add_student']))
     {
 
        $s_name = $_POST['s_name'];
-       $student_number = $_GET['student_number'];
+       $s_number = $_POST['s_number'];
        $s_email = $_POST['s_email'];
-       //$s_pwd = sha1(md5($_POST['s_pwd']));
+       $s_pwd = sha1(md5($_POST['s_pwd']));
        $s_sex = $_POST['s_sex'];
        $s_phone = $_POST['s_phone'];
        $s_bio = $_POST['s_bio'];
@@ -21,16 +23,16 @@
 
         
         //Insert Captured information to a database table
-        $query="UPDATE iL_Students SET s_name =?, s_email = ?, s_sex = ?, s_phone = ?, s_bio = ?, s_adr =?, s_acc_status =? WHERE s_number =?";
+        $query="INSERT INTO iL_Students (s_name, s_number, s_email, s_pwd, s_sex, s_phone, s_bio, s_adr, s_acc_status) VALUES (?,?,?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $s_name, $s_email,  $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status, $student_number);
+        $rc=$stmt->bind_param('sssssssss', $s_name, $s_number, $s_email, $s_pwd, $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status);
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Student Account Updated";
+            $success = "Student Account Created";
         }
         else 
         {
@@ -54,105 +56,93 @@
     <!-- main sidebar -->
         <?php
             include("assets/inc/sidebar.php");
-       
-        $student_number = $_GET['student_number'];
-        $ret="SELECT * FROM  iL_Students WHERE s_number = ?"; 
-        $stmt= $mysqli->prepare($ret) ;
-        $stmt->bind_param('s', $student_number);
-        $stmt->execute() ;//ok
-        $res=$stmt->get_result();
-        while($row=$res->fetch_object())
-        {
-    ?>
+        ?>
+    <!-- main sidebar end -->
 
-        <div id="page_content">
-            <!--Breadcrums-->
-            <div id="top_bar">
-                <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
-                    <li><span>Update <?php echo $row->s_name;?></span></li>
-                </ul>
-            </div>
-
-            <div id="page_content_inner">
-
-                <div class="md-card">
-                    <div class="md-card-content">
-                        <h3 class="heading_a">Please Fill All Fields</h3>
-                        <hr>
-                        <form method="post">
-                            <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Full Name</label>
-                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Number</label>
-                                        <input type="text" required readonly value="<?php echo $row->s_number;?>" name="s_number" class="md-input label-fixed" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Email</label>
-                                        <input type="email" value="<?php echo $row->s_email;?>" required name="s_email" class="md-input"  />
-                                    </div>
-                                    
-                                    
-                                </div>
-
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Phone Number</label>
-                                        <input type="text" value="<?php echo $row->s_phone;?>" required class="md-input" name="s_phone" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Address</label>
-                                        <input type="text" value="<?php echo $row->s_adr;?>" requied name="s_adr" class="md-input"  />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Gender</label>
-                                            <select required name="s_sex" class="md-input"  />
-                                                <option>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
-                                    </div>
-                                </div>
-
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Account Status</label>
-                                            <select required name="s_acc_status" class="md-input"  />
-                                                <option>Active</option>
-                                                <option>Pending</option>
-                                                <option>Suspended</option>
-                                            </select>
-                                    </div>
-
-                                    <div class="uk-form-row">
-                                        <label>Student Bio | About  </label>
-                                        <textarea cols="30" rows="4" class="md-input" name="s_bio"><?php echo $row->s_bio;?></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <div class="uk-input-group">
-                                            <input type="submit" class="md-btn md-btn-success" name="update_student" value="Update <?php echo $row->s_name;?> Account" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
+    <div id="page_content">
+    <!--Breadcrums-->
+        <div id="top_bar">
+            <ul id="breadcrumbs">
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Students</a></li>
+                <li><span>New Student Account</span></li>
+            </ul>
         </div>
 
-    <?php }?>
+        <div id="page_content_inner">
+
+            <div class="md-card">
+                <div class="md-card-content">
+                    <h3 class="heading_a">Please Fill All Fields</h3>
+                    <hr>
+                    <form method="post">
+                        <div class="uk-grid" data-uk-grid-margin>
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row">
+                                    <label>Student Full Name</label>
+                                    <input type="text" required name="s_name" class="md-input" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Student Number</label>
+                                    <input type="text" required readonly value="iLib-<?php echo $Number;?>" name="s_number" class="md-input label-fixed" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Student Email</label>
+                                    <input type="email" required name="s_email" class="md-input"  />
+                                </div>
+                                <div class="uk-form-row" style="display:none">
+                                    <label>Student Account Status</label>
+                                    <input type="text" required name="s_acc_status" value="Active" class="md-input"  />
+                                </div>
+                                
+                            </div>
+
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row">
+                                    <label>Student Phone Number</label>
+                                    <input type="text" required class="md-input" name="s_phone" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Student Address</label>
+                                    <input type="text" requied name="s_adr" class="md-input"  />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Student Passsword</label>
+                                    <input type="password" required name="s_pwd" class="md-input"  />
+                                </div>
+                            </div>
+
+                            <div class="uk-width-medium-2-2">
+                                <div class="uk-form-row">
+                                    <label>Student Gender</label>
+                                        <select required name="s_sex" class="md-input"  />
+                                            <option>Select Gender</option>
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                </div>
+
+                                <div class="uk-form-row">
+                                    <label>Student Bio | About  </label>
+                                    <textarea cols="30" rows="4" class="md-input" name="s_bio"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="uk-width-medium-2-2">
+                                <div class="uk-form-row">
+                                    <div class="uk-input-group">
+                                        <input type="submit" class="md-btn md-btn-success" name="add_student" value="Create Student Account" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->

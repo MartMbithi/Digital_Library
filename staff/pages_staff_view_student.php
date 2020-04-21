@@ -31,11 +31,11 @@
             //display default profile picture
             if($row->s_dpic == '')
             {
-                $profile_pic = "<img src='assets/img/avatars/user_icon.png' alt='user avatar'/>";
+                $profile_pic = "<img src='../sudo/assets/img/avatars/user_icon.png' alt='user avatar'/>";
             }
             else
             {
-                $profile_pic = "<img src='assets/img/avatars/students/$row->s_dpic' alt='user avatar'/>";
+                $profile_pic = "<img src='../sudo/assets/img/avatars/students/$row->s_dpic' alt='user avatar'/>";
             }
 
             //use .danger, .warning, .success according to account status
@@ -58,9 +58,9 @@
             <!--Breadcrums-->
             <div id="top_bar hidden-print">
                     <ul id="breadcrumbs">
-                        <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                        <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
                         <li><a href="#">Students</a></li>
-                        <li><a href="pages_sudo_manage_student.php">Manage Students</a></li>
+                        <li><a href="pages_staff_manage_student.php">Manage Students</a></li>
                         <li><span><?php echo $row->s_name;?> Account</span></li>
                     </ul>
                 </div>

@@ -3,34 +3,38 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    
 
-    //update student account
-    if(isset($_POST['update_student']))
+    //generate random isbn number
+    $length = 6;    
+    $Number =  substr(str_shuffle('0123456789'),1,$length);
+
+    //add new book
+    if(isset($_POST['add_book']))
     {
+        $b_title  = $_POST['b_title'];
+        $b_author = $_POST['b_author'];
+        $b_isbn_no = $_POST['b_isbn_no'];
+        $b_publisher = $_POST['b_publisher'];
+        $bc_id = $_POST['bc_id'];
+        $bc_name = $_POST['bc_name'];
+        $b_status = $_POST['b_status'];
+        $b_summary = $_POST['b_summary'];   
+        $b_copies = $_POST['b_copies'];
 
-       $s_name = $_POST['s_name'];
-       $student_number = $_GET['student_number'];
-       $s_email = $_POST['s_email'];
-       //$s_pwd = sha1(md5($_POST['s_pwd']));
-       $s_sex = $_POST['s_sex'];
-       $s_phone = $_POST['s_phone'];
-       $s_bio = $_POST['s_bio'];
-       $s_adr = $_POST['s_adr'];
-       $s_acc_status = $_POST['s_acc_status'];
-
+        $b_coverimage = $_FILES["b_coverimage"]["name"];
+        move_uploaded_file($_FILES["b_coverimage"]["tmp_name"],"../sudo/assets/img/books/".$_FILES["b_coverimage"]["name"]); 
         
         //Insert Captured information to a database table
-        $query="UPDATE iL_Students SET s_name =?, s_email = ?, s_sex = ?, s_phone = ?, s_bio = ?, s_adr =?, s_acc_status =? WHERE s_number =?";
+        $query="INSERT INTO iL_Books (b_title, b_copies, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary, b_coverimage) VALUES (?,?,?,?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $s_name, $s_email,  $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status, $student_number);
+        $rc=$stmt->bind_param('ssssssssss', $b_title, $b_copies, $b_author, $b_isbn_no, $b_publisher, $bc_id, $bc_name, $b_status, $b_summary, $b_coverimage);
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Student Account Updated";
+            $success = "Book Added";
         }
         else 
         {
@@ -54,105 +58,115 @@
     <!-- main sidebar -->
         <?php
             include("assets/inc/sidebar.php");
-       
-        $student_number = $_GET['student_number'];
-        $ret="SELECT * FROM  iL_Students WHERE s_number = ?"; 
-        $stmt= $mysqli->prepare($ret) ;
-        $stmt->bind_param('s', $student_number);
-        $stmt->execute() ;//ok
-        $res=$stmt->get_result();
-        while($row=$res->fetch_object())
-        {
-    ?>
+        ?>
+    <!-- main sidebar end -->
 
-        <div id="page_content">
-            <!--Breadcrums-->
+    <div id="page_content">
+     <!--Breadcrums-->
             <div id="top_bar">
                 <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
-                    <li><span>Update <?php echo $row->s_name;?></span></li>
+                    <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                    <li><a href="#">Book Inventory</a></li>
+                    <li><span>Add Book</span></li>
                 </ul>
             </div>
 
-            <div id="page_content_inner">
+        <div id="page_content_inner">
 
-                <div class="md-card">
-                    <div class="md-card-content">
-                        <h3 class="heading_a">Please Fill All Fields</h3>
-                        <hr>
-                        <form method="post">
-                            <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Full Name</label>
-                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Number</label>
-                                        <input type="text" required readonly value="<?php echo $row->s_number;?>" name="s_number" class="md-input label-fixed" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Email</label>
-                                        <input type="email" value="<?php echo $row->s_email;?>" required name="s_email" class="md-input"  />
-                                    </div>
-                                    
-                                    
+            <div class="md-card">
+                <div class="md-card-content">
+                    <h3 class="heading_a">Please Fill All Fields</h3>
+                    <hr>
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="uk-grid" data-uk-grid-margin>
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row">
+                                    <label>Book Title</label>
+                                    <input type="text" required name="b_title" class="md-input" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Book ISBN No</label>
+                                    <input type="text" required value="ISBN 0-13-<?php echo $Number;?>-1" name="b_isbn_no" class="md-input label-fixed" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Book Author</label>
+                                    <input type="text" required name="b_author" class="md-input"  />
+                                </div>
+                                
+                                <div class="uk-form-row" style="display:none">
+                                    <label>Book Status</label>
+                                    <input type="text" required name="b_status" value="Available" class="md-input"  />
                                 </div>
 
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Phone Number</label>
-                                        <input type="text" value="<?php echo $row->s_phone;?>" required class="md-input" name="s_phone" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Address</label>
-                                        <input type="text" value="<?php echo $row->s_adr;?>" requied name="s_adr" class="md-input"  />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Gender</label>
-                                            <select required name="s_sex" class="md-input"  />
-                                                <option>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
+                                
+                            </div>
+
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row">
+                                    <label>Book Publisher</label>
+                                    <input type="text" required class="md-input" name="b_publisher" />
+                                </div>
+
+                                <div class="uk-form-row">
+                                    <label>Number Of Copies</label>
+                                    <input type="text"  required name="b_copies" class="md-input"  />
+                                </div>
+                                
+                                <div class="uk-form-row">
+                                    <label>Book Category</label>
+                                            <select required onChange="getBookId(this.value);" name="bc_name" class="md-input"  />
+                                            <option>Select Book Category</option>
+                                                <?php
+                                                    $ret="SELECT * FROM  iL_BookCategories"; 
+                                                    $stmt= $mysqli->prepare($ret) ;
+                                                    $stmt->execute() ;//ok
+                                                    $res=$stmt->get_result();
+                                                    while($row=$res->fetch_object())
+                                                    {
+                                                ?>
+                                                    <option value="<?php echo $row->bc_name;?>"><?php echo $row->bc_name;?></option>
+                                                <?php }?>
                                             </select>
                                     </div>
-                                </div>
 
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Account Status</label>
-                                            <select required name="s_acc_status" class="md-input"  />
-                                                <option>Active</option>
-                                                <option>Pending</option>
-                                                <option>Suspended</option>
-                                            </select>
-                                    </div>
-
-                                    <div class="uk-form-row">
-                                        <label>Student Bio | About  </label>
-                                        <textarea cols="30" rows="4" class="md-input" name="s_bio"><?php echo $row->s_bio;?></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <div class="uk-input-group">
-                                            <input type="submit" class="md-btn md-btn-success" name="update_student" value="Update <?php echo $row->s_name;?> Account" />
-                                        </div>
-                                    </div>
+                                <div class="uk-form-row" style="display:none">
+                                    <label>Book Category ID</label>
+                                    <input type="text" id="BookCategoryID" required name="bc_id" class="md-input"  />
                                 </div>
 
                             </div>
-                        </form>
-                    </div>
+
+                            <div class="uk-width-medium-2-2">
+                                <div id="file_upload-drop" class="uk-file-upload">
+                                    <p class="uk-text">Drop Book Cover Image</p>
+                                    <p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
+                                    <a class="uk-form-file md-btn">choose file<input id="file_upload-select" name="b_coverimage" type="file"></a>
+                                </div>
+                                <div id="file_upload-progressbar" class="uk-progress uk-hidden">
+                                    <div class="uk-progress-bar" style="width:0">0%</div>
+                                </div>
+                            </div>
+
+                            <div class="uk-width-medium-2-2">
+                                <div class="uk-form-row">
+                                    <label>Book Cover Page Summary</label>
+                                    <textarea cols="30" rows="10" class="md-input" name="b_summary"></textarea>
+                                </div>
+                            </div>
+                            <div class="uk-width-medium-2-2">
+                                <div class="uk-form-row">
+                                    <div class="uk-input-group">
+                                        <input type="submit" class="md-btn md-btn-success" name="add_book" value="Add Book" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
             </div>
-        </div>
 
-    <?php }?>
+        </div>
+    </div>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->
