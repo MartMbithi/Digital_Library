@@ -25,7 +25,7 @@
         move_uploaded_file($_FILES["b_coverimage"]["tmp_name"],"assets/img/books/".$_FILES["b_coverimage"]["name"]); 
         
         //Insert Captured information to a database table
-        $query="INSERT INTO iL_Books (b_title, b_copies, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary, b_coverimage) VALUES (?,?,?,?,?,?,?,?,?)";
+        $query="INSERT INTO iL_Books (b_title, b_copies, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary, b_coverimage) VALUES (?,?,?,?,?,?,?,?,?,?)";
         $stmt = $mysqli->prepare($query);
         //bind paramaters
         $rc=$stmt->bind_param('ssssssssss', $b_title, $b_copies, $b_author, $b_isbn_no, $b_publisher, $bc_id, $bc_name, $b_status, $b_summary, $b_coverimage);

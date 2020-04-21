@@ -1,36 +1,59 @@
 <?php 
     session_start();
-    include('assets/config/config.php');
-    include('assets/config/checklogin.php');
+    require_once('assets/config/config.php');
+    require_once('assets/config/checklogin.php');
     check_login();
+
+    //transaction checksum
+    $length = 15;    
+    $checksum =  
+    substr(str_shuffle('qwertyuiopasdfghjklzxcvbnm0123456789'),1,$length);
+
+    /*
+        > generate random 10 digit payment number
+        > this is used only in sandbox mode or development environment
+        > When deploying to live server please comment the following two lines.
+        > This will be dummy output
+          1. ZGSJYNDBKR
+          2. KXOCAVYEZU
+          3. LOQZWXAMCY
+          etc
+
+    */
+    $SandboxCodeLength = 10;
+    $SandboxPaymentCode = 
+    substr(str_shuffle('QWERTYUIOPLKJHGFDSAZXCVBNM'),1,$SandboxCodeLength);
     
-
-    //update student account
-    if(isset($_POST['update_student']))
+    //pay library fines
+    if(isset($_POST['payLibraryFee']))
     {
+        $f_payment_code = $_POST['f_payment_code'];
+        $f_status = $_POST['f_status'];
+        $f_checksum = $_POST['f_checksum'];
+        $fineId = $_GET['fineId'];
 
-       $s_name = $_POST['s_name'];
-       $student_number = $_GET['student_number'];
-       $s_email = $_POST['s_email'];
-       //$s_pwd = sha1(md5($_POST['s_pwd']));
-       $s_sex = $_POST['s_sex'];
-       $s_phone = $_POST['s_phone'];
-       $s_bio = $_POST['s_bio'];
-       $s_adr = $_POST['s_adr'];
-       $s_acc_status = $_POST['s_acc_status'];
+        //---Post a notification that someone has cleared some fine//
+        $content = $_POST['content'];
+        $user_id = $_SESSION['id'];
 
         
         //Insert Captured information to a database table
-        $query="UPDATE iL_Students SET s_name =?, s_email = ?, s_sex = ?, s_phone = ?, s_bio = ?, s_adr =?, s_acc_status =? WHERE s_number =?";
+        $query="UPDATE iL_Fines SET f_payment_code = ?, f_status = ?, f_checksum =? WHERE f_id= ?";
+        $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
+
+        $stmt2 = $mysqli->prepare($notif);
         $stmt = $mysqli->prepare($query);
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $s_name, $s_email,  $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status, $student_number);
+        $rc=$stmt->bind_param('sssi', $f_payment_code, $f_status, $f_checksum, $fineId);
+        $rc = $stmt2->bind_param('si', $content, $user_id);
+
+        $stmt2 ->execute();
         $stmt->execute();
   
         //declare a varible which will be passed to alert function
-        if($stmt)
+        if($stmt && $stmt2)
         {
-            $success = "Student Account Updated";
+            $success = "Payment Confirmed";
         }
         else 
         {
@@ -54,25 +77,26 @@
     <!-- main sidebar -->
         <?php
             include("assets/inc/sidebar.php");
-       
-        $student_number = $_GET['student_number'];
-        $ret="SELECT * FROM  iL_Students WHERE s_number = ?"; 
+        ?>
+    <!-- main sidebar end -->
+    <?php
+        $fineId = $_GET['fineId'];
+        $ret="SELECT * FROM  iL_Fines WHERE f_id = ? "; 
         $stmt= $mysqli->prepare($ret) ;
-        $stmt->bind_param('s', $student_number);
+        $stmt->bind_param('s', $fineId);
         $stmt->execute() ;//ok
         $res=$stmt->get_result();
         while($row=$res->fetch_object())
-        {
+    {
     ?>
-
         <div id="page_content">
             <!--Breadcrums-->
             <div id="top_bar">
                 <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
-                    <li><span>Update <?php echo $row->s_name;?></span></li>
+                    <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                    <li><a href="#">Finances</a></li>
+                    <li><a href="pages_staff_manage_finances.php">Manage Finances</a></li>
+                    <li><span>Pay Library Fee</span></li>
                 </ul>
             </div>
 
@@ -84,66 +108,44 @@
                         <hr>
                         <form method="post">
                             <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Full Name</label>
-                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Number</label>
-                                        <input type="text" required readonly value="<?php echo $row->s_number;?>" name="s_number" class="md-input label-fixed" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Email</label>
-                                        <input type="email" value="<?php echo $row->s_email;?>" required name="s_email" class="md-input"  />
-                                    </div>
-                                    
-                                    
-                                </div>
-
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Phone Number</label>
-                                        <input type="text" value="<?php echo $row->s_phone;?>" required class="md-input" name="s_phone" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Address</label>
-                                        <input type="text" value="<?php echo $row->s_adr;?>" requied name="s_adr" class="md-input"  />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Gender</label>
-                                            <select required name="s_sex" class="md-input"  />
-                                                <option>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
-                                    </div>
-                                </div>
-
                                 <div class="uk-width-medium-2-2">
                                     <div class="uk-form-row">
-                                        <label>Student Account Status</label>
-                                            <select required name="s_acc_status" class="md-input"  />
-                                                <option>Active</option>
-                                                <option>Pending</option>
-                                                <option>Suspended</option>
-                                            </select>
+                                        <label>Penalty For</label>
+                                        <input type="text" required readonly value="<?php echo $row->f_type;?>" name="f_type" class="md-input" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Penalty Amount (Ksh)</label>
+                                        <input type="text" value="<?php echo $row->f_amt;?>" required name="f_amt" class="md-input" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Payment Code (Enter Payment Code Given By Mpesa | Airtel Money | T-kash )</label>
+                                        <input type="text" required  value="<?php echo $SandboxPaymentCode;?>" name="f_payment_code" class="md-input label-fixed" />
                                     </div>
 
-                                    <div class="uk-form-row">
-                                        <label>Student Bio | About  </label>
-                                        <textarea cols="30" rows="4" class="md-input" name="s_bio"><?php echo $row->s_bio;?></textarea>
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Payment Status</label>
+                                        <input type="text" required  name="f_status" value="Paid" class="md-input label-fixed" />
                                     </div>
+                                    <div class="uk-form-row" style="display:non">
+                                        <label>Payment Checksum</label>
+                                        <input type="text" required  name="f_checksum" value="<?php echo $checksum;?>" class="md-input label-fixed" />
+                                    </div>
+
+                                     <!--Notification Content-->
+                                     <div class="uk-form-row" style="display:none">
+                                        <label>Content</label>
+                                        <input type="text" required name="content" value="Ksh <?php echo $row->f_amt;?> Has been paid as a fine for <?php echo $row->f_type;?>" class="md-input"  />
+                                    </div>
+                                
                                 </div>
 
                                 <div class="uk-width-medium-2-2">
                                     <div class="uk-form-row">
                                         <div class="uk-input-group">
-                                            <input type="submit" class="md-btn md-btn-success" name="update_student" value="Update <?php echo $row->s_name;?> Account" />
+                                            <input type="submit" class="md-btn md-btn-success" name="payLibraryFee" value="Pay Library Penalty" />
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </form>
                     </div>
@@ -151,7 +153,6 @@
 
             </div>
         </div>
-
     <?php }?>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>

@@ -69,9 +69,9 @@
             <!--Breadcrums-->
             <div id="top_bar">
                 <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                    <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
                     <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
+                    <li><a href="pages_staff_manage_student.php">Manage Student Account</a></li>
                     <li><span>Update <?php echo $row->s_name;?></span></li>
                 </ul>
             </div>

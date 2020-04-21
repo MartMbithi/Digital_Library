@@ -3,34 +3,64 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    
+ 
+    //generate library operation  number
+    $length = 6;    
+    $Number =  substr(str_shuffle('0123456789'),1,$length);
+    $length= 20;
+    $checksum = substr(str_shuffle('qwertyuioplkjhgfdsazxcvbnm'),1,$length);
 
-    //update student account
-    if(isset($_POST['update_student']))
+
+    //return damanged book
+    if(isset($_POST['returndamanged']))
     {
+        $lo_status = $_GET['lo_status'];
+        $b_id = $_GET['b_id'];
+        $lo_id = $_GET['lo_id'];
+        $b_copies = $_POST['b_copies'];
 
-       $s_name = $_POST['s_name'];
-       $student_number = $_GET['student_number'];
-       $s_email = $_POST['s_email'];
-       //$s_pwd = sha1(md5($_POST['s_pwd']));
-       $s_sex = $_POST['s_sex'];
-       $s_phone = $_POST['s_phone'];
-       $s_bio = $_POST['s_bio'];
-       $s_adr = $_POST['s_adr'];
-       $s_acc_status = $_POST['s_acc_status'];
+        $f_type = $_POST['f_type'];
+        $f_amt = $_POST['f_amt'];
+        $s_id = $_POST['s_id'];
+        $s_number = $_POST['s_number'];
+        $s_name = $_POST['s_name'];
 
-        
-        //Insert Captured information to a database table
-        $query="UPDATE iL_Students SET s_name =?, s_email = ?, s_sex = ?, s_phone = ?, s_bio = ?, s_adr =?, s_acc_status =? WHERE s_number =?";
+        //---Post a notification that someone has reported a book lost--//
+        $content = $_POST['content'];
+        $user_id = $_SESSION['id'];
+
+        //Insert Captured information to a database table -->insert to library operations table
+        $query="UPDATE  iL_LibraryOperations SET lo_status = ? WHERE lo_id = ? ";
+        //update book table and add one book
+        $book_borrow = "UPDATE iL_Books SET b_copies = ? WHERE  b_id = ?";
+        //add a fine 
+        $fine = "INSERT INTO iL_Fines (f_type, f_amt, s_id, s_number, s_name) VALUES (?,?,?,?,?)";
+        $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
+
+        $stmt1= $mysqli->prepare($book_borrow);
         $stmt = $mysqli->prepare($query);
+        $stmt2 = $mysqli->prepare($notif);
+
+        //prepare fine querry
+        $fine_stmt = $mysqli->prepare($fine);
+        
         //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $s_name, $s_email,  $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status, $student_number);
+        $rc=$stmt->bind_param('si', $lo_status, $lo_id);
+        $rc = $stmt1->bind_param('si', $b_copies ,$b_id);
+        $rc = $fine_stmt->bind_param('sssss', $f_type, $f_amt, $s_id, $s_number, $s_name);
+        $rc = $stmt2->bind_param('si', $content, $user_id);
+
         $stmt->execute();
+        $stmt1 ->execute();
+        $fine_stmt->execute();
+        $stmt2 ->execute();
+
+
   
         //declare a varible which will be passed to alert function
-        if($stmt)
+        if($stmt && $stmt1 && $fine_stmt && $stmt2)
         {
-            $success = "Student Account Updated";
+            $success = "Returned Damanged Book";
         }
         else 
         {
@@ -54,105 +84,148 @@
     <!-- main sidebar -->
         <?php
             include("assets/inc/sidebar.php");
-       
-        $student_number = $_GET['student_number'];
-        $ret="SELECT * FROM  iL_Students WHERE s_number = ?"; 
-        $stmt= $mysqli->prepare($ret) ;
-        $stmt->bind_param('s', $student_number);
-        $stmt->execute() ;//ok
-        $res=$stmt->get_result();
-        while($row=$res->fetch_object())
-        {
-    ?>
+        ?>
+    <!-- main sidebar end -->
 
-        <div id="page_content">
-            <!--Breadcrums-->
+    <div id="page_content">
+     <!--Breadcrums-->
             <div id="top_bar">
                 <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
-                    <li><span>Update <?php echo $row->s_name;?></span></li>
+                    <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                    <li><a href="pages_staff_library_operations_damanged_book.php">Library Operations</a></li>
+                    <li><span>Return Damanged Book</span></li>
                 </ul>
             </div>
 
-            <div id="page_content_inner">
+        <div id="page_content_inner">
 
-                <div class="md-card">
-                    <div class="md-card-content">
-                        <h3 class="heading_a">Please Fill All Fields</h3>
-                        <hr>
+            <div class="md-card">
+                <div class="md-card-content">
+                    <h3 class="heading_a">Please Fill All Fields</h3>
+                    <hr>
+                    <?php
+                        $b_id = $_GET['b_id'];
+                        $ret="SELECT * FROM  iL_Books WHERE b_id =?"; 
+                        $stmt= $mysqli->prepare($ret) ;
+                        $stmt->bind_param('i', $b_id);
+                        $stmt->execute() ;//ok
+                        $res=$stmt->get_result();
+                        while($row=$res->fetch_object())
+                        {
+                            //decrement book count by one
+                            $initialBookCount = $row->b_copies;
+                            $newBookCount = $initialBookCount - 1 ;
+                    ?>
+
                         <form method="post">
                             <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-2">
+                                <div class="uk-width-medium-2-2">
                                     <div class="uk-form-row">
-                                        <label>Student Full Name</label>
-                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input" />
+                                        <label>Book Title</label>
+                                        <input type="text" value="<?php echo $row->b_title;?>" required name="b_title" class="md-input" />
                                     </div>
                                     <div class="uk-form-row">
-                                        <label>Student Number</label>
-                                        <input type="text" required readonly value="<?php echo $row->s_number;?>" name="s_number" class="md-input label-fixed" />
+                                        <label>Book ISBN No</label>
+                                        <input type="text" required value="<?php echo $row->b_isbn_no;?>" name="b_isbn_no" class="md-input label-fixed" />
                                     </div>
                                     <div class="uk-form-row">
-                                        <label>Student Email</label>
-                                        <input type="email" value="<?php echo $row->s_email;?>" required name="s_email" class="md-input"  />
+                                        <label>Book Category</label>
+                                        <input type="text" required name="bc_name" value="<?php echo $row->bc_name;?>" class="md-input"  />
                                     </div>
-                                    
-                                    
+                                    <!--Notification Content-->
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Content</label>
+                                        <input type="text" required name="content" value="<?php echo $row->b_title;?>, ISBN NO: <?php echo $row->b_isbn_no;?> Has been returned as a damanged book." class="md-input"  />
+                                    </div>
                                 </div>
 
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Phone Number</label>
-                                        <input type="text" value="<?php echo $row->s_phone;?>" required class="md-input" name="s_phone" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Address</label>
-                                        <input type="text" value="<?php echo $row->s_adr;?>" requied name="s_adr" class="md-input"  />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Gender</label>
-                                            <select required name="s_sex" class="md-input"  />
-                                                <option>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
-                                    </div>
-                                </div>
+                                <?php
+                                    $lo_id = $_GET['lo_id'];
+                                    $ret="SELECT * FROM  iL_LibraryOperations WHERE lo_id =?"; 
+                                    $stmt= $mysqli->prepare($ret) ;
+                                    $stmt->bind_param('i', $lo_id);
+                                    $stmt->execute() ;//ok
+                                    $res=$stmt->get_result();
+                                    while($row=$res->fetch_object())
+                                    {
+                                        //trim borrowed date timestamp to DD/MM/YYYY
+                                        $borrowed_date = $row->created_at;
+                                       
+                                ?>
 
                                 <div class="uk-width-medium-2-2">
                                     <div class="uk-form-row">
-                                        <label>Student Account Status</label>
-                                            <select required name="s_acc_status" class="md-input"  />
-                                                <option>Active</option>
-                                                <option>Pending</option>
-                                                <option>Suspended</option>
-                                            </select>
+                                        <label>Library Operation Number</label>
+                                        <input type="text" required class="md-input" readonly name="lo_number" value=<?php echo $row->lo_number;?> />
                                     </div>
-
                                     <div class="uk-form-row">
-                                        <label>Student Bio | About  </label>
-                                        <textarea cols="30" rows="4" class="md-input" name="s_bio"><?php echo $row->s_bio;?></textarea>
+                                        <label>Library Operation Checksum</label>
+                                        <input type="text" required class="md-input" readonly name="lo_checksum" value=<?php echo $row->lo_checksum;?> />
                                     </div>
-                                </div>
+                                    
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Remaining Book Copies</label>
+                                        <input type="text" value="<?php echo $newBookCount;?>" required name="b_copies" class="md-input"  />
+                                    </div>
+                                    
+                                    <div class="uk-form-row" style="display:non">
+                                        <label>Student Name</label>
+                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input"  />
+                                    </div>
 
+                                    <div class="uk-form-row" style="display:non">
+                                        <label>Student Number</label>
+                                        <input type="text" value="<?php echo $row->s_number;?>" required name="s_number" class="md-input"  />
+                                    </div>
+
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Student ID</label>
+                                        <input type="text" value="<?php echo $row->s_id;?>" required name="s_id" class="md-input"  />
+                                    </div>
+
+
+                                    <div class="uk-form-row" style="display:non">
+                                        <label>Date Borowed</label>
+                                        <input type="text" value="<?php echo date("d-M-Y", strtotime($borrowed_date));?>" required class="md-input"  />
+                                    </div>
+
+                                    <?php
+                                        //Get charges of a damanged book
+                                        $ret="SELECT * FROM  iL_ChargesRates WHERE cr_name = 'Damaged Book' "; 
+                                        $stmt= $mysqli->prepare($ret) ;
+                                        $stmt->execute() ;//ok
+                                        $res=$stmt->get_result();
+                                        while($row=$res->fetch_object())
+                                        {
+                                            
+                                    ?>
+                                    <div class="uk-form-row">
+                                        <label>Fine (Ksh) </label>
+                                        <input type="text" value="<?php echo $row->cr_amount;?>" required name="f_amt" class="md-input"  />
+                                    </div>
+
+                                    <div class="uk-form-row" style="display:none">
+                                        <label>Fine For</label>
+                                        <input type="text" value="<?php echo $row->cr_name;?>" required name="f_type" class="md-input"  />
+                                    </div>
+
+
+                                </div>
                                 <div class="uk-width-medium-2-2">
                                     <div class="uk-form-row">
                                         <div class="uk-input-group">
-                                            <input type="submit" class="md-btn md-btn-success" name="update_student" value="Update <?php echo $row->s_name;?> Account" />
+                                            <input type="submit" class="md-btn md-btn-success" name="returndamanged" value="Return Damanged Book" />
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </form>
-                    </div>
+                    <?php }}}?>
                 </div>
-
             </div>
-        </div>
 
-    <?php }?>
+        </div>
+    </div>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->

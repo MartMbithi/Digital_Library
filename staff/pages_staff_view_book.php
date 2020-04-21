@@ -1,48 +1,13 @@
-<?php 
+<?php
     session_start();
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-    
-
-    //update student account
-    if(isset($_POST['update_student']))
-    {
-
-       $s_name = $_POST['s_name'];
-       $student_number = $_GET['student_number'];
-       $s_email = $_POST['s_email'];
-       //$s_pwd = sha1(md5($_POST['s_pwd']));
-       $s_sex = $_POST['s_sex'];
-       $s_phone = $_POST['s_phone'];
-       $s_bio = $_POST['s_bio'];
-       $s_adr = $_POST['s_adr'];
-       $s_acc_status = $_POST['s_acc_status'];
-
-        
-        //Insert Captured information to a database table
-        $query="UPDATE iL_Students SET s_name =?, s_email = ?, s_sex = ?, s_phone = ?, s_bio = ?, s_adr =?, s_acc_status =? WHERE s_number =?";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $s_name, $s_email,  $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status, $student_number);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Student Account Updated";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
-    }
 ?>
-
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php
+<?php 
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
@@ -52,113 +17,156 @@
         ?>
     <!-- main header end -->
     <!-- main sidebar -->
-        <?php
+        <?php 
             include("assets/inc/sidebar.php");
-       
-        $student_number = $_GET['student_number'];
-        $ret="SELECT * FROM  iL_Students WHERE s_number = ?"; 
+        ?>
+    <!-- main sidebar end -->
+    <?php
+        $book_id = $_GET['book_id'];
+        $ret="SELECT * FROM  iL_Books WHERE b_id = ?"; 
         $stmt= $mysqli->prepare($ret) ;
-        $stmt->bind_param('s', $student_number);
+        $stmt->bind_param('s', $book_id);
         $stmt->execute() ;//ok
         $res=$stmt->get_result();
         while($row=$res->fetch_object())
+    {
+        //load default book cover page if book is missing a cover image
+        if($row->b_coverimage == '')
         {
-    ?>
+            $cover_image = "<img src='../sudo/assets/img/books/Image12.jpg' alt='Book Image'>";
+        }
+        else
+        {
+            $cover_image = "<img src='../sudo/assets/img/books/$row->b_coverimage' alt='Book Image'>";
 
+        }
+    ?>
         <div id="page_content">
             <!--Breadcrums-->
             <div id="top_bar">
                 <ul id="breadcrumbs">
-                    <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                    <li><a href="#">Students</a></li>
-                    <li><a href="#">Manage Student Account</a></li>
-                    <li><span>Update <?php echo $row->s_name;?></span></li>
+                    <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                    <li><a href="pages_staff_manage_books.php">Books Inventory</a></li>
+                    <li><span><?php echo $row->b_title;?></span></li>
                 </ul>
             </div>
-
             <div id="page_content_inner">
-
-                <div class="md-card">
-                    <div class="md-card-content">
-                        <h3 class="heading_a">Please Fill All Fields</h3>
-                        <hr>
-                        <form method="post">
-                            <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Full Name</label>
-                                        <input type="text" value="<?php echo $row->s_name;?>" required name="s_name" class="md-input" />
+                <div class="uk-grid" data-uk-grid-margin data-uk-grid-match id="user_profile">
+                    <div class="uk-width-large-10-10">
+                        <div class="md-card">
+                            <div class="user_heading user_heading_bg" style="background-image: url('../sudo/assets/img/books/<?php echo $row->b_coverimage;?>')">
+                                <div class="bg_overlay">
+                                    <div class="user_heading_menu hidden-print">
+                                        <div class="uk-display-inline-block"><i class="md-icon md-icon-light material-icons" id="page_print">&#xE8ad;</i></div>
                                     </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Number</label>
-                                        <input type="text" required readonly value="<?php echo $row->s_number;?>" name="s_number" class="md-input label-fixed" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Email</label>
-                                        <input type="email" value="<?php echo $row->s_email;?>" required name="s_email" class="md-input"  />
-                                    </div>
-                                    
-                                    
-                                </div>
-
-                                <div class="uk-width-medium-1-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Phone Number</label>
-                                        <input type="text" value="<?php echo $row->s_phone;?>" required class="md-input" name="s_phone" />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Address</label>
-                                        <input type="text" value="<?php echo $row->s_adr;?>" requied name="s_adr" class="md-input"  />
-                                    </div>
-                                    <div class="uk-form-row">
-                                        <label>Student Gender</label>
-                                            <select required name="s_sex" class="md-input"  />
-                                                <option>Select Gender</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                            </select>
+                                    <div class="user_heading_content">
+                                        <h2 class="heading_b uk-margin-bottom"><span class="uk-text-truncate"><?php echo $row->b_title;?></span><span class="sub-heading">ISBN NO: <?php echo $row->b_isbn_no?></span></h2>
+                                        
                                     </div>
                                 </div>
-
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <label>Student Account Status</label>
-                                            <select required name="s_acc_status" class="md-input"  />
-                                                <option>Active</option>
-                                                <option>Pending</option>
-                                                <option>Suspended</option>
-                                            </select>
-                                    </div>
-
-                                    <div class="uk-form-row">
-                                        <label>Student Bio | About  </label>
-                                        <textarea cols="30" rows="4" class="md-input" name="s_bio"><?php echo $row->s_bio;?></textarea>
+                            </div>
+                        </div>
+                        <div class="md-card">
+                            <div class="user_heading">
+                                <div class="user_heading_menu hidden-print">
+                                    <div class="uk-display-inline-block" data-uk-dropdown="{pos:'left-top'}">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="user_content">
+                                <ul id="user_profile_tabs" class="uk-tab" data-uk-tab="{connect:'#user_profile_tabs_content', animation:'slide-horizontal'}" data-uk-sticky="{ top: 48, media: 960 }">
+                                    <li class="uk-active"><a href="#"><?php echo $row->b_title;?> Details</a></li>
+                                    <!--
+                                    <li><a href="#">Photos</a></li>
+                                    <li><a href="#">Posts</a></li>
+                                    -->
+                                </ul>
+                                <ul id="user_profile_tabs_content" class="uk-switcher uk-margin">
+                                    <li>
+                                        <?php echo $row->b_summary;?>
+                                        <div class="uk-grid uk-margin-medium-top uk-margin-large-bottom" data-uk-grid-margin>
+                                            <div class="uk-width-large-1-2">
+                                                <h4 class="heading_c uk-margin-small-bottom">Book Information</h4>
+                                                <ul class="md-list md-list-addon">
+                                                    <li>
+                                                        <div class="md-list-addon-element">
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">person</i>
+                                                        </div>
+                                                        <div class="md-list-content">
+                                                            <span class="md-list-heading"><?php echo $row->b_author;?></span>
+                                                            <span class="uk-text-small uk-text-muted">Author</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="md-list-addon-element">
+                                                            <i class="md-list-addon-icon  uk-text-primary material-icons">theaters</i>
+                                                        </div>
+                                                        <div class="md-list-content">
+                                                            <span class="md-list-heading"><?php echo $row->b_publisher;?></span>
+                                                            <span class="uk-text-small uk-text-muted">Publisher</span>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
 
-                                <div class="uk-width-medium-2-2">
-                                    <div class="uk-form-row">
-                                        <div class="uk-input-group">
-                                            <input type="submit" class="md-btn md-btn-success" name="update_student" value="Update <?php echo $row->s_name;?> Account" />
+                                            <div class="uk-width-large-1-2">
+                                            <h4 class="heading_c uk-margin-small-bottom"></h4>
+                                                <br>
+                                                <ul class="md-list md-list-addon">
+                                                    <li>
+                                                        <div class="md-list-addon-element">
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">spellcheck</i>
+                                                        </div>
+                                                        <div class="md-list-content">
+                                                            <span class="md-list-heading"><?php echo $row->b_copies;?></span>
+                                                            <span class="uk-text-small uk-text-muted">Number Of Copies Available</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="md-list-addon-element">
+                                                            <i class="md-list-addon-icon uk-text-primary material-icons">description</i>
+                                                        </div>
+                                                        <div class="md-list-content">
+                                                            <span class="md-list-heading"><?php echo $row->bc_name;?></span>
+                                                            <span class="uk-text-small uk-text-muted">Book Category</span>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                </ul>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                    </li>
+
+                                </ul>
+                                <!--Book Cover Image-->
+                                <h4 class="heading_c uk-margin-small-bottom">Book Cover Image</h4>
+                                <hr>
+                                <div class="md-card md-card-hover">
+                                        <div class="gallery_grid_item md-card-content">
+                                            <a href="#" class="custom-modal-open" data-image-id="7">
+                                                <?php echo $cover_image ;?>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-
+    
     <?php }?>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->
 
     <!-- google web fonts -->
-    <script>
+    <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         WebFontConfig = {
             google: {
                 families: [
@@ -204,8 +212,6 @@
             altair_helpers.ie_fix();
         });
     </script>
-
-   
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>
