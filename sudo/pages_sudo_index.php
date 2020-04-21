@@ -76,7 +76,7 @@
         <div class="md-card" id="login_card">
             <div class="md-card-content large-padding" id="login_form">
                 <div class="login_heading">
-                    <div class="user_avatar"></div>
+                    <h2>iLibrary SuperUser Login</h2>
                 </div>
                 <form method ="post">
                     <div class="uk-form-row">
@@ -148,6 +148,10 @@
             <a href="#" id="signup_form_show">Create Super User Account</a>
         </div>
         -->
+        
+        <div class="uk-margin-top uk-text-center">
+            <a href="../" >Home</a>
+        </div>
     </div>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>

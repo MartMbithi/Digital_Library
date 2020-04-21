@@ -148,13 +148,33 @@
     $stmt->fetch();
     $stmt->close();
 
-    //3.3 : Number of all amount paid by students as a fine of loosing and damaging any book
-    $result ="SELECT SUM(f_amt) FROM iL_Fines";
+    //3.3 : Number of all amount paid by students as a fine of loosing  any book
+    $result ="SELECT SUM(f_amt) FROM iL_Fines WHERE f_type = 'Lost Book'";
     $stmt = $mysqli->prepare($result);
     $stmt->execute();
-    $stmt->bind_result($fines);
+    $stmt->bind_result($lostBookfines);
     $stmt->fetch();
     $stmt->close();
+
+    //3.4 : Number of all amount paid by students as a fine of  damaging any book
+    $result ="SELECT SUM(f_amt) FROM iL_Fines WHERE f_type = 'Damaged Book' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($damangedBookfines);
+    $stmt->fetch();
+    $stmt->close();
+
+    //3.5 : Number of all amount paid by students as a fine of  damaging any book
+    $result ="SELECT SUM(f_amt) FROM iL_Fines WHERE f_status = 'Paid' ";
+    $stmt = $mysqli->prepare($result);
+    $stmt->execute();
+    $stmt->bind_result($paidFine);
+    $stmt->fetch();
+    $stmt->close();
+
+    $totalFine = $lostBookfines + $damangedBookfines;
+    $pendingFine = $totalFine - $paidFine;
+
 
 
     /*
@@ -345,15 +365,58 @@
                         </div>
                     </div>
                 </div>
+
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
-                            <span class="uk-text-muted uk-text-small">Library Fines</span>
-                            <h2 class="uk-margin-remove">Ksh <?php echo $fines;?></h2>
+                            <span class="uk-text-muted uk-text-small">Library Fines Posted</span>
+                            <h2 class="uk-margin-remove">Ksh <?php echo $totalFine;?></h2>
                         </div>
                     </div>
                 </div>
+            </div>    
+            <div class="uk-grid uk-grid-width-large-1-4 uk-grid-width-medium-2-1 uk-grid-medium uk-sortable sortable-handler hierarchical_show" data-uk-sortable data-uk-grid-margin>
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Library Lost Books Fines</span>
+                            <h2 class="uk-margin-remove">Ksh <?php echo $lostBookfines;?></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Library Damanged Books Fines</span>
+                            <h2 class="uk-margin-remove">Ksh <?php echo $damangedBookfines;?></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Library Total Fine Paid</span>
+                            <h2 class="uk-margin-remove">Ksh <?php echo $paidFine;?></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-float-right uk-margin-top uk-margin-small-right"></div>
+                            <span class="uk-text-muted uk-text-small">Library Pending Fine Payment</span>
+                            <h2 class="uk-margin-remove">Ksh <?php echo $pendingFine;?></h2>
+                        </div>
+                    </div>
+                </div>
+
             </div>
           
             <!-- Pie Charts-->

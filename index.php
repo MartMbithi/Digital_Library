@@ -24,7 +24,7 @@
                         
                         <li><a href="lib_user/"><i class="fa fa-user"></i> My Account</a></li>
                         
-                        <li><a target = "_blank" href="librarian/"><i class="fa fa-sign-in"></i> Librarian</a></li>
+                        <li><a target = "_blank" href="staff/pages_staff_index.php"><i class="fa fa-sign-in"></i> Librarian</a></li>
                         <li><a target = "_blank"  href="sudo/pages_sudo_index.php"><i class="fa fa-user-secret"></i> Super User</a></li>                        
                     </ul>
             </div>
@@ -60,7 +60,7 @@
 			<!-- Nav tabs -->
 			  <ul class="nav nav-tabs" role="tablist">
 				<li role="presentation"><a href="lib_user/">Library User</a></li>
-				<li role="presentation" class="active"><a href="librarian/">Librarian</a></li>
+				<li role="presentation" class="active"><a href="staff/pages_staff_index.php">Librarian</a></li>
 				<li role="presentation"><a href="sudo/pages_sudo_index.php" >Administrator</a></li>
 			  </ul>
 			
