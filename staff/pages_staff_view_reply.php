@@ -4,11 +4,11 @@
     include('assets/config/checklogin.php');
     check_login();
 
-    //delete student password reset request
-    if(isset($_GET['deletePasswordRequest']))
+    //delete mail
+    if(isset($_GET['deleteMail']))
    {
-         $id=intval($_GET['deletePasswordRequest']);
-         $adn="DELETE FROM  iL_PasswordResets  WHERE pr_id = ?";
+         $id=intval($_GET['deleteMail']);
+         $adn="DELETE FROM  iL_sendMails  WHERE sm_id = ?";
          $stmt= $mysqli->prepare($adn);
          $stmt->bind_param('i',$id);
          $stmt->execute();
@@ -23,18 +23,20 @@
                 $err = "Try Again Later";
             }
      }
-?>    
+    
+?>
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php 
+
+<?php
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-    <?php
-        include("assets/inc/nav.php");
-    ?>
+        <?php
+            include("assets/inc/nav.php");
+        ?>
     <!-- main header end -->
     <!-- main sidebar -->
     <?php
@@ -43,87 +45,74 @@
     <!-- main sidebar end -->
 
     <div id="page_content">
-    <!--BreadCrumps-->
+        <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Password Resets</a></li>
-                <li><span>Manage Students Password Resets</span></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Mailbox</a></li>
+                <li><a href="#">View Send Mails</a></li>
+                <li><span>View Replies</span></li>
+
             </ul>
         </div>
         <div id="page_content_inner">
-
-            <h4 class="heading_a uk-margin-bottom">Students Accounts Requesting For Password Resets</h4>
-            <div class="md-card uk-margin-medium-bottom">
-                <div class="md-card-content">
-                    <div class="dt_colVis_buttons"></div>
-                    <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
-                        <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Token</th>
-                            <th>Requested Date</th>
-                            <th>Actions</th>
-                        </tr>
-                      
-                        <tbody>
-                            <?php 
-                                $ret="SELECT * FROM  iL_PasswordResets WHERE pr_usertype = 'Student'"; 
+            <div class="md-card-list-wrapper" id="mailbox">
+                <div class="uk-width-large-8-10 uk-container-center">
+                    <div class="md-card-list">
+                        <div class="md-card-list-header heading_list">Replies</div>
+                        <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">
+                            All Send Mails Replies
+                        </div>
+                        <!--Start Messanges-->
+                            <?php
+                                $sm_id = $_GET['sm_id'];
+                                $ret="SELECT * FROM  iL_receivedMails  WHERE sm_id =?"; 
                                 $stmt= $mysqli->prepare($ret) ;
+                                $stmt->bind_param('i', $sm_id);
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
-                                     //trim timestamp to DD-MM-YYYY
-                                     $rd = $row->created_at;
+                                    //timestamp to DD-MM-YYYY
+                                    $tsamp = $row->created_at;
                             ?>
-                                <tr>
-                                    <td class="uk-text-success" ><?php echo $row->pr_useremail;?></td>
-                                    <td><?php echo $row->pr_token;?></td>
-                                    <td class="uk-text-primary"><?php echo date("d-M-Y h:m:s", strtotime($rd));?></td> 
-                                    <td>
-                                    <?php 
-                                           //mailing password logic
+                                <ul class="hierarchical_slide">
+                                    <li>
+                                        <span class="md-card-list-item-date uk-text-success"><?php echo date("d-M-Y h:m:s", strtotime($tsamp));?></span>
+                                        <div class="md-card-list-item-select">
+                                            <input type="checkbox" data-md-icheck />
+                                        </div>
+                                        <div class="md-card-list-item-avatar-wrapper">
+                                            <img src="../sudo/assets/img/avatars/user_icon.png" class="md-card-list-item-avatar" alt="" />
+                                        </div>
+                                        <div class="md-card-list-item-sender">
+                                            <span><?php echo $row->sm_senderNo;?> <?php echo $row->sm_senderName;?></span>
+                                        </div>
+                                        <div class="md-card-list-item-subject">
+                                            <span class="uk-text-truncate"><?php echo $row->sm_title;?> </span>
+                                        </div>
+                                        <div class="md-card-list-item-content-wrapper">
+                                            <div class="md-card-list-item-content">
+                                                <?php echo $row->sm_reply;?> 
+                                        </div>
+                                    </li>
 
-                                        if ($row->pr_status == 'Pending')
-                                        {
-                                        echo    "
-                                                    <a href='pages_sudo_update_student_password.php?email=$row->pr_useremail&pass=$row->pr_dummypwd&pr_id=$row->pr_id&pr_status=Reset'>
-                                                        <span class='uk-badge uk-badge-primary'>Change Passsword</span>
-                                                    </a>
-                                                 ";
-
-                                        }
-                                        else
-                                        {
-                                          echo   "
-                                                    <a href='mailto:$row->pr_useremail?subject=Password Reset Request&body=Token:$row->pr_token,New Password=$row->pr_dummypwd'>
-                                                        <span class='uk-badge uk-badge-success'>Send Mail</span>
-                                                    </a>
-                                                 ";
-                                        }
-
-                                    ?>
-                                        <a href="pages_sudo_manage_librarian_password_resets.php?deletePasswordRequest=<?php echo $row->pr_id;?>">
-                                            <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>
-                                    </td>
-                                </tr>
-
+                                </ul>
                             <?php }?>
-                        </tbody>
-                    </table>
+                        <!--End Messanges -->
+                    </div>
+
                 </div>
             </div>
 
         </div>
     </div>
+
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->
-
     <!-- google web fonts -->
-    <script>
+    <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         WebFontConfig = {
             google: {
                 families: [
@@ -151,23 +140,9 @@
     <script src="assets/js/altair_admin_common.min.js"></script>
 
     <!-- page specific plugins -->
-    <!-- datatables -->
-    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <!-- datatables buttons-->
-    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
-    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
-    <script src="bower_components/jszip/dist/jszip.min.js"></script>
-    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
-    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
 
-    <!-- datatables custom integration -->
-    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
-
-    <!--  datatables functions -->
-    <script src="assets/js/pages/plugins_datatables.min.js"></script>
+    <!--  mailbox functions -->
+    <script src="assets/js/pages/page_mailbox.min.js"></script>
     
     <script>
         $(function() {
@@ -186,6 +161,15 @@
             // ie fixes
             altair_helpers.ie_fix();
         });
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-65191727-1', 'auto');
+        ga('send', 'pageview');
     </script>
 
     <div id="style_switcher">

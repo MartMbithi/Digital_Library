@@ -3,26 +3,7 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-
-    //delete student password reset request
-    if(isset($_GET['deletePasswordRequest']))
-   {
-         $id=intval($_GET['deletePasswordRequest']);
-         $adn="DELETE FROM  iL_PasswordResets  WHERE pr_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
+    
 ?>    
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
@@ -46,67 +27,61 @@
     <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Password Resets</a></li>
-                <li><span>Manage Students Password Resets</span></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Mail</a></li>
+                <li><span>Students Mail</span></li>
             </ul>
         </div>
         <div id="page_content_inner">
 
-            <h4 class="heading_a uk-margin-bottom">Students Accounts Requesting For Password Resets</h4>
+            <h4 class="heading_a uk-margin-bottom">iLibrary Students Mails</h4>
             <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
                     <div class="dt_colVis_buttons"></div>
                     <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                         <thead>
                         <tr>
+                            <th>Name</th>
+                            <th>iLib Student No</th>
+                            <th>Phone No.</th>
                             <th>Email</th>
-                            <th>Token</th>
-                            <th>Requested Date</th>
+                            <th>Account Status</th>
                             <th>Actions</th>
                         </tr>
                       
                         <tbody>
-                            <?php 
-                                $ret="SELECT * FROM  iL_PasswordResets WHERE pr_usertype = 'Student'"; 
+                            <?php
+                                $ret="SELECT * FROM  iL_Students"; 
                                 $stmt= $mysqli->prepare($ret) ;
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
-                                     //trim timestamp to DD-MM-YYYY
-                                     $rd = $row->created_at;
+                                     //use .danger, .warning, .success according to account status
+                                     if($row->s_acc_status == 'Active')
+                                     {
+                                        $account_status = "<td class='uk-text-success'>$row->s_acc_status</td>";
+                                     }
+                                     elseif($row->s_acc_status == 'Pending')
+                                     {
+                                         $account_status = "<td class='uk-text-warning'>$row->s_acc_status</td>";
+                                     }
+                                     else
+                                     {
+                                         $account_status = "<td class='uk-text-danger'>$row->s_acc_status</td>";
+                                     }
                             ?>
                                 <tr>
-                                    <td class="uk-text-success" ><?php echo $row->pr_useremail;?></td>
-                                    <td><?php echo $row->pr_token;?></td>
-                                    <td class="uk-text-primary"><?php echo date("d-M-Y h:m:s", strtotime($rd));?></td> 
+                                    <td><?php echo $row->s_name;?></td>
+                                    <td><?php echo $row->s_number;?></td>
+                                    <td><?php echo $row->s_phone;?></td>
+                                    <td><?php echo $row->s_email;?></td>
+                                    <?php echo $account_status;?>
                                     <td>
-                                    <?php 
-                                           //mailing password logic
-
-                                        if ($row->pr_status == 'Pending')
-                                        {
-                                        echo    "
-                                                    <a href='pages_sudo_update_student_password.php?email=$row->pr_useremail&pass=$row->pr_dummypwd&pr_id=$row->pr_id&pr_status=Reset'>
-                                                        <span class='uk-badge uk-badge-primary'>Change Passsword</span>
-                                                    </a>
-                                                 ";
-
-                                        }
-                                        else
-                                        {
-                                          echo   "
-                                                    <a href='mailto:$row->pr_useremail?subject=Password Reset Request&body=Token:$row->pr_token,New Password=$row->pr_dummypwd'>
-                                                        <span class='uk-badge uk-badge-success'>Send Mail</span>
-                                                    </a>
-                                                 ";
-                                        }
-
-                                    ?>
-                                        <a href="pages_sudo_manage_librarian_password_resets.php?deletePasswordRequest=<?php echo $row->pr_id;?>">
-                                            <span class='uk-badge uk-badge-danger'>Delete</span>
+                                        <a href="pages_staff_new_mail.php?sm_senderName=Library Staff&sm_receiverName=<?php echo $row->s_name;?>&sm_receiverNo=<?php echo $row->s_number;?>">
+                                            <span class='uk-badge uk-badge-success'>Sent Mail</span>
                                         </a>
+                                        
                                     </td>
                                 </tr>
 

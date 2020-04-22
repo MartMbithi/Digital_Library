@@ -141,7 +141,8 @@
                 </li>
                 -->
                 
-                <!--Mailbox-->                
+                <!--Mailbox-
+                This feature will be implemented on future versions               
                
                 <li title="iLibrary Store">
                     <a href="#">
@@ -155,6 +156,7 @@
                     </ul>
                 
                 </li>
+                -->
 
                 <!--password resets-->
                 <li title="Password Resets">

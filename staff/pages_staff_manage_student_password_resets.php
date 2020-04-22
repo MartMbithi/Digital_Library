@@ -46,7 +46,7 @@
     <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
                 <li><a href="#">Password Resets</a></li>
                 <li><span>Manage Students Password Resets</span></li>
             </ul>
@@ -88,7 +88,7 @@
                                         if ($row->pr_status == 'Pending')
                                         {
                                         echo    "
-                                                    <a href='pages_sudo_update_student_password.php?email=$row->pr_useremail&pass=$row->pr_dummypwd&pr_id=$row->pr_id&pr_status=Reset'>
+                                                    <a href='pages_staff_update_student_password.php?email=$row->pr_useremail&pass=$row->pr_dummypwd&pr_id=$row->pr_id&pr_status=Reset'>
                                                         <span class='uk-badge uk-badge-primary'>Change Passsword</span>
                                                     </a>
                                                  ";
@@ -104,7 +104,7 @@
                                         }
 
                                     ?>
-                                        <a href="pages_sudo_manage_librarian_password_resets.php?deletePasswordRequest=<?php echo $row->pr_id;?>">
+                                        <a href="pages_staff_manage_librarian_password_resets.php?deletePasswordRequest=<?php echo $row->pr_id;?>">
                                             <span class='uk-badge uk-badge-danger'>Delete</span>
                                         </a>
                                     </td>
