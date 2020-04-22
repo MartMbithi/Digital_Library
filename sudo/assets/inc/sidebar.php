@@ -203,8 +203,9 @@
                 
                 </li>
                 -->
-                
-                <!--Mailbox-->                
+                <!-- Mail
+                This feature will be implemented on future versions               
+             
                
                 <li title="iLibrary Store">
                     <a href="#">
@@ -214,13 +215,13 @@
                     <ul>
                         <li><a href="pages_sudo_mail_students.php">Student Mail</a></li>
                         <li><a href="pages_sudo_mail_staff.php">Staff Mail</a></li>
-                        <!--<li><a href="pages_sudo_manage_inbox.php">Manage Mail</a></li>-->
+                        <li><a href="pages_sudo_manage_inbox.php">Manage Mail</a></li>
                         <li><a href="pages_sudo_manage_sendmails.php">Send Mails</a></li>
                         <li><a href="pages_sudo_manage_incommingmails.php">Inbox</a></li>
                     </ul>
                 
                 </li>
-
+                -->
                 <!--password resets-->
                 <li title="Password Resets">
                     <a href="#">

@@ -4,7 +4,7 @@
     include('assets/config/checklogin.php');
     check_login();
     
-    //update librarian password
+    //update student password
     if(isset($_POST['changePassword']))
     {
 

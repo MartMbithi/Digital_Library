@@ -76,6 +76,7 @@
                                         </ul>
                                         <ul id="header_alerts" class="uk-switcher uk-margin">
                                             <li>
+                                            <!--
                                                 <ul class="md-list md-list-addon">
 
                                                     <?php
@@ -102,10 +103,11 @@
 
                                                     <?php }?>
                                                 </ul>
-
+                                                
                                                 <div class="uk-text-center uk-margin-top uk-margin-small-bottom">
                                                     <a href="pages_sudo_manage_incommingmails.php" class="md-btn md-btn-flat md-btn-flat-primary js-uk-prevent">Show All</a>
                                                 </div>
+                                                -->
                                             </li>
 
                                             <li>
