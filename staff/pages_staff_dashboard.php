@@ -575,7 +575,7 @@
                                         while($row=$res->fetch_object())
                                         {
                                             //use .success, .warning, . danger on book copies
-                                            if($row->b_copies > '200')
+                                            if($row->b_copies >= '200')
                                             {
                                                 $copies = "<td class='uk-text-success'>$row->b_copies Copies</td>";
                                             }

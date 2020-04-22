@@ -3,27 +3,6 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-
-    //delete recommendated book
-    if(isset($_GET['delete']))
-   {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
-
    
 ?>    
 <!doctype html>
@@ -48,47 +27,44 @@
     <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Recomendations</a></li>
-                <li><span>Manage</span></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Audits</a></li>
+                <li><span>Books Records</span></li>
             </ul>
         </div>
         <div id="page_content_inner">
 
-            <h4 class="heading_a uk-margin-bottom">iLibrary Recomended books</h4>
+            <h4 class="heading_a uk-margin-bottom">iLibrary Books Catalog</h4>
             <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
                     <div class="dt_colVis_buttons"></div>
                     <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                         <thead>
-                            <th>Book Title</th>
-                            <th>Book Author</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>Available Copies</th>
                             <th>Action</th>
                         </thead>    
                       
                         <tbody>
                             <?php
-                                $ret="SELECT * FROM  iL_Reccomendations  "; 
+                                $ret="SELECT * FROM  iL_Books"; 
                                 $stmt= $mysqli->prepare($ret) ;
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
-                                    
-
                             ?>
                                 <tr>
-                                    <td><?php echo $row->iR_Booktitle;?></td>
-                                    <td><?php echo $row->iR_author?></td>
+                                    <td class="uk-text-truncate"><?php echo $row->b_title;?></td>
+                                    <td><?php echo $row->b_author;?></td>
+                                    <td><?php echo $row->bc_name;?></td>
+                                    <td><?php echo $row->b_copies;?> Copies</td>
                                     <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-primary'>Update</span>
+                                        <a href="pages_staff_view_book.php?book_id=<?php echo $row->b_id;?>">
+                                            <span class='uk-badge uk-badge-success'>View</span>
                                         </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
                                     </td>
                                 </tr>
 

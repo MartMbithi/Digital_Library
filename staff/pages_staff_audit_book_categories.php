@@ -3,12 +3,11 @@
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
-
-    //delete recommendated book
-    if(isset($_GET['delete']))
+    //delete booc categoory 
+    if(isset($_GET['deleteBookCategory']))
    {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
+         $id=intval($_GET['deleteBookCategory']);
+         $adn="DELETE FROM  iL_BookCategories  WHERE bc_id = ?";
          $stmt= $mysqli->prepare($adn);
          $stmt->bind_param('i',$id);
          $stmt->execute();
@@ -16,15 +15,13 @@
    
             if($stmt)
             {
-                $info = "Deleted";
+                $info = "Book Category Deleted";
             }
             else
             {
                 $err = "Try Again Later";
             }
      }
-
-   
 ?>    
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
@@ -49,46 +46,42 @@
         <div id="top_bar">
             <ul id="breadcrumbs">
                 <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Recomendations</a></li>
-                <li><span>Manage</span></li>
+                <li><a href="#">Audits</a></li>
+                <li><span>Book Categories</span></li>
             </ul>
         </div>
         <div id="page_content_inner">
 
-            <h4 class="heading_a uk-margin-bottom">iLibrary Recomended books</h4>
+            <h4 class="heading_a uk-margin-bottom">iLibrary Book Categories</h4>
             <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
                     <div class="dt_colVis_buttons"></div>
                     <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                         <thead>
-                            <th>Book Title</th>
-                            <th>Book Author</th>
-                            <th>Action</th>
-                        </thead>    
+                        <tr>
+                            <th>Book Category Code</th>
+                            <th>Book Category Name</th>
+                            <th>Actions</th>
+                        </tr>
                       
                         <tbody>
                             <?php
-                                $ret="SELECT * FROM  iL_Reccomendations  "; 
+                                $ret="SELECT * FROM  iL_BookCategories"; 
                                 $stmt= $mysqli->prepare($ret) ;
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
                                     
-
                             ?>
                                 <tr>
-                                    <td><?php echo $row->iR_Booktitle;?></td>
-                                    <td><?php echo $row->iR_author?></td>
+                                    <td><?php echo $row->bc_code;?></td>
+                                    <td><?php echo $row->bc_name;?></td>
                                     <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-primary'>Update</span>
+                                        <a href="pages_staff_view_book_category.php?category_code=<?php echo $row->bc_code;?>">
+                                            <span class='uk-badge uk-badge-success'>View</span>
                                         </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
+                                        
                                     </td>
                                 </tr>
 
