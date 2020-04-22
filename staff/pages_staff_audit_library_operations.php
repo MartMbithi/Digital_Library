@@ -4,26 +4,6 @@
     include('assets/config/checklogin.php');
     check_login();
 
-    //delete recommendated book
-    if(isset($_GET['delete']))
-   {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
-
    
 ?>    
 <!doctype html>
@@ -48,47 +28,61 @@
     <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Recomendations</a></li>
-                <li><span>Manage</span></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Audits</a></li>
+                <li><span>Manage Library Operations</span></li>
             </ul>
         </div>
         <div id="page_content_inner">
 
-            <h4 class="heading_a uk-margin-bottom">iLibrary Recomended books</h4>
+            <h4 class="heading_a uk-margin-bottom">iLibrary Operations Records</h4>
             <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
                     <div class="dt_colVis_buttons"></div>
                     <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                         <thead>
-                            <th>Book Title</th>
-                            <th>Book Author</th>
+                            <th>Operation Type</th>
+                            <th>Operation Timestamp</th>
+                            <th>Operation Checksum</th>
+                            <th>Operation Number</th>
                             <th>Action</th>
                         </thead>    
                       
                         <tbody>
                             <?php
-                                $ret="SELECT * FROM  iL_Reccomendations  "; 
+                                $ret="SELECT * FROM  iL_LibraryOperations  "; 
                                 $stmt= $mysqli->prepare($ret) ;
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
-                                    
+                                    //trim timestamp to DD/MM/YYY
+                                    $tsamp = $row->created_at;
+                                    //assign .success .danger .warning classes to  operation type
+                                    if($row->lo_status == 'Returned')
+                                    {
+                                        $opsType = "<td class='uk-text-success'>$row->lo_status</td>";
+                                    }
+                                    elseif($row->lo_status == 'Damanged')
+                                    {
+                                        $opsType = "<td class='uk-text-warning'>$row->lo_status</td>";
+                                    }
+                                    else
+                                    {
+                                        $opsType = "<td class='uk-text-danger'>$row->lo_status</td>";
+                                    }
 
                             ?>
                                 <tr>
-                                    <td><?php echo $row->iR_Booktitle;?></td>
-                                    <td><?php echo $row->iR_author?></td>
+                                    <?php echo $opsType;?>
+                                    <td><?php echo date("d-M-Y", strtotime($tsamp));?></td> 
+                                    <td class="uk-text-primary"><?php echo $row->lo_checksum;?></td>
+                                    <td class="uk-text-primary"><?php echo $row->lo_number;?></td>
                                     <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
+                                        <a href='pages_staff_view_library_operations.php?operationChecksum=<?php echo $row->lo_checksum;?>'>
                                                 <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-primary'>Update</span>
                                         </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
+                                                                              
                                     </td>
                                 </tr>
 

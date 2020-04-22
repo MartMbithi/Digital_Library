@@ -1,105 +1,192 @@
-<?php
+<?php 
     session_start();
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
 
-    //delete recommendated book
-    if(isset($_GET['delete']))
-   {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
+    //generate random subcription issue
+    $length = 5;    
+    $code =  substr(str_shuffle('0123456789'),1,$length);
 
-   
-?>    
+    //update subscription
+    if(isset($_POST['update_subscribed_media']))
+    {
+        $s_id = $_GET['s_id'];
+        $s_title = $_POST['s_title'];
+        $s_code  = $_POST['s_code'];
+        $s_category = $_POST['s_category'];
+        $s_desc = $_POST['s_desc'];
+
+        $s_cover_img = $_FILES["s_cover_img"]["name"];
+        move_uploaded_file($_FILES["s_cover_img"]["tmp_name"],"../sudo/assets/magazines/".$_FILES["s_cover_img"]["name"]);
+
+        $s_file = $_FILES["s_file"]["name"];
+        move_uploaded_file($_FILES["s_file"]["tmp_name"],"./sudo/assets/magazines/".$_FILES["s_file"]["name"]);
+        
+        $s_publisher = $_POST['s_publisher'];
+        $s_year = $_POST['s_year'];
+        
+        //Insert Captured information to a database table
+        $query="UPDATE iL_Subscriptions SET s_title=?, s_code=?, s_category=?, s_desc=?, s_cover_img=?, s_file=?, s_publisher=?, s_year=? WHERE s_id = ?";
+        $stmt = $mysqli->prepare($query);
+        //bind paramaters
+        $rc=$stmt->bind_param('ssssssssi',$s_title, $s_code, $s_category, $s_desc, $s_cover_img, $s_file, $s_publisher, $s_year, $s_id);
+        $stmt->execute();
+  
+        //declare a varible which will be passed to alert function
+        if($stmt)
+        {
+            $success = "Subscription Media Updated";
+        }
+        else 
+        {
+            $err = "Please Try Again Or Try Later";
+        }      
+    }
+?>
+
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php 
+<?php
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-    <?php
-        include("assets/inc/nav.php");
-    ?>
+        <?php 
+            include("assets/inc/nav.php");
+        ?>
     <!-- main header end -->
     <!-- main sidebar -->
-    <?php
-        include("assets/inc/sidebar.php");
-    ?>
+        <?php
+            include("assets/inc/sidebar.php");
+        ?>
     <!-- main sidebar end -->
-
-    <div id="page_content">
-    <!--BreadCrumps-->
-        <div id="top_bar">
-            <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Recomendations</a></li>
-                <li><span>Manage</span></li>
-            </ul>
-        </div>
-        <div id="page_content_inner">
-
-            <h4 class="heading_a uk-margin-bottom">iLibrary Recomended books</h4>
-            <div class="md-card uk-margin-medium-bottom">
-                <div class="md-card-content">
-                    <div class="dt_colVis_buttons"></div>
-                    <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
-                        <thead>
-                            <th>Book Title</th>
-                            <th>Book Author</th>
-                            <th>Action</th>
-                        </thead>    
-                      
-                        <tbody>
-                            <?php
-                                $ret="SELECT * FROM  iL_Reccomendations  "; 
-                                $stmt= $mysqli->prepare($ret) ;
-                                $stmt->execute() ;//ok
-                                $res=$stmt->get_result();
-                                while($row=$res->fetch_object())
-                                {
-                                    
-
-                            ?>
-                                <tr>
-                                    <td><?php echo $row->iR_Booktitle;?></td>
-                                    <td><?php echo $row->iR_author?></td>
-                                    <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-primary'>Update</span>
-                                        </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
-                                    </td>
-                                </tr>
-
-                            <?php }?>
-                        </tbody>
-                    </table>
-                </div>
+    <?php
+        $s_id = $_GET['s_id'];
+        $ret="SELECT * FROM  iL_Subscriptions WHERE s_id = ?"; 
+        $stmt= $mysqli->prepare($ret) ;
+        $stmt->bind_param('i', $s_id);
+        $stmt->execute() ;//ok
+        $res=$stmt->get_result();
+        while($row=$res->fetch_object())
+        {
+    ?>
+        <div id="page_content">
+            <!--Breadcrums-->
+            <div id="top_bar">
+                <ul id="breadcrumbs">
+                    <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                    <li><a href="#">Subscribed Media</a></li>
+                    <li><a href="pages_staff_manage_subscriptions.php">Manage Subscribed Media</a></li>
+                    <li><span>Update <?php echo $row->s_title;?></span></li>
+                </ul>
             </div>
 
+            <div id="page_content_inner">
+
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <h3 class="heading_a">Please Fill All Fields</h3>
+                        <hr>
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="uk-grid" data-uk-grid-margin>
+                                <div class="uk-width-medium-2-2">
+                                    <div class="uk-form-row">
+                                        <label>Title</label>
+                                        <input type="text" value="<?php echo $row->s_title;?>" required name="s_title" class="md-input" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Code</label>
+                                        <input type="text" required readonly value="SUB-<?php echo $code;?>" name="s_code" class="md-input label-fixed" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Publisher</label>
+                                        <input type="text" required  value="<?php echo $row->s_publisher;?>" name="s_publisher" class="md-input label-fixed" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Year Published</label>
+                                        <input type="text" required value="<?php echo $row->s_year;?>"  name="s_year" class="md-input label-fixed" />
+                                    </div>
+                                    <div class="uk-form-row">
+                                        <label>Category</label>
+                                        <select name="s_category"class="md-input">
+                                            <option>Art & Architecture</option>
+                                            <option>Boating & Aviation</option>
+                                            <option>Business & Finance</option>
+                                            <option>Cars & Motorcycles</option>
+                                            <option>Celebrity & Gossip</option>
+                                            <option>Comics & Manga</option>
+                                            <option>Crafts</option>
+                                            <option>Culture & Literature</option>
+                                            <option>Family & Parenting</option>
+                                            <option>Fashion</option>
+                                            <option>Food & Wine</option>
+                                            <option>Health & Fitness</option>
+                                            <option>Home & Garden</option>
+                                            <option>Hunting & Fishing</option>
+                                            <option>Kids & Teens</option>
+                                            <option>Luxury</option>
+                                            <option>Men's Lifestyle</option>
+                                            <option>Movies, TV & Music</option>
+                                            <option>News & Politics</option>
+                                            <option>Photography</option>
+                                            <option>Science</option>
+                                            <option>Sports</option>
+                                            <option>Tech & Gaming</option>
+                                            <option>Travel & Outdoor</option>
+                                            <option>Women's Lifestyle</option>
+                                            <option>Adult</option>
+                                        </select>
+                                    </div>
+                                
+                                </div>
+
+                                <div class="uk-width-medium-2-2">
+                                    <div id="file_upload-drop" class="uk-file-upload">
+                                        <p class="uk-text">Drop Media (Subscribed Magazine) Image</p>
+                                        <p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
+                                        <a class="uk-form-file md-btn">Choose File<input id="file_upload-select" name="s_cover_img" type="file"></a>
+                                    </div>
+                                    <div id="file_upload-progressbar" class="uk-progress uk-hidden">
+                                        <div class="uk-progress-bar" style="width:0">0%</div>
+                                    </div>
+                                </div>
+
+                                <div class="uk-width-medium-2-2">
+                                    <div id="file_upload-drop" class="uk-file-upload">
+                                        <p class="uk-text">Drop Media File (Only In PDF Formart)</p>
+                                        <p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
+                                        <a class="uk-form-file md-btn">Choose Pdf File<input id="file_upload-select" name="s_file" type="file"></a>
+                                    </div>
+                                    <div id="file_upload-progressbar" class="uk-progress uk-hidden">
+                                        <div class="uk-progress-bar" style="width:0">0%</div>
+                                    </div>
+                                </div>
+
+                                <div class="uk-width-medium-2-2">
+                                    <div class="uk-form-row">
+                                        <label>Description</label>
+                                        <textarea cols="30" rows="4" class="md-input" name="s_desc"><?php echo $row->s_desc;?></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="uk-width-medium-2-2">
+                                    <div class="uk-form-row">
+                                        <div class="uk-input-group">
+                                            <input type="submit" class="md-btn md-btn-success" name="update_subscribed_media" value="Upate Subscribed Media" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
+
+    <?php }?>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->
@@ -132,25 +219,7 @@
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
-    <!-- page specific plugins -->
-    <!-- datatables -->
-    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <!-- datatables buttons-->
-    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
-    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
-    <script src="bower_components/jszip/dist/jszip.min.js"></script>
-    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
-    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
 
-    <!-- datatables custom integration -->
-    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
-
-    <!--  datatables functions -->
-    <script src="assets/js/pages/plugins_datatables.min.js"></script>
-    
     <script>
         $(function() {
             if(isHighDensity()) {
@@ -169,6 +238,8 @@
             altair_helpers.ie_fix();
         });
     </script>
+
+   
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>

@@ -1,109 +1,117 @@
-<?php
+<?php 
     session_start();
     include('assets/config/config.php');
     include('assets/config/checklogin.php');
     check_login();
 
-    //delete recommendated book
-    if(isset($_GET['delete']))
-   {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
+    //update reccomendation
+    if(isset($_POST['update_reccomendation']))
+    {
+        $iR_Booktitle = $_POST['iR_Booktitle'];
+        $iR_author = $_POST['iR_author'];
+        $iR_desc = $_POST['iR_desc'];
+        $iR_id = $_GET['iR_id'];
+        
+        //Insert Captured information to a database table
+        $query="UPDATE iL_Reccomendations SET iR_Booktitle=?, iR_author=?, iR_desc=? WHERE iR_id = ?";
+        $stmt = $mysqli->prepare($query);
+        //bind paramaters
+        $rc=$stmt->bind_param('sssi', $iR_Booktitle, $iR_author, $iR_desc, $iR_id);
+        $stmt->execute();
+  
+        //declare a varible which will be passed to alert function
+        if($stmt)
+        {
+            $success = "Recomended Book Updated";
+        }
+        else 
+        {
+            $err = "Please Try Again Or Try Later";
+        }      
+    }
+?>
 
-   
-?>    
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<?php 
+<?php
     include("assets/inc/head.php");
 ?>
 <body class="disable_transitions sidebar_main_open sidebar_main_swipe">
     <!-- main header -->
-    <?php
-        include("assets/inc/nav.php");
-    ?>
+        <?php 
+            include("assets/inc/nav.php");
+        ?>
     <!-- main header end -->
     <!-- main sidebar -->
-    <?php
-        include("assets/inc/sidebar.php");
-    ?>
+        <?php
+            include("assets/inc/sidebar.php");
+        ?>
     <!-- main sidebar end -->
-
+    <?php
+        $iR_id = $_GET['iR_id'];
+        $ret="SELECT * FROM  iL_Reccomendations WHERE iR_id = ?"; 
+        $stmt= $mysqli->prepare($ret) ;
+        $stmt->bind_param('i', $iR_id);
+        $stmt->execute() ;//ok
+        $res=$stmt->get_result();
+        while($row=$res->fetch_object())
+    {
+        ?>
     <div id="page_content">
-    <!--BreadCrumps-->
+        <!--Breadcrums-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
                 <li><a href="#">Recomendations</a></li>
-                <li><span>Manage</span></li>
+                <li><a href="#">Manage</a></li>
+                <li><span>Update <?php echo $row->iR_Booktitle;?></span></li>
             </ul>
         </div>
+
         <div id="page_content_inner">
 
-            <h4 class="heading_a uk-margin-bottom">iLibrary Recomended books</h4>
-            <div class="md-card uk-margin-medium-bottom">
+            <div class="md-card">
                 <div class="md-card-content">
-                    <div class="dt_colVis_buttons"></div>
-                    <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
-                        <thead>
-                            <th>Book Title</th>
-                            <th>Book Author</th>
-                            <th>Action</th>
-                        </thead>    
-                      
-                        <tbody>
-                            <?php
-                                $ret="SELECT * FROM  iL_Reccomendations  "; 
-                                $stmt= $mysqli->prepare($ret) ;
-                                $stmt->execute() ;//ok
-                                $res=$stmt->get_result();
-                                while($row=$res->fetch_object())
-                                {
-                                    
+                    <h3 class="heading_a">Please Fill All Fields</h3>
+                    <hr>
+                    <form method="post">
+                        <div class="uk-grid" data-uk-grid-margin>
+                            <div class="uk-width-medium-2-2">
+                                <div class="uk-form-row">
+                                    <label>Book Title:</label>
+                                    <input type="text" value="<?php echo $row->iR_Booktitle;?>" required name="iR_Booktitle" class="md-input" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Book Author</label>
+                                    <input type="text" value="<?php echo $row->iR_author;?>" required name="iR_author" class="md-input" />
+                                </div>
+                                <div class="uk-form-row">
+                                    <label>Book Description</label>
+                                    <textarea cols="30" rows="10" class="md-input" name="iR_desc"><?php echo $row->iR_desc;?></textarea>
+                                </div>
+                               
+                            </div>
 
-                            ?>
-                                <tr>
-                                    <td><?php echo $row->iR_Booktitle;?></td>
-                                    <td><?php echo $row->iR_author?></td>
-                                    <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-primary'>Update</span>
-                                        </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
-                                    </td>
-                                </tr>
-
-                            <?php }?>
-                        </tbody>
-                    </table>
+                            <div class="uk-width-medium-2-2">
+                                <div class="uk-form-row">
+                                    <div class="uk-input-group">
+                                        <input type="submit" class="md-btn md-btn-success" name="update_reccomendation" value="Update Recomendation" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
         </div>
     </div>
+    
+    <?php }?>
     <!--Footer-->
     <?php require_once('assets/inc/footer.php');?>
     <!--Footer-->
-
     <!-- google web fonts -->
     <script>
         WebFontConfig = {
@@ -132,25 +140,7 @@
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
-    <!-- page specific plugins -->
-    <!-- datatables -->
-    <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <!-- datatables buttons-->
-    <script src="bower_components/datatables-buttons/js/dataTables.buttons.js"></script>
-    <script src="assets/js/custom/datatables/buttons.uikit.js"></script>
-    <script src="bower_components/jszip/dist/jszip.min.js"></script>
-    <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
-    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.colVis.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.html5.js"></script>
-    <script src="bower_components/datatables-buttons/js/buttons.print.js"></script>
 
-    <!-- datatables custom integration -->
-    <script src="assets/js/custom/datatables/datatables.uikit.min.js"></script>
-
-    <!--  datatables functions -->
-    <script src="assets/js/pages/plugins_datatables.min.js"></script>
-    
     <script>
         $(function() {
             if(isHighDensity()) {
@@ -169,6 +159,8 @@
             altair_helpers.ie_fix();
         });
     </script>
+
+   
 
     <div id="style_switcher">
         <div id="style_switcher_toggle"><i class="material-icons">&#xE8B8;</i></div>

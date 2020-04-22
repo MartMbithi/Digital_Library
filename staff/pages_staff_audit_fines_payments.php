@@ -4,26 +4,6 @@
     include('assets/config/checklogin.php');
     check_login();
 
-    //delete recommendated book
-    if(isset($_GET['delete']))
-   {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
-
    
 ?>    
 <!doctype html>
@@ -48,48 +28,67 @@
     <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
-                <li><a href="#">Recomendations</a></li>
-                <li><span>Manage</span></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
+                <li><a href="#">Audits</a></li>
+                <li><span>Manage Finances</span></li>
             </ul>
         </div>
         <div id="page_content_inner">
 
-            <h4 class="heading_a uk-margin-bottom">iLibrary Recomended books</h4>
+            <h4 class="heading_a uk-margin-bottom">iLibrary Finance Records</h4>
             <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
                     <div class="dt_colVis_buttons"></div>
                     <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                         <thead>
-                            <th>Book Title</th>
-                            <th>Book Author</th>
-                            <th>Action</th>
+                            <th>Penalty Type</th>
+                            <th>Penalty Charges</th>
+                            <th>Student Name</th>
+                            <th>Student Number</th>
+                            <th>Penalty Status</th>
                         </thead>    
                       
                         <tbody>
                             <?php
-                                $ret="SELECT * FROM  iL_Reccomendations  "; 
+                                $ret="SELECT * FROM  iL_Fines  "; 
                                 $stmt= $mysqli->prepare($ret) ;
                                 $stmt->execute() ;//ok
                                 $res=$stmt->get_result();
                                 while($row=$res->fetch_object())
                                 {
                                     
+                                    //assign .success .danger .warning classes to f_type
+                                    if($row->f_type== 'Lost Book')
+                                    {
+                                        $opsType = "<td class='uk-text-danger'>$row->f_type</td>";
+                                    }
+                                    elseif($row->f_type == 'Damaged Book')
+                                    {
+                                        $opsType = "<td class='uk-text-warning'>$row->f_type</td>";
+                                    }
+                                    else
+                                    {
+                                        $opsType = "<td class='uk-text-success'>$row->f_type</td>";
+                                    }
+
+                                    //also assig some .success and  .danger to penalty status
+                                    if($row->f_status == '')
+                                    {
+                                        $fineStatus = "<td class='uk-text-danger'>Pending</td>";
+                                    }
+                                    else
+                                    {
+                                        $fineStatus = "<td class='uk-text-success'>Paid</td>";
+                                    }
 
                             ?>
                                 <tr>
-                                    <td><?php echo $row->iR_Booktitle;?></td>
-                                    <td><?php echo $row->iR_author?></td>
-                                    <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
-                                                <span class='uk-badge uk-badge-primary'>Update</span>
-                                        </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
-                                    </td>
+                                    <?php echo $opsType;?>
+                                    <td>Ksh <?php echo $row->f_amt?></td>
+                                    <td><?php echo $row->s_name;?></td>
+                                    <td class="uk-text-primary"><?php echo $row->s_number;?></td>
+                                    <?php echo $fineStatus;?>
+                                   
                                 </tr>
 
                             <?php }?>

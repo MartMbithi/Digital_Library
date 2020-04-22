@@ -4,26 +4,6 @@
     include('assets/config/checklogin.php');
     check_login();
 
-    //delete recommendated book
-    if(isset($_GET['delete']))
-   {
-         $id=intval($_GET['delete']);
-         $adn="DELETE FROM  iL_Reccomendations  WHERE iR_id = ?";
-         $stmt= $mysqli->prepare($adn);
-         $stmt->bind_param('i',$id);
-         $stmt->execute();
-         $stmt->close();	 
-   
-            if($stmt)
-            {
-                $info = "Deleted";
-            }
-            else
-            {
-                $err = "Try Again Later";
-            }
-     }
-
    
 ?>    
 <!doctype html>
@@ -48,7 +28,7 @@
     <!--BreadCrumps-->
         <div id="top_bar">
             <ul id="breadcrumbs">
-                <li><a href="pages_sudo_dashboard.php">Dashboard</a></li>
+                <li><a href="pages_staff_dashboard.php">Dashboard</a></li>
                 <li><a href="#">Recomendations</a></li>
                 <li><span>Manage</span></li>
             </ul>
@@ -81,14 +61,12 @@
                                     <td><?php echo $row->iR_Booktitle;?></td>
                                     <td><?php echo $row->iR_author?></td>
                                     <td>
-                                        <a href='pages_sudo_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
+                                        <a href='pages_staff_view_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
                                                 <span class='uk-badge uk-badge-success'>View</span>
-                                        </a><a href='pages_sudo_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
+                                        </a><a href='pages_staff_update_recommended_book.php?iR_id=<?php echo $row->iR_id;?>'>
                                                 <span class='uk-badge uk-badge-primary'>Update</span>
                                         </a>
-                                        <a href='pages_sudo_manage_reccomendations.php?delete=<?php echo $row->cr_id;?>'>
-                                                <span class='uk-badge uk-badge-danger'>Delete</span>
-                                        </a>                                        
+                                                                               
                                     </td>
                                 </tr>
 
