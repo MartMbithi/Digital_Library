@@ -1,0 +1,1 @@
+$(function(){$("#randomize").click(function(r){r.preventDefault();var a=Math.floor(100*Math.random()+1);altair_md.card_progress("#random_progress",a,!0),$("#progress_value").text(a)})});
