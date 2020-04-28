@@ -60,7 +60,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1 && $fine_stmt && $stmt2)
         {
-            $success = "Returned Damanged Book";
+            $success = "Returned Damanged Book" && header("refresh:1;url=pages_sudo_library_operations_damanged_book.php");
         }
         else 
         {

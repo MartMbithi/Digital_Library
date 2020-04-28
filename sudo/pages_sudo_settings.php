@@ -27,11 +27,11 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Super User Account Updated";
+            $success = 'Super User Account Updated' && header("refresh:1;url=pages_sudo_profile.php");
         }
         else 
         {
-            $err = "Please Try Again Or Try Later";
+            $err = "Please Try Again Or Try Later" && header("refresh:1;url=pages_sudo_profile.php");
         }      
     }
 

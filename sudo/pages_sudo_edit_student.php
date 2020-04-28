@@ -30,7 +30,7 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Student Account Updated";
+            $success = "Student Account Updated" && header("refresh:1;url=pages_sudo_manage_student.php");;
         }
         else 
         {

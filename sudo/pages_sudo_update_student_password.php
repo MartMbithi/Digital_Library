@@ -26,7 +26,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1)
         {
-            $success = "Student Account Password Reset";
+            $success = "Student Account Password Reset" && header("refresh:1;url=pages_sudo_manage_student_password_resets.php");
         }
         else 
         {

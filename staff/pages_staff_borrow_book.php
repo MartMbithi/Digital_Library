@@ -31,7 +31,7 @@
 
         //---Post a notification that someone has borrowed a book--//
         $content = $_POST['content'];
-        $user_id = $_SESSION['id'];
+        $user_id = $_SESSION['l_id'];
         //Insert Captured information to a database table -->insert to library operations table
         $query="INSERT INTO iL_LibraryOperations (b_title, b_isbn_no, bc_id, bc_name, lo_type, b_id, lo_number, s_id, s_name, s_number, lo_checksum, lo_return_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         //update book table and minus one book
@@ -53,7 +53,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1 && $stmt2)
         {
-            $success = "Book Borrowed";
+            $success = "Book Borrowed" && header("refresh:1;url=pages_staff_new_library_book_borrow_operation.php");
         }
         else 
         {

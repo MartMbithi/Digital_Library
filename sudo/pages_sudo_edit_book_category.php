@@ -21,7 +21,7 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Book Category Updated";
+            $success = "Book Category Updated" && header("refresh:1;url=pages_sudo_manage_categories.php");
         }
         else 
         {

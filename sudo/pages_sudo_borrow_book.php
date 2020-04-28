@@ -53,7 +53,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1 && $stmt2)
         {
-            $success = "Book Borrowed";
+            $success = "Book Borrowed" && header("refresh:1;url=pages_sudo_new_library_book_borrow_operation.php");
         }
         else 
         {
