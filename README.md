@@ -59,9 +59,9 @@ Digital Library is a web based and also desktop based library management system.
 <p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/7.png" ></p>
 <p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/8.png" ></p>
 
+## Theme
 
-
-
+The Digital Library Management System is crafted using [Altair-Admin-Template](https://github.com/Saworieza/Altair-Admin-Template).
 
 ## License
 
