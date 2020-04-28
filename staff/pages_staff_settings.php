@@ -28,7 +28,7 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Details Updated";
+            $success = "Details Updated" && header("refresh:1;url=pages_staff_profile.php");
         }
         else 
         {

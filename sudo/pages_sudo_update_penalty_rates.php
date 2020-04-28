@@ -22,7 +22,7 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Fine Rate Updated";
+            $success = "Fine Rate Updated" && header("refresh:1;url=pages_sudo_manage_penalty.php");
         }
         else 
         {

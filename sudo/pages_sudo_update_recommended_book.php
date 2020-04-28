@@ -22,7 +22,7 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Recomended Book Updated";
+            $success = "Recomended Book Updated" && header("refresh:1;url=pages_sudo_manage_reccomendations.php");
         }
         else 
         {

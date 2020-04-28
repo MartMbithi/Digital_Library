@@ -29,11 +29,11 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Librarian Account Updated";
+            $success = 'Librarian Account Updated' && header("refresh:1;url=pages_sudo_manage_librarians.php"); 
         }
         else 
         {
-            $err = "Please Try Again Or Try Later";
+            $err = "Please Try Again Or Try Later" && header("refresh:1;url=pages_sudo_manage_librarians.php"); ;
         }      
     }
 ?>

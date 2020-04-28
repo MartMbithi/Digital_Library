@@ -36,7 +36,7 @@
         //declare a varible which will be passed to alert function
         if($stmt)
         {
-            $success = "Book Record Updated";
+            $success = "Book Record Updated" && header("refresh:1;url=pages_staff_manage_books.php");
         }
         else 
         {

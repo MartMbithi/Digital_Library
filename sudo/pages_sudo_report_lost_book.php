@@ -62,7 +62,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1 && $fine_stmt && $stmt2)
         {
-            $success = "Book Reported Lost";
+            $success = "Book Reported Lost" && header("refresh:1;url=pages_sudo_library_operations_lost_book.php");
         }
         else 
         {

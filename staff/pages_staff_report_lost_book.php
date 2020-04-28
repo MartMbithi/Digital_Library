@@ -27,7 +27,7 @@
 
         //---Post a notification that someone has reported a book lost--//
         $content = $_POST['content'];
-        $user_id = $_SESSION['id'];
+        $user_id = $_SESSION['l_id'];
 
         //Insert Captured information to a database table -->insert to library operations table
         $query="UPDATE  iL_LibraryOperations SET lo_status = ? WHERE lo_id = ? ";
@@ -62,7 +62,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1 && $fine_stmt && $stmt2)
         {
-            $success = "Book Reported Lost";
+            $success = "Book Reported Lost" && header("refresh:1;url=pages_staff_library_operations_lost_book.php");
         }
         else 
         {

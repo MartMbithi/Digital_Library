@@ -21,7 +21,7 @@
 
         //---Post a notification that someone has returned a book--//
         $content = $_POST['content'];
-        $user_id = $_SESSION['id'];
+        $user_id = $_SESSION['l_id'];
 
         //Insert Captured information to a database table -->insert to library operations table
         $query="UPDATE  iL_LibraryOperations SET lo_status = ? WHERE lo_id = ? ";
@@ -47,7 +47,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1  && $stmt2)
         {
-            $success = "Book Returned";
+            $success = "Book Returned" && header("refresh:1;url=pages_staff_new_library_book_return_operation.php");
         }
         else 
         {

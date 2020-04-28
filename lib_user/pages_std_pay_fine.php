@@ -34,7 +34,7 @@
 
         //---Post a notification that someone has cleared some fine//
         $content = $_POST['content'];
-        $user_id = $_SESSION['id'];
+        $user_id = $_SESSION['s_id'];
 
         
         //Insert Captured information to a database table
@@ -53,7 +53,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt2)
         {
-            $success = "Payment Confirmed";
+            $success = "Payment Confirmed" && header("refresh:1;url=pages_std_manage_finances.php");
         }
         else 
         {

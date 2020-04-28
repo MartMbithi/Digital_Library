@@ -47,7 +47,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt1  && $stmt2)
         {
-            $success = "Book Returned";
+            $success = "Book Returned" && header("refresh:1;url=pages_sudo_new_library_book_return_operation.php");
         }
         else 
         {

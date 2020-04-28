@@ -53,7 +53,7 @@
         //declare a varible which will be passed to alert function
         if($stmt && $stmt2)
         {
-            $success = "Payment Confirmed";
+            $success = "Payment Confirmed" && header("refresh:1;url=pages_sudo_manage_finances.php");
         }
         else 
         {
