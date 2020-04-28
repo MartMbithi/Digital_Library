@@ -10,10 +10,10 @@ Digital Library is a web based and also desktop based library management system.
 6. Edit the following files inorder to match your database server configurations:<br>
     <ul>
     <li>
-    <b>Configuration Files</b> Which is under the following directories: <i>sudo/assets/config/, staff/assets/config/ and /lib_user/assets/config/
+    <b>Configuration Files</b> Which is under the following directories: <i>sudo/assets/config/, staff/assets/config/ and /lib_user/assets/config/ </i>
     </li>
     </ul>
-7. On your web browser type <b>http://127.0.0.1/Digital_Library</b>
+7. On your web browser type <b>http://127.0.0.1/Digital_Library</b> </br>
 8. Enjoy </br>
 
 ## How To Run desktop version.
@@ -25,7 +25,7 @@ Digital Library is a web based and also desktop based library management system.
 6. Edit the following files inorder to match your database server configurations:<br>
     <ul>
     <li>
-    <b>Configuration Files</b> Which is under the following directories: <i>sudo/assets/config/, staff/assets/config/ and /lib_user/assets/config/
+    <b>Configuration Files</b> Which is under the following directories: <i>sudo/assets/config/, staff/assets/config/ and /lib_user/assets/config/ </i>
     </li>
     </ul>
 7. Navigate path/to/your/project then locate Executables folder </br>
@@ -50,7 +50,18 @@ Digital Library is a web based and also desktop based library management system.
 
 
 ## Glance Of The System
-<p align="center"><img src="https://github.com/MartMbithi/LMS/blob/master/LMS_Core/img/screenshot.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/1.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/2.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/3.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/4.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/5.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/6.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/7.png" ></p>
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/8.png" ></p>
+
+
+
+
 
 ## License
 
