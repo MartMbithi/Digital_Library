@@ -47,7 +47,7 @@ Digital Library is a web based and also desktop based library management system.
 2. Password :  <b>demo</b> <br>
 
 ## Login Credentials For Student Account
-1. Username:   <b>iLib-59213</b><br>
+1. Username:   <b>iLib-37508</b> or <b>student001@gmail.com</b><br>
 2. Password :  <b>demo</b> <br>
 
 
