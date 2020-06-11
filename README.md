@@ -38,9 +38,8 @@ Digital Library is a web based and also desktop based library management system.
 
 
 ## Login Credentials For Super User Account
-1. Email:   <b>martdevelopers@ilib.org</b><br>
-2. Password :  <b>demo</b> <br>
-
+1. Email:   <b>admin@ilib.org</b><br>
+2. Password :  <b>admin</b> <br>
 
 ## Login Credentials For Staff Account
 1. Username:   <b>iLib-24567</b><br>
