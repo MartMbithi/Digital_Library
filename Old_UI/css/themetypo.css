@@ -1,0 +1,684 @@
+@import url(http://fonts.googleapis.com/css?family=Exo:400,100,100italic,200,200italic,300,300italic,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900italic,900&amp;subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300italic,300,400italic,700,700italic,900,900italic&amp;subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700italic,700&amp;subset=latin,cyrillic-ext,latin-ext,cyrillic);
+@import url(http://fonts.googleapis.com/css?family=Hammersmith+One&amp;subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700&amp;subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,300,700,500,600);
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+	border: 0;
+	font-size: 100%;
+	margin: 0;
+	outline: 0;
+	vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+	display: block;
+}
+
+audio,
+canvas,
+video {
+	display: inline-block;
+	max-width: 100%;
+}
+
+html {
+	overflow-y: scroll;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust:     100%;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+	color: #2b2b2b;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+body {
+	background: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size:15px;
+	font-weight:300;
+	line-height:26px;
+	color:#666666;
+}
+
+a {
+	color: #24890d;
+	text-decoration: none;
+}
+
+a:focus {
+	outline: thin dotted;
+}
+
+a:hover,
+a:active {
+	outline: 0;
+}
+
+a:active,
+a:hover {
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	clear: both;
+	margin: 0px 0 12px;	
+	clear:none;
+	font-family: 'Open Sans', sans-serif;
+	color:#262626;
+	font-weight:700;
+}
+
+h1 {
+	font-size: 26px;
+	line-height: 1.3846153846;
+}
+
+h2 {
+	font-size: 24px;
+	line-height: 1;
+	text-transform:uppercase;
+	margin-bottom:20px;
+}
+
+h3 {
+	font-size: 22px;
+	line-height: 1.0909090909;
+}
+
+h4 {
+	font-size: 20px;
+	line-height: 1.2;
+}
+
+h5 {
+	font-size: 18px;
+	line-height: 1.3333333333;
+}
+
+h6 {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+address {
+	font-style: italic;
+	margin-bottom: 24px;
+}
+
+abbr[title] {
+	border-bottom: 1px dotted #2b2b2b;
+	cursor: help;
+}
+
+b,
+strong {
+	font-weight: 700;
+}
+
+cite,
+dfn,
+em,
+i {
+	font-style: italic;
+}
+
+mark,
+ins {
+	background: #fff9c0;
+	text-decoration: none;
+}
+
+p {
+	margin-bottom: 24px;
+}
+
+code,
+kbd,
+tt,
+var,
+samp,
+pre {
+	font-family: monospace, serif;
+	font-size: 15px;
+	-webkit-hyphens: none;
+	-moz-hyphens:    none;
+	-ms-hyphens:     none;
+	hyphens:         none;
+	line-height: 1.6;
+}
+
+pre {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	box-sizing:         border-box;
+	margin-bottom: 24px;
+	max-width: 100%;
+	overflow: auto;
+	padding: 12px;
+	white-space: pre;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+blockquote,
+q {
+	-webkit-hyphens: none;
+	-moz-hyphens:    none;
+	-ms-hyphens:     none;
+	hyphens:         none;
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: "";
+	content: none;
+}
+
+blockquote {
+	color: #767676;
+	font-size: 19px;
+	font-style: italic;
+	font-weight: 300;
+	line-height: 32px;
+	margin: 0px 0px 10px;
+}
+
+blockquote cite,
+blockquote small {
+	color: #2b2b2b;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+blockquote em,
+blockquote i,
+blockquote cite {
+	font-style: normal;
+}
+
+blockquote strong,
+blockquote b {
+	font-weight: 400;
+}
+
+small {
+	font-size: smaller;
+}
+
+big {
+	font-size: 125%;
+}
+
+sup,
+sub {
+	font-size: 75%;
+	height: 0;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sup {
+	bottom: 1ex;
+}
+
+sub {
+	top: .5ex;
+}
+
+dl {
+	margin-bottom: 24px;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-bottom: 24px;
+}
+
+ul,
+ol {
+	list-style: none;
+	margin: 0 0 24px 20px;
+}
+
+ul {
+	list-style: disc;
+}
+
+ol {
+	list-style: decimal;
+}
+
+li > ul,
+li > ol {
+	margin: 0 0 0 20px;
+}
+
+img {
+	-ms-interpolation-mode: bicubic;
+	border: 0;
+	vertical-align: middle;
+}
+
+figure {
+	margin: 0;
+}
+
+fieldset {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	margin: 0 0 24px;
+	padding: 11px 12px 0;
+}
+
+legend {
+	white-space: normal;
+}
+
+button,
+input,
+select,
+textarea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	box-sizing:         border-box;
+	font-size: 100%;
+	margin: 0;
+	max-width: 100%;
+	vertical-align: baseline;
+}
+
+button,
+input {
+	line-height: normal;
+}
+
+input,
+textarea {
+	background-image: -webkit-linear-gradient(hsla(0,0%,100%,0), hsla(0,0%,100%,0)); /* Removing the inner shadow, rounded corners on iOS inputs */
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	-webkit-appearance: button;
+	cursor: pointer;
+}
+
+button[disabled],
+input[disabled] {
+	cursor: default;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	padding: 0;
+}
+
+input[type="search"] {
+	-webkit-appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-decoration {
+	-webkit-appearance: none;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+textarea {
+	overflow: auto;
+	vertical-align: top;
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+	border-width: 1px 0 0 1px;
+	margin-bottom: 24px;
+	width: 100%;
+}
+
+caption,
+th,
+td {
+	font-weight: normal;
+	text-align: left;
+}
+
+th {
+	border-width: 0 1px 1px 0;
+	font-weight: bold;
+}
+
+td {
+	border-width: 0 1px 1px 0;
+}
+
+del {
+	color: #767676;
+}
+
+hr {
+	background-color: rgba(0, 0, 0, 0.1);
+	border: 0;
+	height: 1px;
+	margin-bottom: 23px;
+}
+
+/* Support a widely-adopted but non-standard selector for text selection styles
+ * to achieve a better experience. See http://core.trac.wordpress.org/ticket/25898.
+ */
+::selection {
+	background: #11c8de;
+	color: #fff;
+	text-shadow: none;
+}
+
+::-moz-selection {
+	background: #11c8de;
+	color: #fff;
+	text-shadow: none;
+}
+
+
+/**
+ * 2.0 Repeatable Patterns
+ * -----------------------------------------------------------------------------
+ */
+
+/* Input fields */
+
+input,
+textarea {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 2px;
+	color: #2b2b2b;
+	padding: 6px 10px 6px 35px ;
+	width:100%;
+	height:47px;
+}
+.input-container{
+	position:relative;
+	margin:0px 0px 30px 0px;
+}
+.input-container i{
+	position:absolute;
+	left:15px;
+	top:50%;
+	font-size:14px;
+	color: #999;
+	margin-top:-7px;
+}
+textarea {
+	width: 100%;
+	height:300px;
+	padding:10px;
+}
+
+input:focus,
+textarea:focus {
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	outline: 0;
+}
+
+/* Buttons */
+
+button,
+.contributor-posts-link,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	border: 0;
+	border-radius: 2px;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	padding: 10px 30px 11px;
+	text-transform: uppercase;
+	vertical-align: bottom;
+}
+
+button:hover,
+button:focus,
+.contributor-posts-link:hover,
+input[type="button"]:hover,
+input[type="button"]:focus,
+input[type="reset"]:hover,
+input[type="reset"]:focus,
+input[type="submit"]:hover,
+input[type="submit"]:focus {
+	background-color: #41a62a;
+	color: #fff;
+}
+
+button:active,
+.contributor-posts-link:active,
+input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+	background-color: #55d737;
+}
+
+.search-field {
+	width: 100%;
+}
+
+.search-submit {
+	display: none;
+}
+
+/* Placeholder text color -- selectors need to be separate to work. */
+
+::-webkit-input-placeholder {
+	color: #939393;
+}
+
+:-moz-placeholder {
+	color: #939393;
+}
+
+::-moz-placeholder {
+	color: #939393;
+	opacity: 1; /* Since FF19 lowers the opacity of the placeholder by default */
+}
+
+:-ms-input-placeholder {
+	color: #939393;
+}
+
+/* Responsive images. Fluid images for posts, comments, and widgets */
+
+.comment-content img,
+.entry-content img,
+.entry-summary img,
+#site-header img,
+.widget img,
+.wp-caption {
+	max-width: 100%;
+}
+
+/**
+ * Make sure images with WordPress-added height and width attributes are
+ * scaled correctly.
+ */
+
+.comment-content img[height],
+.entry-content img,
+.entry-summary img,
+img[class*="align"],
+img[class*="wp-image-"],
+img[class*="attachment-"],
+#site-header img {
+	height: auto;
+}
+
+img.size-full,
+img.size-large,
+.wp-post-image,
+.post-thumbnail img {
+	height: auto;
+	max-width: 100%;
+}
+
+/* Make sure embeds and iframes fit their containers */
+
+embed,
+iframe,
+object,
+video {
+	margin-bottom: 24px;
+	max-width: 100%;
+}
+
+p > embed,
+p > iframe,
+p > object,
+span > embed,
+span > iframe,
+span > object {
+	margin-bottom: 0;
+}
+
+/* Alignment */
+
+.alignleft {
+	float: left;
+}
+
+.alignright {
+	float: right;
+}
+
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+blockquote.alignleft,
+img.alignleft {
+	margin: 7px 24px 7px 0;
+}
+
+.wp-caption.alignleft {
+	margin: 7px 14px 7px 0;
+}
+
+blockquote.alignright,
+img.alignright {
+	margin: 7px 0 7px 24px;
+}
+
+.wp-caption.alignright {
+	margin: 7px 0 7px 14px;
+}
+
+blockquote.aligncenter,
+img.aligncenter,
+.wp-caption.aligncenter {
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.site-content blockquote.alignleft,
+.site-content blockquote.alignright {
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding-top: 17px;
+	width: 50%;
+}
+
+.site-content blockquote.alignleft p,
+.site-content blockquote.alignright p {
+	margin-bottom: 17px;
+}
+
+.wp-caption {
+	margin-bottom: 24px;
+}
+/* BlockQoutes style 1
+blockquote {
+	float: left;
+	width: 100%;
+	background-color: #f8f8f8;
+	border-left: 7px solid;
+	border-right: 7px solid;
+	font-size: 20px;
+	color: #666;
+	font-style: italic;
+	padding: 30px;
+	font-weight: 300;
+	box-shadow: 0px 7px 11px 0px rgba(0,0,0,0.1);
+	margin-bottom: 30px;
+}
+blockquote a{
+	color:#666;
+}
+/* BlockQoutes*/*/
+.wp-caption img[class*="wp-image-"] {
+	display: block;
+	margin: 0;
+}
+
+.wp-caption {
+	color: #767676;
+}
+
+.wp-caption-text {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	box-sizing:         border-box;
+	font-size: 12px;
+	font-style: italic;
+	line-height: 1.5;
+	margin: 9px 0;
+	padding-right: 10px;
+}
+
+.wp-smiley {
+	border: 0;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding: 0;
+}

@@ -1,0 +1,1251 @@
+/*
+=================================================
+				UP FROM 1200PX
+=================================================
+*/ 
+@media (min-width: 1200px) {
+  
+}
+/*
+=================================================
+			FROM 992PX TO 1199PX
+=================================================
+*/ 
+@media (min-width: 992px) and (max-width: 1199px) {
+	.kode-navigation ul li{
+		margin:0px 8px;
+	}
+	.kode-banner .kode-caption h2{
+		font-size:60px;
+	}
+	.kode-banner .kode-caption{
+		top:35%;
+	}
+	.kode-banner .kode-caption h5{
+		font-size:24px;
+	}
+	.kode-mega-menu.fixed-width .kode-megamenu-container{
+		width:970px;
+	}
+	.kode-mega-menu.small-menu .kode-megamenu-container{
+		width:460px;
+	}
+	.buy-template h2{
+		font-size:18px;
+	}
+	.buy-template p{
+		font-size:14px;
+	}
+	.section-content h2{
+		font-size:24px;
+	}
+	.kode-page-heading{
+		margin:140px 0 50px;
+	}
+	.banner-search h2{
+		font-size:17px;
+		line-height:22px;
+	}
+	section{
+		padding:30px 0px;
+	}
+	.kode-testimonials-4 .kode-text{
+		padding:0px 100px;
+	}
+	.testimonial-section{
+		padding:60px 0px;
+	}
+	.count-up-section span.counter{
+		font-size:50px;
+	}
+	.count-up-section .count-up p{
+		font-size:14px;
+	}
+	.count-up-section{
+		padding:50px 0px;
+	}
+	.best-seller-pro{
+		padding: 15px;
+	}
+	.kode-inner-banner-2{
+		min-height:inherit;
+	}
+	.page-404 span{
+		font-size: 40px;
+	}
+	.header-3 .kode-navigation ul li a{
+		padding: 30px 12px;
+		font-size: 14px;
+	}
+	.header-3 .logo img{
+		width: 90%;
+	}
+	.kode-inner-banner-3{
+		min-height: inherit;
+	}
+	.kode-page-heading{
+		margin: 170px 0 50px;
+	}
+	.lib-event-listing .lib-event-captions p.date span{
+		float: left;
+		width: 100%;
+		font-size: 30px;
+	}
+	.search-section .nav-tabs > li > a{
+		font-size: 14px;
+		padding: 10px 30px;
+	}
+	.search-section .nav-tabs > li.active > a, .search-section .nav-tabs > li.active > a:focus{
+		padding: 17px 30px
+	}
+	.search-section .nav-tabs{
+		margin: -52px 0 0;
+	}
+	.lib-gallery:hover .caption{
+		left: 15px;
+		bottom: 15px;
+		right: 15px;
+		top: 15px;
+	}
+	.col-md-3 .lib-gallery:hover .caption{
+		padding: 10% 10px;
+	}
+	.section-heading-1 .kode-icon::before{
+		left: 30%;
+
+	}
+	.section-heading-1 .kode-icon::after{
+		right: 30%;
+	}
+	.lib-categories-section .nav-tabs > li > a{
+		padding: 19px 9px;
+	}
+	.best-seller-pro .kode-caption{
+		padding: 15px;
+	}
+	.best-seller-pro .kode-caption h3{
+		font-size: 18px;
+	}
+	.lib-papular .kode-thumb{
+		width: 40%;
+	}
+	.lib-papular .kode-text{
+		padding: 10px 0 0 190px;
+	}
+	.section-heading-1{
+		margin-bottom: 30px;
+	}
+	.lib-video-section{
+		padding: 60px 0px;
+	}
+	.lib-count-up-section .count-up{
+		padding: 40px 0px;
+	}
+	.lib-blog-post .kode-text{
+		padding: 30px 15px 20px;
+	}
+	.widget-flickr ul li{
+		width: 64px;
+	}
+	.kode-blog-list .kode-thumb{
+		width: 220px;
+	}
+	.kode-blog-list .kode-text{
+		padding: 20px 20px 20px 240px;
+	}
+	.kode-blog-list .kode-text p{
+		margin: 0px;
+
+	}
+	.kode-blog-list .kode-text h2{
+		padding: 0px;
+	}
+	.kode-blog-list .kode-text {
+		padding: 10px 10px 20px 240px;
+	}
+	.kode-banner .kode-caption-2 h2{
+		font-size:50px;
+	}
+	
+	.kode-banner .kode-caption-2 h5{
+		font-size:26px;
+	}
+	.kode-banner .kode-caption-2 .caption-btns{
+		margin:0px;
+	}
+	.kode-banner .kode-caption-2{
+		top:20%;
+	}
+	.count-up-section-2 .count-up p:before{
+		margin:0 20px 0 30px;
+		width:20px;
+	}
+	.count-up-section-2 .count-up p{
+		font-size:14px;
+	}
+	.count-up-section-2 .count-up .counter{
+		font-size:36px;
+		margin-bottom:20px;
+	}
+	.book-cover-detail .kode-thumb{
+		width:300px;
+	}
+	.book-cover-detail .kode-thumb img{
+		width:100%;
+	}
+	.book-cover-detail .kode-text{
+		padding:50px 0 0 350px;
+	}
+	.book-cover-detail.call-to-action-right .kode-text{
+		padding:50px 350px 0 0;
+	}
+	.lib-book-detail a.add-to-cart{
+		padding:8px 15px;
+	}
+}
+/*
+=================================================
+			FROM 0PX TO 979PX
+=================================================
+*/ 
+@media (max-width: 991px) {
+	section{
+		padding:50px 0px;
+	}
+	.section-heading-1{
+		margin-bottom: 30px;
+	}
+	.lib-video-section{
+		padding: 50px 0px;
+	}
+	.kode-navigation {
+		display: none;
+	}
+	.dl-menuwrapper{
+		display:block;
+	}
+	.banner-search input[type="text"], .banner-search select{
+		margin: 0px 0px 14px 0px;
+	}
+	.banner-search h2 br{
+		display: none;
+	}
+	.banner-search h2{
+		margin:0px 0px 20px 0px; 
+	}
+	.section-content{
+		padding: 0px 60px;
+	}
+	.kode-service{
+		margin-bottom: 20px;
+	}
+	.count-up-section{
+		padding: 40px 0px;
+	}
+	.count-up-section span.counter{
+		font-size: 50px;
+	}
+	section .kode-author{
+		margin:0px 0px 30px 0px;
+	}
+	.book-guide img{
+		width:30%;
+	}
+	.book-guide div.col-md-5{
+		text-align:center;
+	}
+	.coming-soon .is-countdown{
+		width:90%;
+	}
+	.kode-event-detail-thumb .kode-caption{
+		position:static;
+		float:left;
+		width:100%;
+		text-align:center;
+	}
+	.kode-event-detail-thumb .kode-caption a.reg{
+		float:none
+	}
+	.kode-event-detail a.book-now{
+		margin-bottom:30px;
+	}
+	footer .widget{
+		margin-bottom:30px;
+	}
+	.kode-event-detail-thumb .social-icon{
+		left:20px;
+	}
+	.header-3 .logo{
+		height:auto;
+		float:left;
+		width:auto;
+	}
+	.header-3 .logo-container{
+		padding:20px;
+	}
+	.header-3 .logo img{
+		position:static;
+	}
+	.header-3 .logo-container .col-md-3{
+		width:auto;
+		float:left;
+	}
+	.header-3 .logo-container .col-md-9{
+		float:right;
+	}
+	.header-3 .top-strip{
+		float:left;
+		width:auto;
+	}
+	.header-3 .top-strip .pull-left{
+		display:none;
+	}
+	.header-3 .dl-menuwrapper{
+		float:right;
+		margin:13px 0px;
+	}
+	.header-3 .social-icon{
+		margin:12px 0px;
+	}
+	.header-1 .dl-menuwrapper{
+		margin:7px 0px;
+	}
+	
+	.book-cover-detail .kode-thumb{
+		width:200px;
+	}
+	.book-cover-detail .kode-thumb img{
+		width:100%;
+	}
+	.book-cover-detail .kode-text{
+		padding:20px 0 0 230px;
+	}
+	.book-cover-detail.call-to-action-right .kode-text{
+		padding:20px 230px 0 0;
+	}
+	.book-cover-detail h2{
+		font-size:40px;
+		margin:0px;
+	}
+	.book-cover-detail h4{
+		font-size:18px;
+	}
+	.book-cover-detail p{
+		font-size:14px;
+		line-height:22px;
+
+	}
+	.section-heading-1 .kode-icon:before{
+		left:23%;
+	}
+	
+	.section-heading-1 .kode-icon:after{
+		right:23%;
+	}
+	.kode-page-heading{
+		margin:140px 0px 90px 0;
+	}
+	.kode-banner .kode-caption-2{
+		width:60%;
+		margin-left:-36%;
+	}
+	.kode-banner .kode-caption-2 h2{
+		font-size:50px;
+	}
+	.kode-banner .kode-caption-2 h5{
+		font-size:24px;
+	}
+	.kode-banner .kode-caption-2 p{
+		display:none;
+	}
+	.search-section .form-container{
+		padding:30px 0px;
+	}
+	.search-section .form-container input{
+		margin-bottom:30px;
+	}
+	.lib-categories-section .nav-tabs > li > a{
+		padding:19px 10px;
+	}
+	.lib-papular-books .tab-content{
+		width:100%;
+	}
+	.lib-papular-books .nav-tabs{
+		width:100%;
+		margin:-24px 0 20px 0;
+	}
+	.lib-authors{
+		width:50%;
+		margin-bottom:30px;
+	}
+	.newsletters-container{
+		padding:0px;
+	}
+	.kode-uptodate .row .col-md-8, .kode-uptodate .row .col-md-4{
+		padding-bottom: 30px;
+		padding-top: 20px;
+	}
+	.kode-uptodate h2{
+		margin-bottom:0px;
+	}
+	.kode-blog-list .kode-thumb{
+		float:left;
+		width:100%;
+	}
+	.kode-blog-list .kode-text{
+		width:100%;
+		float:left;
+		padding:20px;
+	}
+	.lib-event-listing .kode-text{
+		padding:30px;
+	}
+	.lib-event-listing{
+		border:solid 1px #ccc;
+	}
+	.lib-event-listing:hover .kode-thumb{
+		box-shadow:none;
+	}
+	.lib-event-listing:hover{
+		box-shadow:0px 10px 20px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow:0px 10px 20px 0px rgba(0,0,0,0.3);
+	-webkit-box-shadow:0px 10px 20px 0px rgba(0,0,0,0.3);
+	}
+	.error-404{
+		width:100%;
+	}
+	.page-404 p{
+		font-size:300px;
+	}
+	.page-404 span{
+		font-size:40px;
+		margin:-30px 0px 0px 0px;
+	}
+	.search-section .nav-tabs > li > a{
+		padding:10px 20px;
+	}
+	.search-section .nav-tabs > li.active > a, .search-section .nav-tabs > li.active > a:focus{
+		padding:17px 20px;
+	}
+	.search-section .nav-tabs{
+		margin:-55px 0px 0px 0px;
+	}
+	.kode-author-detail-2 .kode-thumb{
+		width:300px;
+	}
+	.kode-author-detail-2 .kode-text{
+		padding: 0px 0px 0px 330px;
+	}
+ 
+}
+/*
+=================================================
+			FROM 768PX TO 979PX
+=================================================
+*/
+
+@media (min-width: 768px) and (max-width: 979px) {
+	
+  
+}
+/*
+=================================================
+			FROM 0PX TO 767PX
+=================================================
+*/
+@media (max-width: 767px) {
+	.section-content h2{
+		font-size:24px;
+	}
+	.kode-profile-text img{
+		margin-bottom:20px;
+	}
+	.kode-service{
+		padding:45px 20px;
+	}
+	.kode-testimonials-4 .kode-text{
+		padding:0 10px;
+	}
+	.kode-testimonials-4 .bx-wrapper .bx-controls-direction a{
+		left:24%
+	}
+	.kode-testimonials-4 .bx-wrapper .bx-controls-direction a.bx-next{
+		right:24%;
+		left:auto;
+	}
+	.kode-testimonials-4 h2{
+		font-size:24px;
+	}
+	.testimonial-section{
+		padding:50px 0px;
+	}
+	.kd-tab-2 .tab-content{
+		width:67%;
+	}
+	.kd-tab-2 .nav-tabs{
+		width:33%;
+	}
+	.kd-tab-2 .nav-tabs > li > a{
+		font-size:12px;
+		padding:10px;
+	}
+	.count-up-section-2 .count-up .counter{
+		line-height:normal;
+	}
+	.count-up-section-2 .count-up{
+		padding:20px 0px;
+		text-align:center;
+	}
+	.count-up-section-2 .count-up p:before{
+		display:none;
+	}
+	.kode-newsletters .input-container{
+		width:100%;
+	}
+	.top-strip {
+		text-align:center;
+	}
+	.top-strip .site-info{
+		float:none;
+		display:inline-block;
+	}
+	.logo-container .logo{
+		float:left;
+	}
+	.kode-page-heading{
+		margin:140px 0 20px;
+	}
+	.kode-inner-banner-3 .kode-page-heading{
+		margin:150px 0 50px;
+	}
+	.kode-comments ul li .kode-thumb{
+		height:60px;
+		width:60px;
+	}
+	.kode-comments ul li .kode-text{
+		padding:0px 0px 0px 80px;
+	}
+	.kode-comments ul ul{
+		padding:0px 0px 0px 60px;
+	}
+	.kode-blog-full .meta-date p{
+		font-size:14px;
+		line-height:normal
+	}
+	.kode-blog-full .meta-date .kode-date p{
+		margin:5px 0px 0px 15px;
+		float:left;
+	}
+	.kode-blog-full .meta-date .kode-date h2{
+		font-size:24px;
+		float:left;
+	}
+	.kode-blog-full .kode-text h2{
+		font-size:20px;
+		line-height:normal;
+		margin-bottom:5px;
+	}
+	aside div.widget:first-child, .sidebar div.widget:first-child{
+		margin-top:30px;
+	}
+	.kode-newsletters .section-content h2{
+		font-size:18px;
+	}
+	.section-content{
+		padding:0px;
+	}
+	.sidebar{
+		margin-bottom:30px;
+		float:left;
+		width:100%;
+	}
+	.copyrights{
+		text-align:center;
+	}
+	.copyrights p{
+		width:100%;
+		margin:0px 0px 10px 0px;
+	}
+	.cards{
+		float:left;
+		width:100%;
+	}
+	.kode-inner-banner-2{
+		min-height:inherit;
+	}
+	.kode-inner-banner-2 .kode-page-heading{
+		margin:30px 0 20px;
+	}
+	.kode-inner-banner-2 .kode-page-heading h2{
+		font-size:28px;
+	}
+	.coming-soon h2{
+		font-size:30px;
+	}
+	.coming-soon .countdown-amount{
+		font-size:34px;
+	}
+	.coming-soon .is-countdown{
+		width:100%;
+	}
+	.coming-soon .countdown-show4 .countdown-section{
+		width:22.4%;
+		margin:0 1%;
+	}
+	.coming-soon .countdown-period{
+		font-size:12px;
+	}
+	.coming-soon .search-field{
+		width:96%;
+	}
+	.page-404 p{
+		font-size:180px;
+		line-height:180px;
+		margin:0px;
+	}
+	.page-404 span{
+		font-size:20px;
+		line-height:40px;
+		margin:-40px 0 0;
+	}
+	.error-404 h2{
+		font-size:30px;
+	}
+	.header-3 .logo-container .col-md-3{
+		float:left;
+		width:auto;
+	}
+	.header-3 .logo-container .col-md-9{
+		float:right;
+		width:auto;
+	}
+	.header-3 .logo {
+		height:auto;
+	}
+	.header-3 .logo img{
+		position:static;
+	}
+	.header-3 .logo-container{
+		padding:20px;
+	}
+	.header-3 .top-strip .pull-left{
+		display:none;
+	}
+	.lib-event-listing .kode-thumb{
+		margin-bottom:30px;
+	}
+	.lib-event-listing .lib-event-captions p.date span{
+		font-size:30px;
+	}
+	.lib-event-listing .lib-event-captions{
+		width:45%;
+	}
+	.kode-inner-banner-3{
+		min-height:inherit;
+	}
+	.search-section .nav-tabs > li{
+		float:left;
+		width:33.333%;
+		margin: 0px;
+	}
+	.search-section .nav-tabs > li > a, .search-section .nav-tabs > li.active > a, .search-section .nav-tabs > li.active > a:focus{
+		font-size:12px;
+		padding:12px 25px;
+		font-weight:normal;
+		text-align:center;
+	}
+	.search-section .nav-tabs{
+		margin:0px;
+	}
+	.search-section .nav-tabs > li.active > a:before, .search-section .nav-tabs > li.active > a:after{
+		display:none;
+	}
+	.search-section{
+		padding:20px;
+	}
+	.search-section .form-container{
+		padding: 10px 0px 0;
+	}
+	.search-section .form-container div{
+
+	}
+	.search-section .form-container input[type="text"], .search-section .form-container button{
+		margin:10px 0px;
+	}
+	#filterable-item-filter-1 li{
+		margin:0 0 3px;
+	}
+	.buy-template{
+		text-align:center;
+	}
+	.buy-template h2{
+		font-size:20px;
+	}
+	.buy-template .kode-btns{
+		float:left;
+		width:100%;
+		margin-top:10px;
+	}
+	.buy-template .kode-btns a{
+		float:none;
+		margin:0px 3px;
+		padding:6px 20px;
+		font-size:12px;
+	}
+	.gift-card-section .kode-gift{
+		float:left;
+		width:100%;
+	}
+	.gift-card-section:before{
+		display:none;
+	}
+	.kode-package{
+		margin:0px 0px 30px 0px;
+	}
+	.kode-package .package-content{
+		padding:60px 30px 30px 30px;
+	}
+	.kode-blog-list .kode-thumb{
+		width:200px;
+	}
+	.kode-blog-list .kode-text{
+		padding:10px 10px 10px 220px;
+	}
+	.kode-blog-list .kode-text p{
+		font-size:14px;
+		margin:0px;
+		line-height:20px;
+	}
+	.kode-blog-list .kode-text h2{
+		margin:0px;
+	}
+	header{
+		position:static;
+		background-color:#000;
+		padding:20px 0px;
+	}
+	.kode-banner .kode-caption h2{
+		font-size:30px;
+	}
+	.kode-banner .kode-caption h5{
+		font-size:14px;
+	}
+	.kode-banner .kode-caption p{
+		display:none;
+	}
+	.kode-banner .kode-caption h5::before, .kode-banner .kode-caption h5::after{
+		top:7px;
+	}
+	.kode-banner .kode-caption .input-container{
+		display:none;
+	}
+	.kode-banner .kode-caption-2{
+		width:80%;
+	}
+	.kode-banner .kode-caption-2 h5{
+		font-size:18px;
+	}
+	.kode-banner .kode-caption-2 h2{
+		font-size:26px;
+	}
+	.kode-banner .kode-caption-2 p{
+		display:none;
+	}
+	.kode-banner .kode-caption-2 .caption-btns{
+		margin:0px;
+	}
+	.kode-banner .kode-caption-2 .caption-btns a{
+		padding:6px 20px;
+		font-size:14px;
+	}
+	.kode-service-3{
+		margin-bottom:30px;
+	}
+	.lib-categories-section .nav-tabs > li > a{
+		padding:7px 10px;
+		font-size:12px;
+	}
+	.lib-categories-section .bx-wrapper .bx-controls-direction a{
+		top:0px;
+		height:30px;
+		line-height:30px;
+	}
+	.lib-papular-books .nav-tabs{
+		float:left;
+		width:100%;
+		display:none;
+	}
+	.lib-papular-books .tab-content{
+		float:left;
+		width:100%;
+	}
+	.lib-papular .kode-thumb{
+		width:40%;
+	}
+	.lib-papular .kode-text{
+		padding:0 0 0 300px;
+	}
+	.lib-authors{
+		width:100%;
+		margin-bottom:30px;
+	}
+	.newsletters-container{
+		float:left;
+		width:100%;
+		padding:0px;
+	}
+	.header-3{
+		padding:0px;
+		background-color:transparent;
+	}
+	.header-3 .container{
+		padding:0px;
+	}
+	.lib-ebook h3{
+		display:none;
+	}
+	.lib-ebook{
+		margin-bottom:30px;
+		text-align:center;
+	}
+	footer .widget{
+		margin-bottom:30px;
+	}
+	.kode-uptodate .row .col-md-8, .kode-uptodate .row .col-md-4{
+		padding:30px 20px;
+	}
+	.kode-uptodate h2{
+		margin:0px;
+	}
+	.kode-uptodate .social-icons{
+		float:left;
+		width:100%;
+	}
+	.kode-uptodate .social-icons ul{
+		margin:0px 0px 10px 0px;
+		width:100%;
+		text-align:center
+	}
+	.kode-uptodate .social-icons ul li{
+		float:none;
+		display:inline-block;
+	}
+	.kode-blog-full .writer .kode-text{
+		float:none;
+		padding:0px 0px 0px 95px;
+	}
+	.kode-blog-full .kode-thumb{
+		margin:0px;
+	}
+	.kode-blog-full .meta-date .writer{
+		padding:0px 0px 10px 0px;
+	}
+	.section-heading-1 .kode-icon:before, .section-heading-1 .kode-icon:after{
+		width:150px;
+		left:10%;
+	}
+	.section-heading-1 .kode-icon:after{
+		left:auto;
+		right:10%;
+	}
+	.best-seller-pro{
+		padding:10px;
+	}
+	.kode-event-detail-thumb .kode-caption{
+		padding:0px;
+	}
+	.kode-event-detail-thumb .social-icon{
+		width:auto;
+		top:10px;
+		left:10px;
+	}
+	.header-1{
+		padding:0px;
+	}
+	.lib-papular .kode-thumb{
+		width:100%;
+		float:left;
+	}
+	.lib-papular .kode-text{
+		padding:20px;
+		float:left;
+		width:100%;
+	}
+	.section-heading-1 h2{
+		font-size:22px;
+	}
+	.kode-newsletters-2 .input-container{
+		margin:0px 0px 30px 0px;
+	}
+	.kode-newsletters-2 div{
+		float:left;
+		width:100%;
+	}
+	.lib-copyrights p{
+		width:100%;
+		text-align:center;
+		margin:0px 0px 10px 0px;
+	}
+	.lib-copyrights .social-icon{
+		float:left;
+		width:100%;
+	}
+	.lib-copyrights .social-icon ul{
+		float:left;
+		width:100%;
+		text-align:center;
+	}
+	.lib-copyrights .social-icon ul li{
+		float:none;
+		display:inline-block;
+	}
+	.lib-count-up-section .count-up{
+		padding:50px 0 20px;
+	}
+	.kode-author-detail-2 .kode-thumb{
+		width:100%;
+		margin-bottom: 30px;
+	}
+	.kode-author-detail-2 .kode-text{
+		padding: 0px;
+	}
+	.kode-facts .nav-tabs > li > a{
+		font-size: 14px;
+		padding: 8px 10px;
+
+	}
+	.kode-page-heading{
+		margin:30px 0 20px; 
+	}
+
+
+}
+/*
+=================================================
+			FROM 0PX TO 0PX
+=================================================
+*/
+@media (max-width: 480px) {
+	.lib-event-listing .lib-event-captions{
+		position:static;
+		float:left;
+		width:100%;
+		border:none;
+	}
+	.header-3 .top-strip{
+		display:none;
+	}
+	.header-3 .logo{
+		width:150px;
+	}
+	.header-3 .logo img{
+		width:100%;
+	}
+	.kode-content section:first-child{
+		padding:30px 0 40px;
+	}
+	section{
+		padding:30px 0px;
+	}
+	.kode-service{
+		padding:20px;
+	}
+	.kode-testimonials-4 .bx-wrapper .bx-controls-direction a.bx-next{
+		right:0px;
+		left:auto;
+	}
+	.kode-testimonials-4 .bx-wrapper .bx-controls-direction a{
+		left:0px;
+		top:34px;
+	}
+	.kode-testimonials-4 .kode-text{
+		padding:0px;
+	}
+	.kode-testimonials-4 .kode-thumb{
+		height:100px;
+		width:100px;
+	}
+	.count-up-section span.counter{
+		font-size:30px;
+		line-height:30px;
+	}
+	.count-up-section .count-up p{
+		font-size:12px;
+	}
+	.count-up-section .count-up{
+		padding:15px 0px;
+	}
+	.kode-profile-tabs .kd-horizontal-tab .nav-tabs > li{
+		float:left;
+		margin:0px;
+		width:auto;
+	}
+	.kode-profile-tabs .kd-horizontal-tab .nav-tabs > li > a{
+		font-size:12px;
+		font-weight:normal;
+		padding:9px 10px;
+		margin:0px;
+	}
+	.kode-profile-tabs .kd-horizontal-tab .nav-tabs > li.active > a{
+		font-size:12px;
+		font-weight:normal;
+		padding:8px 10px;
+	}
+	.kode-profile-tabs .kd-horizontal-tab .nav-tabs{
+		margin-top:-38px;
+	}
+	.book-guide img{
+		width:100%;
+	}
+	.kd-tab-2 .nav-tabs{
+		float:left;
+		width:100%;
+	}
+	.kd-tab-2 .tab-content{
+		width:100%;
+	}
+	
+	.kode-blog-detail .kode-user{
+		float:left;
+		width:100%;
+	}
+	.kode-blog-detail .blog-meta{
+		float:left;
+		width:100%
+	}
+	.kode-blog-detail .kode-detail-meta{
+		padding:0px;
+	}
+	.kode-blog-detail .kode-text h2{
+		margin:0px;
+	}
+	.kode-comments ul li .kode-text a.reply{
+		position:static;
+	}
+	.kode-map iframe{
+		height:200px;
+	}
+	.padding-tb-50{
+		padding:30px px;
+	}
+	.contact-info ul li{
+		width:100%;
+		margin:0px;
+	}
+	.page-404 p{
+		font-size:110px;
+		line-height:100px;
+	}
+	.page-404 span{
+		position:static;
+		font-size:20px;
+		margin:0px;
+	}
+	.error-404{
+		width:100%;
+		margin:0px;
+	}
+	.error-404 a.go-back{
+		font-size:16px;
+	}
+	.top-strip ul.my-account li a{
+		font-size:12px;
+		text-transform:capitalize;
+	}
+	
+	.header-1 .top-strip{
+		text-align:center;
+	}
+	.header-1 .top-strip .pull-left{
+		width:100%;
+	}
+	.top-strip ul.my-account{
+		float:left;
+		width:100%;
+	}
+	.top-strip ul.my-account li{
+		float:none;
+		display:inline-block;
+		margin:0px 4px;
+	}
+	.kode-banner .kode-caption h5{
+		display:none;
+	}
+	.kode-banner .bx-wrapper .bx-controls-direction a:before{
+		font-size:30px;
+	}
+	.kode-blog-list .kode-thumb{
+		float:left;
+		width:100%;
+	}
+	.kode-blog-list .kode-text{
+		padding:20px;
+		float:left;
+		width:100%;
+	}
+	.kode-package .package-content{
+		padding:30px;
+	}
+	.kode-package .package-content h2{
+		margin-bottom:15px;
+	}
+	.kode-banner .kode-caption-2 .caption-btns{
+		display:none;
+	}
+	.kode-banner .kode-caption-2{
+		left:0;
+		text-align:center;
+		width:100%;
+		margin:0px;
+	}
+	.search-section .nav-tabs > li > a, .search-section .nav-tabs > li.active > a, .search-section .nav-tabs > li.active > a:focus{
+		padding:10px;
+		font-size:10px;
+	}
+	.lib-papular .kode-thumb{
+		width:100%;
+		margin-bottom:20px;
+	}
+	.lib-papular .kode-text{
+		padding:0px;
+	}
+	.section-heading-1 .kode-icon:before, .section-heading-1 .kode-icon:after{
+		width:80px;
+		left:10%;
+	}
+	.section-heading-1 .kode-icon:after{
+		left:auto;
+		right:10%;
+	}
+	.section-heading-1 h2{
+		font-size:24px;
+	}
+	.newsletters-container div{
+		float:left;
+		width:100%;
+		margin:0px 0px 10px 0px;
+	}
+	.lib-video-section h2{
+		font-size:22px;
+	}
+	.lib-contact-section .location-text{
+		width:100%;
+		height:auto;
+		position:static;
+		border-radius:0;
+		float:left;
+		padding:30px;
+
+	}
+	.lib-contact-section .kode-thumb{
+		display:none;
+	}
+	.lib-contact-section iframe{
+		height:250px;
+		float:left;
+		width:100%;
+	}
+	.lib-call-to-action h2{
+		font-size:30px;
+	}
+	.kode-uptodate .input-container button{
+		font-weight:normal;
+		font-size:12px;
+		padding:10px 10px;
+	}
+	.kode-uptodate h2{
+		font-size:22px;
+	}
+	.lib-theme-intro .kode-thumb img{
+		float:left;
+		width:100%;
+	}
+	.section-heading{
+		padding:0px;
+	}
+	.section-heading h2{
+		font-size:20px;
+	}
+	.section-content h2{
+		font-size:20px;
+	}
+	.lib-blog-2.lib-blog-3 .kode-text{
+		margin:0px;
+		padding:20px;
+	}
+	.lib-blog-2.lib-blog-3 .kode-blog-date{
+		right:auto;
+		top:auto;
+		bottom:0px;
+	}
+	.kode-blog-date{
+		width:100%;
+		margin-bottom:10px;
+	}
+	.kode-blog-date p, .kode-blog-date span{
+		float:left;
+		width:50%;
+	}
+	.kode-blog-date span:before{
+		display:none;
+	}
+	.lib-blog-detail .detailed-text .header .kode-text{
+		float:left;
+		width:100%;
+		padding:0px;
+	}
+	.lib-blog-detail .detailed-text .header .kode-text h3{
+		font-size:18px;
+		margin:0px;
+	}
+	.lib-blog-detail .detailed-text .header{
+		margin:0px;
+	}
+	.kode-comments ul li .kode-thumb{
+		width:40px;
+		height:40px;
+	}
+	.kode-comments ul li .kode-text{
+		padding:0px 0px 0px 60px;
+	}
+	.kode-comments ul ul{
+		padding:0px 0px 0px 40px;
+	}
+	.location-map iframe{
+		height:200px;
+	}
+	.product-review-tabs .nav-tabs li{
+		float:left;
+		width:100%;
+	}
+	.product-review-tabs .nav-tabs li a{
+		font-size:12px;
+		font-weight:normal;
+		padding:10px;
+	}
+	.book-cover-detail .kode-thumb{
+		width:100%;
+		padding:0px 100px;
+	}
+	.book-cover-detail .kode-thumb img{
+		width:100%;
+	}
+	.book-cover-detail .kode-text, .book-cover-detail.call-to-action-right .kode-text{
+		padding:20px 0 0 0;
+		width:100%;
+		text-align:left;
+	}
+	.search-section .form-container .row div{
+		float: left;
+		width: 100%;
+	}
+	.heading-1 h2{
+		font-size: 22px;
+	}
+	.kode-facts .nav-tabs > li{
+		width: 100%;
+		float: left;
+
+	}
+ 
+}
