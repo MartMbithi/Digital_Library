@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+/*
+============================================
+				TEXT COLOR
+============================================
+*/
+.comment-form textarea:focus + label, .comment-form input[type="text"]:focus + label,
+.widget-twitter ul li a,
+.section-content h2 span, .kode-service:hover i, .kode-testimonials-4 .client-name h2, .kode-testimonials-4 .bx-wrapper .bx-controls-direction a:before, .kode-profile-tabs .kd-horizontal-tab .nav-tabs > li.active > a, .kode-blog-full:hover h2, .widget-newletter .social-icon ul li a:hover, .kode-blog-detail .user-profile h4 span, .kode-blog-detail .blog-meta ul li a:hover, .kode-service-3:hover i, .kode-service-3:hover a, .lib-testimonial-content:hover h4, .lib-testimonial-content:hover:after, .kode-inner-banner-2 .kode-page-heading h2, .lib-ebook:hover i, .lib-contact-section .location-text i, .lib-contact-section .location-text span, .lib-copyrights .social-icon ul li a, .error-404 h2, .page-404 p, .error-404 a.go-back, 
+.color, .lib-book-detail  .product-price h4, .lib-event-listing .kode-text a.more, .coming-soon .countdown-amount, 
+.coming-soon .countdown-period, .coming-soon h2, .coming-soon .search-field input[type="text"], .coming-soon .social-icon ul li a, .kode-uptodate .input-container button, .lib-testimonial-content:hover p.title, .widget-text ul li i, 
+.kode-navigation li.kode-mega-menu .kode-megamenu-container .mega-wrapper ul li:hover a, .kode-blog-list2 .event-listing-meta ul li i, .kode-event-detail table tr td a, .kode-event-detail-thumb .kode-caption .countdown-amount, .books-listing-4:hover h3 a, .kd-list3 li a:hover, .kd-list3 li:hover:before, .kode-facts .nav-tabs > li > a, .kode-author-detail-2 .kode-text h5, .kode-blog-full .kode-text a.read-more:hover, .kode-blog-list a.more:hover:before, .kode-blog-list a.more:hover, .widget-contact-info a:hover{
+	color: #FF9606;
+}
+/*
+============================================
+			BACKGROUND COLOR
+============================================
+*/
+input.thbg-color,
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus,
+.lib-blog-2 .kode-text a.more,
+.kode-banner .input-container button, .buy-template .kode-btns a, .kode-service:hover, .kode-best-pro-seller p.price, .kode-best-slider .bx-wrapper .bx-controls-direction a:hover, .count-up-section, .kode-blog-list .blog-date span, .gift-card-section, .kode-package .package-content a.purchase:hover, .kode-package:hover .package-content .package-price, .kode-newsletters, .kode-newsletters .input-container button, .widget-categories ul li a:hover, footer .widget-newletter button, .kode-author:hover .kode-caption, .banner-search button, .widget-newletter button, .kode-blog-full .kode-thumb .blog-btns ul li a:hover, .widget-archive ul li a:hover, .kode-portfolio .kode-thumb, .comment-form button, .kode-single-blog:hover .kode-text .kode-date, .kode-single-sidebar:hover .kode-date, .kode-author-2, .book-guide p.cap:first-letter, .kd-list2 li:before, .kode-service-2:hover i, .kd-tab-2 .nav-tabs > li.active > a, .kd-tab-2 .nav-tabs > li.active > a:hover, .kd-tab-2 .nav-tabs > li.active > a:focus, .kd-tab-2 .nav-tabs > li.active > a:before, .kd-tab-2 .bx-wrapper .bx-controls-direction a:hover, .kode-video-section-2 a.more, .count-up-section-2, .header-1, .kode-banner .kode-caption-2 .caption-btns a:hover, .search-section .nav-tabs > li.active > a, .search-section .nav-tabs > li > a:hover, .search-section .form-container button, .lib-categories-section .nav-tabs > li.active > a, .lib-count-up-section, .lib-authors, .kd-accordion .panel-group .panel-heading i, .kode-comments ul li .kode-text a.reply:hover, .lib-ebook a.more:hover, .kode-membership, .kode-newsletters-2 button, .footer-2, .lib-qualities ul li:hover i, .lib-blog-2 .kode-text a.more:hover, .kode-blog-date, 
+.lib-book-detail a.add-to-cart:hover, .product-review-tabs .nav-tabs li.active a, .lib-event-listing .lib-event-captions, .lib-event-sidebar ul.lib-event-content li i, .lib-event-sidebar a.register, .coming-soon .search-field button, .kode-uptodate, .header-3 .logo-container, .header-3 .kode-navigation ul li:before, 
+.header-1 .kode-navigation ul ul li a:hover, .header-3 .kode-navigation ul ul li a:hover, .post-next-previous a:hover, .best-seller-pro:before, .bx-wrapper .bx-pager.bx-default-pager a.active, #filterable-item-filter-1 li a.active, #filterable-item-filter-1 li a:hover, .lib-categories-section .bx-wrapper .bx-controls-direction a:hover, .kode-best-pro-seller .kode-thumb, .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus, .kode-megamenu-container .mega-wrapper h3, .kode-event-detail a.book-now, .kode-blog-list2 .blog-date, .kode-blog-list2 .buy-ticket, .kode-event-detail-thumb .kode-caption a.reg, .kode-event-detail-thumb .social-icon ul li a:hover, .books-listing-3 .kode-caption a:hover, .books-listing-4 a.add-to-cart, .books-listing-4 .kode-thumb a:before, 
+.kode-facts .nav-tabs > li:hover > a,
+.kode-facts .nav-tabs > li.active > a, .kode-facts .nav-tabs > li.active > a:hover, .kode-facts .nav-tabs > li.active > a:focus, .slider-selection, .widget-price-filter a.filter, .kode-navigation ul ul li a:hover, .contact-box .social-icon ul li a:hover, .book-released .cart-btns a, .recent-release .owl-controls .owl-page.active, .kd-tab-2 .nav-tabs > li > a:hover, .lib-blog-post .kode-text a.more:hover, .error-404 a.go-back:hover{
+	background-color: #FF9606;
+}
+/*
+============================================
+				BORDER COLOR
+============================================
+*/
+.comment-form textarea:focus, .comment-form input[type="text"]:focus,
+.lib-blog-2 .kode-text a.more,
+.kode-service:hover, .kode-testimonials-4 .kode-thumb, .kode-blog-list h2:before, .kode-package .package-content a.purchase:hover, .kode-profile-tabs .kd-horizontal-tab .nav-tabs > li.active > a, .banner-search, blockquote, .kode-banner .kode-caption-2 .caption-btns a:hover, .kode-service-3:hover i, .lib-testimonial-content:hover .kode-thumb, .kode-service-2:hover, .kd-accordion .panel-group .panel-heading a, .kode-comments ul li .kode-text a.reply:hover, .lib-ebook a.more:hover, .lib-blog-2 .kode-text a.more:hover, .error-404 a.go-back, .coming-soon .countdown-show4 .countdown-section, 
+.coming-soon .search-field input[type="text"], .coming-soon .social-icon ul li a, 
+.header-3 .kode-navigation ul ul, .section-content h2:before, #filterable-item-filter-1 li a.active, #filterable-item-filter-1 li a:hover, .kode-service-3:hover, .kode-event-detail-thumb .kode-caption, .books-listing-3 .kode-caption a:hover, .kode-facts .nav-tabs > li > a, .lib-book-detail a.add-to-cart:hover, .kode-navigation ul ul, .contact-box, .kd-tab-2 .nav-tabs > li > a:hover, .lib-blog-post .kode-text a.more:hover, .error-404 a.go-back:hover{
+	border-color: #FF9606;
+}
+
+.header-3 .kode-navigation ul li:after{
+	border-bottom-color: #FF9606;
+}
+
+.kode_price_sec h2,.kode_list_section:hover .kode_try_wrap a{
+	color:#FF9606;	
+}
+
+/*
+	  =============================
+		   Background Color
+	  =============================
+*/
+.kode_list_section:hover .kode_price_sec,.kode_list_section:hover .kode_try_wrap{
+	background-color:#FF9606;	
+}
+
+
+/*
+============================================
+			CSS TRANSITIONS
+============================================
+*/
+input,
+.comment-form  label,
+.kode_list_section:hover .kode_price_sec,.kode_list_section:hover .kode_try_wrap,
+.kode_price_sec h2,.kode_list_section:hover .kode_try_wrap a,
+.kode-navigation ul li:before, .buy-template .kode-btns a, .kode-service, .kode-service i, .kode-service p, .kode-service h3, .kode-service h3:before, .kode-service a.read-more, .kode-service h3 a, .best-seller-pro .kode-caption a.add-to-cart, .best-seller-pro .kode-caption, .bx-wrapper .bx-controls-direction a, .kode-blog-list, .kode-blog-list .blog-date, .gift-card-section .kode-gift ul li, .kode-package .package-content a.purchase, .kode-package, .package-price, .package-price small, .kode-newsletters .input-container button, .widget-categories ul li a, .widget-categories ul li:before, footer .widget-newletter button, .social-icon ul li a, .kode-author .kode-caption, .kode-author .kode-caption h4, .kode-author .kode-caption p, .banner-search button, .kode-blog-full h2, .kode-blog-full .kode-thumb .blog-btns, .kode-blog-full .kode-thumb img, .widget-newletter button, .kode-blog-full .kode-thumb .blog-btns ul li a, .widget-instagram ul li img, .widget-archive ul li a, .widget-archive ul li:before, .portfolio-btns ul li a, .kode-portfolio .portfolio-btns, .kode-portfolio .kode-thumb img, .kode-blog-detail .blog-meta ul li a, .comment-form button, .kode-single-blog .kode-text .kode-date, .kode-single-blog, .kode-single-blog figure img, .kode-single-blog figure a:before, .kode-single-sidebar figure img, .kode-single-sidebar figure a:before, .kode-single-sidebar .kode-date, .kode-author-2 img, .kode-author-2:before, .kode-service-2 i, .kd-tab-2 .bx-wrapper .bx-controls-direction a, .kode-banner .kode-caption-2 .caption-btns a, .kode-service-3 i, .kode-service-3 a, .lib-categories-section .best-seller-pro, .lib-papular-books .nav-tabs > li > a, .lib-blog-post, .lib-blog-post .kode-text a.more, .lib-blog-post .kode-thumb img, .lib-blog-post .lib-btns, .lib-testimonial-content:after, .lib-authors .kode-caption, .lib-authors img, .lib-authors .social-icons, .kode-service-2, .kode-comments ul li .kode-text a.reply, .lib-ebook a.more, .lib-ebook i, 
+.lib-qualities ul li i, .lib-blog-2 .kode-text a.more, .kode-blog-date, .lib-blog-2 .kode-thumb img, .lib-gallery img, .lib-gallery .caption, .product-review-tabs .nav-tabs li a, .lib-event-listing .kode-thumb, .lib-event-listing .kode-thumb img, .header-3 .kode-navigation ul li:before, .header-3 .kode-navigation ul li:after, .widget-flickr ul li:before, .widget-flickr ul li img, .kode-navigation ul ul, .kode-navigation ul li a, .post-next-previous a, .best-seller-pro:before, .gift-card-section .kode-gift ul li:before, #filterable-item-filter-1 li a, .kode-best-pro-seller .kode-thumb img, .kode-best-pro-seller .kode-thumb:before, .kode-service-3, .reg-btn, .product-review-tabs .product-tags a, .event-gallery .grid-item a:before, .kode-blog-list2 .kode-thumb img, .kode-blog-list2 .buy-ticket, .books-listing-3 .kode-caption a, .books-listing-3, .books-listing-3 .kode-caption, .books-listing-4 a.add-to-cart, .books-listing-4 h3, .books-listing-4 h3 a, .books-listing-4 .kode-thumb a:before, .books-listing-4, .kd-list3 li a, .kode-team-listing .kode-thumb img, .our-libraries .kode-thumb, .our-libraries .kode-thumb img, .kode-facts .nav-tabs > li > a, .widget-price-filter a.filter, .widget-new-arrival ul li, .widget-new-arrival ul li .kode-thumb img, .lib-book-detail a.add-to-cart, .bb-custom-wrapper > nav a, .lib-blog-2, .lib-event-listing, .contact-box .social-icon ul li a, .book-released .cart-btns a, .book-released, .book-released .cart-btns, .kode-certificate, .kode-blog-list a.more:before, .kode-blog-list a.more, .kode-banner .input-container button, .kode-banner .input-container button i, .kd-tab-2 .nav-tabs > li > a, .kd-tab-2 .nav-tabs > li > a:before, .kode-video-section-2 a.more, .kode-video a:before, .kode-video a:after, .comment-form textarea, .comment-form input[type="text"], .kode-certificate .kode-thumb a:before, 
+.lib-call-to-action a.more, .kode-uptodate .social-icons ul li a, .kode-recent-posts .kode-thumb img, 
+.search-section .form-container button, .lib-event-listing .lib-event-captions a.register, .kode-event-detail-thumb .kode-caption a.reg, .kode-event-detail a.book-now, .kode-blog-list2, .kode-newsletters-2 button, .lib-blog-post .kode-text a.more, .kode-uptodate .input-container button, .search-section .form-container input, .widget-latest-news .kode-thumb, .widget-latest-news .kode-thumb img, .error-404 a.go-back{
+	transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-webkit-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+}
