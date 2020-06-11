@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/images/logo-1.png" ></p>
+
 # Digital_Library
 Digital Library is a web based and also desktop based library management system.
 
@@ -50,6 +52,7 @@ Digital Library is a web based and also desktop based library management system.
 
 
 ## Glance Of The System
+<p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/landing.png" ></p>
 <p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/1.png" ></p>
 <p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/2.png" ></p>
 <p align="center"><img src="https://github.com/MartMbithi/Digital_Library/blob/master/Screenshots/3.png" ></p>
