@@ -11,36 +11,76 @@
     //add new book
     if(isset($_POST['add_book']))
     {
-        $b_title  = $_POST['b_title'];
-        $b_author = $_POST['b_author'];
-        $b_isbn_no = $_POST['b_isbn_no'];
-        $b_publisher = $_POST['b_publisher'];
-        $bc_id = $_POST['bc_id'];
-        $bc_name = $_POST['bc_name'];
-        $b_status = $_POST['b_status'];
-        $b_summary = $_POST['b_summary'];   
-        $b_copies = $_POST['b_copies'];
+            $error = 0;
+            if (isset($_POST['b_title']) && !empty($_POST['b_title'])) {
+                $b_title=mysqli_real_escape_string($mysqli,trim($_POST['b_title']));
+            }else{
+                $error = 1;
+                $err="Book title cannot be empty";
+            }
+            if (isset($_POST['b_author']) && !empty($_POST['b_author'])) {
+                $b_author=mysqli_real_escape_string($mysqli,trim($_POST['b_author']));
+            }else{
+                $error = 1;
+                $err="Book author cannot be empty";
+            }
+            if (isset($_POST['b_isbn_no']) && !empty($_POST['b_isbn_no'])) {
+                $b_isbn_no=mysqli_real_escape_string($mysqli,trim($_POST['b_isbn_no']));
+            }else{
+                $error = 1;
+                $err="Book ISBN number cannot be empty";
+            }
+            
+            if(!$error)
+            {
+                $sql="SELECT * FROM  iL_Books WHERE  b_isbn_no='$b_isbn_no' ";
+                $res=mysqli_query($mysqli,$sql);
+                if (mysqli_num_rows($res) > 0) {
+                $row = mysqli_fetch_assoc($res);
+                if ($b_isbn_no==$row['b_isbn_no'])
+                {
+                    $err="ISBN number already exists";
+                }
+                else
+                {
+                    $err="ISBN number already exists";
+                }
+            }
+            else
+            {
+                $b_title  = $_POST['b_title'];
+                $b_author = $_POST['b_author'];
+                $b_isbn_no = $_POST['b_isbn_no'];
+                $b_publisher = $_POST['b_publisher'];
+                $bc_id = $_POST['bc_id'];
+                $bc_name = $_POST['bc_name'];
+                $b_status = $_POST['b_status'];
+                $b_summary = $_POST['b_summary'];   
+                $b_copies = $_POST['b_copies'];
 
-        $b_coverimage = $_FILES["b_coverimage"]["name"];
-        move_uploaded_file($_FILES["b_coverimage"]["tmp_name"],"assets/img/books/".$_FILES["b_coverimage"]["name"]); 
+                $b_coverimage = $_FILES["b_coverimage"]["name"];
+                move_uploaded_file($_FILES["b_coverimage"]["tmp_name"],"assets/img/books/".$_FILES["b_coverimage"]["name"]); 
+                
+                //Insert Captured information to a database table
+                $query="INSERT INTO iL_Books (b_title, b_copies, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary, b_coverimage) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                $stmt = $mysqli->prepare($query);
+                //bind paramaters
+                $rc=$stmt->bind_param('ssssssssss', $b_title, $b_copies, $b_author, $b_isbn_no, $b_publisher, $bc_id, $bc_name, $b_status, $b_summary, $b_coverimage);
+                $stmt->execute();
         
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_Books (b_title, b_copies, b_author, b_isbn_no, b_publisher, bc_id, bc_name, b_status, b_summary, b_coverimage) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssssss', $b_title, $b_copies, $b_author, $b_isbn_no, $b_publisher, $bc_id, $bc_name, $b_status, $b_summary, $b_coverimage);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Book Added";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
+                //declare a varible which will be passed to alert function
+                if($stmt)
+                {
+                    $success = "Book Added";
+                }
+                else 
+                {
+                    $err = "Please Try Again Or Try Later";
+                }      
+            }
+       }
     }
+
 ?>
 
 <!doctype html>
