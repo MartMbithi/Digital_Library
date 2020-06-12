@@ -9,27 +9,61 @@
 
     //create a book category
     if(isset($_POST['add_book_category']))
+
     {
-        $bc_code = $_POST['bc_code'];
-        $bc_name = $_POST['bc_name'];
-        $bc_desc = $_POST['bc_desc'];
+                $error = 0;
+                if (isset($_POST['bc_code']) && !empty($_POST['bc_code'])) {
+                    $bc_code=mysqli_real_escape_string($mysqli,trim($_POST['bc_code']));
+                }else{
+                    $error = 1;
+                    $err="Book Category number cannot be empty";
+                }
+                if (isset($_POST['bc_name']) && !empty($_POST['bc_name'])) {
+                    $bc_name=mysqli_real_escape_string($mysqli,trim($_POST['bc_name']));
+                }else{
+                    $error = 1;
+                    $err="Book Category name cannot be empty";
+                }
+                
+                if(!$error)
+                {
+                    $sql="SELECT * FROM  iL_BookCategories WHERE  bc_code='$bc_code' ";
+                    $res=mysqli_query($mysqli,$sql);
+                    if (mysqli_num_rows($res) > 0) {
+                    $row = mysqli_fetch_assoc($res);
+                    if ($bc_code==$row['bc_code'])
+                    {
+                        $err =  "Book category code already exists";
+                    }
+                    else
+                    {
+                        $err =  "Book category code already exists";
+                    }
+                }
+                else
+                {
+                $bc_code = $_POST['bc_code'];
+                $bc_name = $_POST['bc_name'];
+                $bc_desc = $_POST['bc_desc'];
+                
+                //Insert Captured information to a database table
+                $query="INSERT INTO iL_BookCategories (bc_code, bc_name, bc_desc) VALUES (?,?,?)";
+                $stmt = $mysqli->prepare($query);
+                //bind paramaters
+                $rc=$stmt->bind_param('sss', $bc_code, $bc_name, $bc_desc);
+                $stmt->execute();
         
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_BookCategories (bc_code, bc_name, bc_desc) VALUES (?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('sss', $bc_code, $bc_name, $bc_desc);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Book Category Added";
+                //declare a varible which will be passed to alert function
+                if($stmt)
+                {
+                    $success = "Book Category Added";
+                }
+                else 
+                {
+                    $err = "Please Try Again Or Try Later";
+                }      
+            }
         }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
     }
 ?>
 
