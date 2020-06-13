@@ -11,36 +11,69 @@
     //create a subscription
     if(isset($_POST['add_subscribed_media']))
     {
-        $s_title = $_POST['s_title'];
-        $s_code  = $_POST['s_code'];
-        $s_category = $_POST['s_category'];
-        $s_desc = $_POST['s_desc'];
+        $error = 0;
+            if (isset($_POST['s_title']) && !empty($_POST['s_title'])) {
+                $s_title=mysqli_real_escape_string($mysqli,trim($_POST['s_title']));
+            }else{
+                $error = 1;
+                $err="Subscription title cannot be empty";
+            }
+            
+            if (isset($_POST['s_code']) && !empty($_POST['s_code'])) {
+                $s_code=mysqli_real_escape_string($mysqli,trim($_POST['s_code']));
+            }else{
+                $error = 1;
+                $err="Subscription code cannot be empty";
+            }
+            if(!$error)
+            {
+                $sql="SELECT * FROM  iL_Subscriptions WHERE  s_code='$s_code' || s_name='$s_name'";
+                $res=mysqli_query($mysqli,$sql);
+                if (mysqli_num_rows($res) > 0) {
+                $row = mysqli_fetch_assoc($res);
+                if ($s_code==$row['s_code'])
+                {
+                    $err="Subscription Code already exists";
+                }
+                else
+                {
+                    $err="Subscription Name already exists";
+                }
+            }
+            else
+            {
+                $s_title = $_POST['s_title'];
+                $s_code  = $_POST['s_code'];
+                $s_category = $_POST['s_category'];
+                $s_desc = $_POST['s_desc'];
 
-        $s_cover_img = $_FILES["s_cover_img"]["name"];
-        move_uploaded_file($_FILES["s_cover_img"]["tmp_name"],"assets/magazines/".$_FILES["s_cover_img"]["name"]);
+                $s_cover_img = $_FILES["s_cover_img"]["name"];
+                move_uploaded_file($_FILES["s_cover_img"]["tmp_name"],"assets/magazines/".$_FILES["s_cover_img"]["name"]);
 
-        $s_file = $_FILES["s_file"]["name"];
-        move_uploaded_file($_FILES["s_file"]["tmp_name"],"assets/magazines/".$_FILES["s_file"]["name"]);
+                $s_file = $_FILES["s_file"]["name"];
+                move_uploaded_file($_FILES["s_file"]["tmp_name"],"assets/magazines/".$_FILES["s_file"]["name"]);
+                
+                $s_publisher = $_POST['s_publisher'];
+                $s_year = $_POST['s_year'];
+                
+                //Insert Captured information to a database table
+                $query="INSERT INTO iL_Subscriptions (s_title, s_code, s_category, s_desc, s_cover_img, s_file, s_publisher, s_year) VALUES (?,?,?,?,?,?,?,?)";
+                $stmt = $mysqli->prepare($query);
+                //bind paramaters
+                $rc=$stmt->bind_param('ssssssss',$s_title, $s_code, $s_category, $s_desc, $s_cover_img, $s_file, $s_publisher, $s_year);
+                $stmt->execute();
         
-        $s_publisher = $_POST['s_publisher'];
-        $s_year = $_POST['s_year'];
-        
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_Subscriptions (s_title, s_code, s_category, s_desc, s_cover_img, s_file, s_publisher, s_year) VALUES (?,?,?,?,?,?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssss',$s_title, $s_code, $s_category, $s_desc, $s_cover_img, $s_file, $s_publisher, $s_year);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Subscription Media Added";
+                //declare a varible which will be passed to alert function
+                if($stmt)
+                {
+                    $success = "Subscription Media Added";
+                }
+                else 
+                {
+                    $err = "Please Try Again Or Try Later";
+                }      
+            }
         }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
     }
 ?>
 
