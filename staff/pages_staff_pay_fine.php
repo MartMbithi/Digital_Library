@@ -18,7 +18,6 @@
           2. KXOCAVYEZU
           3. LOQZWXAMCY
           etc
-
     */
     $SandboxCodeLength = 10;
     $SandboxPaymentCode = 
@@ -27,38 +26,71 @@
     //pay library fines
     if(isset($_POST['payLibraryFee']))
     {
-        $f_payment_code = $_POST['f_payment_code'];
-        $f_status = $_POST['f_status'];
-        $f_checksum = $_POST['f_checksum'];
-        $fineId = $_GET['fineId'];
+            $error = 0;
+            if (isset($_POST['f_payment_code']) && !empty($_POST['f_payment_code'])) {
+                $f_payment_code=mysqli_real_escape_string($mysqli,trim($_POST['f_payment_code']));
+            }else{
+                $error = 1;
+                $err="Payment code cannot be empty";
+            }
+            
+            if (isset($_POST['f_checksum']) && !empty($_POST['f_checksum'])) {
+                $f_checksum=mysqli_real_escape_string($mysqli,trim($_POST['f_checksum']));
+            }else{
+                $error = 1;
+                $err="Payment Checksum cannot be empty";
+            }
+            if(!$error)
+            {
+                $sql="SELECT * FROM  iL_Fines WHERE  f_payment_code='$f_payment_code' || f_checksum='$f_checksum'";
+                $res=mysqli_query($mysqli,$sql);
+                if (mysqli_num_rows($res) > 0) {
+                $row = mysqli_fetch_assoc($res);
+                if ($f_payment_code==$row['f_payment_code'])
+                {
+                    $err="Payment Code already exists";
+                }
+                else
+                {
+                    $err="Payment Checksum already exists";
+                }
+            }
+            else
+            {
+                $f_payment_code = $_POST['f_payment_code'];
+                $f_status = $_POST['f_status'];
+                $f_checksum = $_POST['f_checksum'];
+                $fineId = $_GET['fineId'];
 
-        //---Post a notification that someone has cleared some fine//
-        $content = $_POST['content'];
-        $user_id = $_SESSION['l_id'];
+                //---Post a notification that someone has cleared some fine//
+                $content = $_POST['content'];
+                $user_id = $_SESSION['l_id'];
 
+                
+                //Insert Captured information to a database table
+                $query="UPDATE iL_Fines SET f_payment_code = ?, f_status = ?, f_checksum =? WHERE f_id= ?";
+                $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
+
+                $stmt2 = $mysqli->prepare($notif);
+                $stmt = $mysqli->prepare($query);
+                //bind paramaters
+                $rc=$stmt->bind_param('sssi', $f_payment_code, $f_status, $f_checksum, $fineId);
+                $rc = $stmt2->bind_param('si', $content, $user_id);
+
+                $stmt2 ->execute();
+                $stmt->execute();
         
-        //Insert Captured information to a database table
-        $query="UPDATE iL_Fines SET f_payment_code = ?, f_status = ?, f_checksum =? WHERE f_id= ?";
-        $notif = "INSERT INTO iL_notifications (content,user_id) VALUES(?,?)";
-
-        $stmt2 = $mysqli->prepare($notif);
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('sssi', $f_payment_code, $f_status, $f_checksum, $fineId);
-        $rc = $stmt2->bind_param('si', $content, $user_id);
-
-        $stmt2 ->execute();
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt && $stmt2)
-        {
-            $success = "Payment Confirmed" && header("refresh:1;url=pages_staff_manage_finances.php");
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
+                //declare a varible which will be passed to alert function
+                if($stmt && $stmt2)
+                {
+                    $success = "Payment Confirmed" && header("refresh:1;url=pages_staff_manage_finances.php");
+                }
+                else 
+                {
+                    $err = "Please Try Again Or Try Later";
+                }
+            }
+        }          
     }
 ?>
 

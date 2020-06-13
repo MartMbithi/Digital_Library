@@ -10,34 +10,70 @@
     //create a student account
     if(isset($_POST['add_student']))
     {
+            $error = 0;
+            if (isset($_POST['s_name']) && !empty($_POST['s_name'])) {
+                $s_name=mysqli_real_escape_string($mysqli,trim($_POST['s_name']));
+            }else{
+                $error = 1;
+                $err="Student name cannot be empty";
+            }
+            if (isset($_POST['s_email']) && !empty($_POST['s_email'])) {
+                $s_email=mysqli_real_escape_string($mysqli,trim($_POST['s_email']));
+            }else{
+                $error = 1;
+                $err="Student email cannot be empty";
+            }
+            if (isset($_POST['s_number']) && !empty($_POST['s_number'])) {
+                $s_number=mysqli_real_escape_string($mysqli,trim($_POST['s_number']));
+            }else{
+                $error = 1;
+                $err="Student email cannot be empty";
+            }
+            if(!$error)
+            {
+                $sql="SELECT * FROM  iL_Students WHERE  s_number='$s_number' || s_email ='$s_email' ";
+                $res=mysqli_query($mysqli,$sql);
+                if (mysqli_num_rows($res) > 0) {
+                $row = mysqli_fetch_assoc($res);
+                if ($s_number==$row['s_number'])
+                {
+                    $err="Student number already exists";
+                }
+                else
+                {
+                    $err="Student email already exists";
+                }
+            }
+            else
+            {
 
-       $s_name = $_POST['s_name'];
-       $s_number = $_POST['s_number'];
-       $s_email = $_POST['s_email'];
-       $s_pwd = sha1(md5($_POST['s_pwd']));
-       $s_sex = $_POST['s_sex'];
-       $s_phone = $_POST['s_phone'];
-       $s_bio = $_POST['s_bio'];
-       $s_adr = $_POST['s_adr'];
-       $s_acc_status = $_POST['s_acc_status'];
-
+                $s_name = $_POST['s_name'];
+                $s_number = $_POST['s_number'];
+                $s_email = $_POST['s_email'];
+                $s_pwd = sha1(md5($_POST['s_pwd']));
+                $s_sex = $_POST['s_sex'];
+                $s_phone = $_POST['s_phone'];
+                $s_bio = $_POST['s_bio'];
+                $s_adr = $_POST['s_adr'];
+                $s_acc_status = $_POST['s_acc_status'];
+                //Insert Captured information to a database table
+                $query="INSERT INTO iL_Students (s_name, s_number, s_email, s_pwd, s_sex, s_phone, s_bio, s_adr, s_acc_status) VALUES (?,?,?,?,?,?,?,?,?)";
+                $stmt = $mysqli->prepare($query);
+                //bind paramaters
+                $rc=$stmt->bind_param('sssssssss', $s_name, $s_number, $s_email, $s_pwd, $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status);
+                $stmt->execute();
         
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_Students (s_name, s_number, s_email, s_pwd, s_sex, s_phone, s_bio, s_adr, s_acc_status) VALUES (?,?,?,?,?,?,?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('sssssssss', $s_name, $s_number, $s_email, $s_pwd, $s_sex, $s_phone, $s_bio, $s_adr, $s_acc_status);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Student Account Created";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
-        }      
+                //declare a varible which will be passed to alert function
+                if($stmt)
+                {
+                    $success = "Student Account Created";
+                }
+                else 
+                {
+                    $err = "Please Try Again Or Try Later";
+                }  
+            }
+        }        
     }
 ?>
 
