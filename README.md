@@ -42,7 +42,7 @@ Digital Library is a web based and also desktop based library management system.
 2. Password :  <b>admin</b> <br>
 
 ## Login Credentials For Staff Account
-1. Username:   <b>iLib-24567</b><br>
+1. Username:   <b>iLib-35196</b><br>
 2. Password :  <b>demo</b> <br>
 
 ## Login Credentials For Student Account
