@@ -10,31 +10,69 @@
     //create a librarian account
     if(isset($_POST['add_librarian']))
     {
+        $error = 0;
+            if (isset($_POST['l_name']) && !empty($_POST['l_name'])) {
+                $l_name=mysqli_real_escape_string($mysqli,trim($_POST['l_name']));
+            }else{
+                $error = 1;
+                $err="Librarian name cannot be empty";
+            }
+            if (isset($_POST['l_email']) && !empty($_POST['l_email'])) {
+                $l_email=mysqli_real_escape_string($mysqli,trim($_POST['l_email']));
+            }else{
+                $error = 1;
+                $err="Librarian email cannot be empty";
+            }
+            if (isset($_POST['l_number']) && !empty($_POST['l_number'])) {
+                $l_number=mysqli_real_escape_string($mysqli,trim($_POST['l_number']));
+            }else{
+                $error = 1;
+                $err="Librarian email cannot be empty";
+            }
+            if(!$error)
+            {
+                $sql="SELECT * FROM  iL_Librarians WHERE  l_number='$l_number' || l_email ='$l_email' ";
+                $res=mysqli_query($mysqli,$sql);
+                if (mysqli_num_rows($res) > 0) {
+                $row = mysqli_fetch_assoc($res);
+                if ($l_number==$row['l_number'])
+                {
+                    $err="Librarian number already exists";
+                }
+                else
+                {
+                    $err="Librarian email already exists";
+                }
+            }
+            else
+            {
 
-        $l_number = $_POST['l_number'];
-        $l_name =$_POST['l_name'];
-        $l_phone = $_POST['l_phone'];
-        $l_email = $_POST['l_email'];
-        $l_pwd = sha1(md5($_POST['l_pwd']));
-        $l_adr = $_POST['l_adr'];
-        $l_bio = $_POST['l_bio'];
-        $l_acc_status = $_POST['l_acc_status'];
+                $l_number = $_POST['l_number'];
+                $l_name =$_POST['l_name'];
+                $l_phone = $_POST['l_phone'];
+                $l_email = $_POST['l_email'];
+                $l_pwd = sha1(md5($_POST['l_pwd']));
+                $l_adr = $_POST['l_adr'];
+                $l_bio = $_POST['l_bio'];
+                $l_acc_status = $_POST['l_acc_status'];
+                
+                //Insert Captured information to a database table
+                $query="INSERT INTO iL_Librarians (l_number, l_name, l_phone, l_email, l_pwd, l_adr, l_bio, l_acc_status) VALUES (?,?,?,?,?,?,?,?)";
+                $stmt = $mysqli->prepare($query);
+                //bind paramaters
+                $rc=$stmt->bind_param('ssssssss', $l_number, $l_name, $l_phone, $l_email, $l_pwd, $l_adr, $l_bio, $l_acc_status);
+                $stmt->execute();
         
-        //Insert Captured information to a database table
-        $query="INSERT INTO iL_Librarians (l_number, l_name, l_phone, l_email, l_pwd, l_adr, l_bio, l_acc_status) VALUES (?,?,?,?,?,?,?,?)";
-        $stmt = $mysqli->prepare($query);
-        //bind paramaters
-        $rc=$stmt->bind_param('ssssssss', $l_number, $l_name, $l_phone, $l_email, $l_pwd, $l_adr, $l_bio, $l_acc_status);
-        $stmt->execute();
-  
-        //declare a varible which will be passed to alert function
-        if($stmt)
-        {
-            $success = "Librarian Account Created";
-        }
-        else 
-        {
-            $err = "Please Try Again Or Try Later";
+                //declare a varible which will be passed to alert function
+                if($stmt)
+                {
+                    $success = "Librarian Account Created";
+                }
+                else 
+                {
+                    $err = "Please Try Again Or Try Later";
+                }
+            }
         }      
     }
 ?>
